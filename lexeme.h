@@ -31,6 +31,15 @@ enum lexeme_type {
         ASSIGN,
         SIZEOF,
         INCREMENT,
-        DECREMENT
+        DECREMENT,
+        /* Control structures */
+        LBRACE,
+        RBRACE,
+        LBRACKET,
+        RBRACKER
+        LPAREN,
+        RPAREN,
+        SEMICOLON,
+        PERIOD
 };
 #endif  /* CFLAT_LEXEME_H */
