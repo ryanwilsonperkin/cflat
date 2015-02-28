@@ -1,2 +1,43 @@
 cflat
 ===
+
+Terminals
+---
+- CHAR
+- ELSE
+- FLOAT
+- FOR
+- IF
+- INT
+- RETURN
+- STRUCT
+- TYPEDEF
+- VOID
+- WHILE
+- PLUS
+- MINUS
+- ASTERISK
+- SLASH
+- PERCENT
+- EQ
+- NE
+- LT
+- GT
+- LE
+- GE
+- AND
+- OR
+- NOT
+- ASSIGN
+- SIZEOF
+- INCREMENT
+- DECREMENT
+- LBRACE
+- RBRACE
+- LBRACKET
+- RBRACKET
+- LPAREN
+- RPAREN
+- SEMICOLON
+- PERIOD
+- ID
