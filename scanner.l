@@ -9,9 +9,12 @@ INT	-?(0|[1-9][0-9]*)
 
 %%
 
-{CHAR}		{ return CHAR; }
-{FLOAT}		{ return FLOAT; }
-{INT}		{ return INT;}
+{CHAR}		{ return CONST_CHAR; }
+{FLOAT}		{ return CONST_FLOAT; }
+{INT}		{ return CONST_INT; }
+"char"		{ return CHAR; }
+"float"		{ return FLOAT; }
+"int"		{ return INT;}
 "else"		{ return ELSE; }
 "for"		{ return FOR; }
 "if"		{ return IF; }

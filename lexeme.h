@@ -13,6 +13,10 @@ enum lexeme_type {
         TYPEDEF,
         VOID,
         WHILE,
+        /* Const values */
+        CONST_CHAR,
+        CONST_FLOAT,
+        CONST_INT,
         /* Operators */
         PLUS,
         MINUS,
