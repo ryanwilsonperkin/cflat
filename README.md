@@ -130,3 +130,8 @@ Grammar
 - CONST_CHAR
 - CONST_FLOAT
 - CONST_INT
+
+### type_name
+- CHAR
+- FLOAT
+- INT
