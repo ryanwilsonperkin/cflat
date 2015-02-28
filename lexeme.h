@@ -40,6 +40,10 @@ enum lexeme_type {
         LPAREN,
         RPAREN,
         SEMICOLON,
-        PERIOD
+        PERIOD,
+        /* Identifier */
+        ID,
+        /* Anything not matching */
+        OTHER
 };
 #endif  /* CFLAT_LEXEME_H */
