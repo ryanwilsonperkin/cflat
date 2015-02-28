@@ -36,7 +36,7 @@ enum lexeme_type {
         LBRACE,
         RBRACE,
         LBRACKET,
-        RBRACKER
+        RBRACKET,
         LPAREN,
         RPAREN,
         SEMICOLON,
