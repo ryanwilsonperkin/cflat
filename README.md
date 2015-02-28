@@ -127,6 +127,6 @@ Grammar
 - var PERIOD var
 
 ### constant
-- const_int
-- const_float
-- const_char
+- CONST_CHAR
+- CONST_FLOAT
+- CONST_INT
