@@ -11,8 +11,26 @@ enum lexeme_type {
         RETURN,
         STRUCT,
         TYPEDEF,
-        SIZEOF,
         VOID,
-        WHILE
+        WHILE,
+        /* Operators */
+        PLUS,
+        MINUS,
+        ASTERISK,
+        SLASH,
+        PERCENT,
+        EQ,  /* Equal */
+        NE,  /* Not equal */
+        LT,  /* Less than */
+        GT,  /* Greater than */
+        LE,  /* Less than or equal */
+        GE,  /* Greater than or equal */
+        AND,
+        OR,
+        NOT,
+        ASSIGN,
+        SIZEOF,
+        INCREMENT,
+        DECREMENT
 };
 #endif  /* CFLAT_LEXEME_H */
