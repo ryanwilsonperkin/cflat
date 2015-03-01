@@ -41,13 +41,17 @@ var_decl_list
     ;
 
 var_decl
-    : var_type ID SEMICOLON { printf("var_type ID SEMICOLON\n"); }
-    | var_type ID LBRACKET CONST_INT RBRACKET SEMICOLON { printf("var_type LBRACKET CONST_INT RBRACKET ID SEMICOLON\n"); }
+    : basic_type ID array_specifier SEMICOLON { printf("basic_type ID SEMICOLON\n"); }
+    | struct_type ID array_specifier SEMICOLON { printf("struct_type ID SEMICOLON\n"); }
     ;
 
-var_type 
-    : basic_type { printf("basic_type\n"); }
-    | STRUCT LBRACE var_decl_list RBRACE { printf("STRUCT LBRACE var_decl_list RBRACE\n"); }
+struct_type
+    : STRUCT LBRACE var_decl_list RBRACE { printf("STRUCT LBRACE var_decl_list RBRACE\n"); }
+    ;
+
+array_specifier
+    : /* empty */ { printf("empty\n"); }
+    | LBRACKET CONST_INT RBRACKET
     ;
 
 function_def_list
