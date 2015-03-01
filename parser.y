@@ -185,8 +185,8 @@ postfix_expr
 
 var
     : ID { printf("ID\n"); }
-    | var LBRACKET expr RBRACKET  { printf("var LBRACKET expr RBRACKET \n"); }
-    | var PERIOD var { printf("var PERIOD var\n"); }
+    | ID LBRACKET expr RBRACKET  { printf("ID LBRACKET expr RBRACKET \n"); }
+    | ID PERIOD var { printf("ID PERIOD var\n"); }
     | constant
     ;
 

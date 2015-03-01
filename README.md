@@ -207,12 +207,12 @@ Grammar
 - postfix_expr DECREMENT
 - LPAREN expr RPAREN
 - function_call
-- constant
 
 ### var
 - ID
-- var LBRACKET expr RBRACKET 
-- var PERIOD var
+- ID LBRACKET expr RBRACKET 
+- ID PERIOD var
+- constant
 
 ### constant
 - CONST_CHAR
