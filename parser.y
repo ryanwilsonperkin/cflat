@@ -71,7 +71,7 @@ function_call
 
 arg_list
     : /* empty */ { printf("empty\n"); }
-    | arg_list expr { printf("arg_list expr\n"); }
+    | arg_list expr SEMICOLON { printf("arg_list expr\n"); }
     ;
 
 stmt_list

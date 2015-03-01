@@ -114,7 +114,7 @@ Grammar
 
 ### arg_list
 - null
-- arg_list expr
+- arg_list expr SEMICOLON
 
 ### stmt_list
 - stmt
