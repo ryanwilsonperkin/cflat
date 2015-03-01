@@ -27,7 +27,7 @@ program :
 ; 
 
 type_decl_list :
-  /* empty */ { printf("empty\n"); }
+  type_decl { printf("type_decl\n"); }
 | type_decl_list type_decl { printf("type_decl_list type_decl\n"); }
 ;
 
@@ -36,7 +36,7 @@ type_decl :
 ;
 
 var_decl_list :
-  /* empty */ { printf("empty\n"); }
+  var_decl { printf("var_decl\n"); }
 | var_decl_list var_decl { printf("var_decl_list var_decl\n"); }
 ;
 
@@ -51,7 +51,7 @@ var_type :
 ;
 
 function_def_list :
-  /* empty */ { printf("empty\n"); }
+  function_def { printf("function_def\n"); }
 | function_def_list function_def { printf("function_def_list function_def\n"); }
 ;
 
