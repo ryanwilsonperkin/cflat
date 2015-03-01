@@ -186,19 +186,19 @@ Grammar
 - multiplicative_expr
 
 ### multiplicative_expr
-- multiplicative_expr ASTERISK unary_expression
-- multiplicative_expr SLASH unary_expression
-- multiplicative_expr PERCENT unary_expression
-- unary_expression
+- multiplicative_expr ASTERISK unary_expr
+- multiplicative_expr SLASH unary_expr
+- multiplicative_expr PERCENT unary_expr
+- unary_expr
 
-### unary_expression
-- SIZEOF LPAREN unary_expression RPAREN
+### unary_expr
+- SIZEOF LPAREN unary_expr RPAREN
 - SIZEOF LPAREN basic_type RPAREN
-- NOT unary_expression
-- PLUS unary_expression
-- MINUS unary_expression
-- INCREMENT var
-- DECREMENT var
+- NOT unary_expr
+- PLUS unary_expr
+- MINUS unary_expr
+- INCREMENT unary_expr
+- DECREMENT unary_expr
 - postfix_expr
 
 ### postfix_expr

@@ -170,8 +170,8 @@ unary_expr
     | NOT unary_expr { printf("NOT unary_expr\n"); }
     | PLUS unary_expr { printf("PLUS unary_expr\n"); }
     | MINUS unary_expr { printf("MINUS unary_expr\n"); }
-    | INCREMENT var { printf("INCREMENT var\n"); }
-    | DECREMENT var { printf("DECREMENT var\n"); }
+    | INCREMENT unary_expr { printf("INCREMENT unary_expr\n"); }
+    | DECREMENT unary_expr { printf("DECREMENT unary_expr\n"); }
     | postfix_expr { printf("postfix_expr\n"); }
     ;
 
