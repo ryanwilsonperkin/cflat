@@ -78,8 +78,7 @@ Grammar
 - function_def_list function_def
 
 ### function_def
-- function_type ID LPAREN RPAREN function_body
-- function_type ID LPAREN param_list RPAREN function_body
+- function_type ID LPAREN var_decl_list RPAREN function_body
 
 ### function_type
 - VOID
