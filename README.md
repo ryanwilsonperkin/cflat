@@ -61,6 +61,12 @@ Grammar
 - VOID ID LPAREN param_list RPAREN function_body
 - type_name ID LPAREN param_list RPAREN function_body
 
+### function_body
+- LBRACE return_stmt RBRACE
+- LBRACE stmt_list return_stmt RBRACE
+- LBRACE local_var_list return_stmt RBRACE
+- LBRACE local_var_list stmt_list return_stmt RBRACE
+
 ### stmt_list
 - stmt
 - stmt_list stmt 
