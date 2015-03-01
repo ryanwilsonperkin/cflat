@@ -134,32 +134,59 @@ Grammar
 - RETURN SEMICOLON
 
 ### expr
-- expr PLUS expr
-- expr MINUS expr
-- expr ASTERISK expr
-- expr SLASH expr
-- expr PERCENT expr
-- expr LT expr
-- expr GT expr
-- expr GE expr
-- expr LE expr
-- expr NE expr
-- expr EQ expr
-- expr OR expr
-- expr AND expr
-- NOT expr 
-- MINUS expr
-- PLUS expr
-- LPAREN expr RPAREN
-- function_call
-- var ASSIGN expr
+- expr_l1
+
+### expr_l1
+- expr_l2
+- var ASSIGN expr_l1
+
+### expr_l2
+- expr_l2 OR expr_l3
+- expr_l3
+
+### expr_l3
+- expr_l3 AND expr_l4
+- expr_l4
+
+### expr_l4
+- expr_l4 EQ expr_l5
+- expr_l4 NE expr_l5
+- expr_l5
+
+### expr_l5
+- expr_l5 LT expr_l6
+- expr_l5 LE expr_l6
+- expr_l5 GT expr_l6
+- expr_l5 GE expr_l6
+- expr_l6
+
+### expr_l6
+- expr_l6 PLUS expr_l7
+- expr_l6 MINUS expr_l7
+- expr_l7
+
+### expr_l7
+- expr_l7 ASTERISK expr_l8
+- expr_l7 SLASH expr_l8
+- expr_l7 PERCENT expr_l8
+- expr_l8
+
+### expr_l8
+- SIZEOF LPAREN expr_l8 RPAREN
+- SIZEOF LPAREN basic_type RPAREN
+- NOT expr_l8
+- PLUS expr_l8
+- MINUS expr_l8
+- INCREMENT var
+- DECREMENT var
+- expr_l9
+
+### expr_l9
 - var
 - var INCREMENT
 - var DECREMENT
-- INCREMENT var
-- DECREMENT var
-- SIZEOF LPAREN expr RPAREN
-- SIZEOF LPAREN basic_type RPAREN
+- LPAREN expr RPAREN
+- function_call
 - constant
 
 ### var
