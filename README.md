@@ -57,7 +57,7 @@ Grammar
 - type_decl_list type_decl
 
 ### type_decl
-- TYPEDEF type_name ID SEMICOLON
+- TYPEDEF basic_type ID SEMICOLON
 
 ### var_decl_list
 - null
@@ -69,7 +69,7 @@ Grammar
 - var_type LBRACKET INT RBRACKET ID SEMICOLON
 
 ### var_type
-- type_name
+- basic_type
 - STRUCT LBRACE var_decl_list RBRACE
 
 ### function_def_list
@@ -82,7 +82,7 @@ Grammar
 
 ### function_type
 - VOID
-- type_name
+- basic_type
 
 ### function_body
 - LBRACE var_decl_list return_stmt RBRACE
@@ -159,7 +159,7 @@ Grammar
 - INCREMENT var
 - DECREMENT var
 - SIZEOF LPAREN expr RPAREN
-- SIZEOF LPAREN type_name RPAREN
+- SIZEOF LPAREN basic_type RPAREN
 - constant
 
 ### var
@@ -172,7 +172,7 @@ Grammar
 - CONST_FLOAT
 - CONST_INT
 
-### type_name
+### basic_type
 - CHAR
 - FLOAT
 - INT
