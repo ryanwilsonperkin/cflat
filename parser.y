@@ -177,8 +177,8 @@ unary_expr
 
 postfix_expr
     : var { printf("var\n"); }
-    | var INCREMENT { printf("var INCREMENT\n"); }
-    | var DECREMENT { printf("var DECREMENT\n"); }
+    | postfix_expr INCREMENT { printf("var INCREMENT\n"); }
+    | postfix_expr DECREMENT { printf("var DECREMENT\n"); }
     | LPAREN expr RPAREN { printf("LPAREN expr RPAREN\n"); }
     | function_call { printf("function_call\n"); }
     ;

@@ -203,8 +203,8 @@ Grammar
 
 ### postfix_expr
 - var
-- var INCREMENT
-- var DECREMENT
+- postfix_expr INCREMENT
+- postfix_expr DECREMENT
 - LPAREN expr RPAREN
 - function_call
 - constant
