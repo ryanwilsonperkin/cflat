@@ -83,6 +83,7 @@ Grammar
 - ID LPAREN arg_list RPAREN
 
 ### arg_list
+- null
 - expr
 - arg_list expr
 
