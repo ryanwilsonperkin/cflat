@@ -1,0 +1,15 @@
+%union {
+    char cval;
+    float fval;
+    int ival;
+    char *sval;
+}
+%token CHAR ELSE FLOAT FOR IF INT RETURN STRUCT TYPEDEF VOID WHILE 
+%token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON
+%token ASSIGN OR AND NOT EQ NE LT LE GT GE PLUS MINUS ASTERISK SLASH PERCENT
+%token SIZEOF INCREMENT DECREMENT PERIOD
+%token <cval> CONST_CHAR
+%token <fval> CONST_FLOAT
+%token <ival> CONST_INT
+%token <sval> ID
+%%
