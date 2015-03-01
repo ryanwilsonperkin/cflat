@@ -206,6 +206,7 @@ Grammar
 
 ### postfix_expr
 - var
+- constant
 - postfix_expr INCREMENT
 - postfix_expr DECREMENT
 - LPAREN expr RPAREN
@@ -215,7 +216,6 @@ Grammar
 - ID
 - var LBRACKET expr RBRACKET 
 - var PERIOD ID
-- constant
 
 ### constant
 - CONST_CHAR

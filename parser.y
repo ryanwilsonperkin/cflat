@@ -188,6 +188,7 @@ unary_expr
 
 postfix_expr
     : var { printf("var\n"); }
+    | constant { printf("constant\n"); }
     | postfix_expr INCREMENT { printf("var INCREMENT\n"); }
     | postfix_expr DECREMENT { printf("var DECREMENT\n"); }
     | LPAREN expr RPAREN { printf("LPAREN expr RPAREN\n"); }
@@ -198,7 +199,6 @@ var
     : ID { printf("ID\n"); }
     | var LBRACKET expr RBRACKET  { printf("ID LBRACKET expr RBRACKET \n"); }
     | var PERIOD ID { printf("ID PERIOD var\n"); }
-    | constant
     ;
 
 constant
