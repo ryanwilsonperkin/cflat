@@ -91,7 +91,7 @@ Grammar
 
 ### var_decl
 - var_type ID SEMICOLON
-- var_type LBRACKET CONST_INT RBRACKET ID SEMICOLON
+- var_type ID LBRACKET CONST_INT RBRACKET SEMICOLON
 
 ### var_type
 - basic_type
