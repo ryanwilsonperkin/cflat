@@ -56,10 +56,11 @@ char *lexeme_name(int l)
 
 int main()
 {
+        int next_lexeme;
         char test_name[20] = {0};
         scanf("%s", test_name);
-        while (!feof(stdin)) {
-                if (strcmp(test_name, lexeme_name(yylex())) != 0) {
+        while ((next_lexeme = yylex()) != 0) {
+                if (strcmp(test_name, lexeme_name(next_lexeme)) != 0) {
                         printf("error: %s doesn't match\n", yytext);
                 }
         }
