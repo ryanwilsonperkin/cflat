@@ -67,6 +67,13 @@ Grammar
 - LBRACE local_var_list return_stmt RBRACE
 - LBRACE local_var_list stmt_list return_stmt RBRACE
 
+### function_call
+- ID LPAREN arg_list RPAREN
+
+### arg_list
+- expr
+- arg_list expr
+
 ### stmt_list
 - stmt
 - stmt_list stmt 
