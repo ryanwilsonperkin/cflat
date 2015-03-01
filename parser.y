@@ -61,7 +61,7 @@ function_def
     ;
 
 function_body
-    :  LBRACE var_decl_list return_stmt RBRACE { printf("LBRACE var_decl_list return_stmt RBRACE\n"); }
+    : LBRACE var_decl_list return_stmt RBRACE { printf("LBRACE var_decl_list return_stmt RBRACE\n"); }
     | LBRACE var_decl_list stmt_list return_stmt RBRACE { printf("LBRACE var_decl_list stmt_list return_stmt RBRACE\n"); }
     ;
 
