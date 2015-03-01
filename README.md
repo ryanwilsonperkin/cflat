@@ -213,8 +213,8 @@ Grammar
 
 ### var
 - ID
-- ID LBRACKET expr RBRACKET 
-- ID PERIOD var
+- var LBRACKET expr RBRACKET 
+- var PERIOD ID
 - constant
 
 ### constant
