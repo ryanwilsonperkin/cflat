@@ -64,6 +64,14 @@ Grammar
 - var_decl
 - var_decl_list var_decl
 
+### var_decl
+- var_type ID SEMICOLON
+- var_type LBRACKET INT RBRACKET ID SEMICOLON
+
+### var_type
+- type_name
+- STRUCT LBRACE var_decl_list RBRACE
+
 ### function_def_list
 - null
 - function_def
