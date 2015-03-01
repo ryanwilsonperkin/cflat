@@ -79,7 +79,7 @@ Grammar
 - type_decl_list var_decl_list function_def_list
 
 ### type_decl_list
-- type_decl
+- empty
 - type_decl_list type_decl
 
 ### type_decl

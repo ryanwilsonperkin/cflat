@@ -30,7 +30,7 @@ program
     ; 
 
 type_decl_list
-    : type_decl { printf("type_decl\n"); }
+    : /* empty */ { printf("empty\n"); }
     | type_decl_list type_decl { printf("type_decl_list type_decl\n"); }
     ;
 
