@@ -78,10 +78,12 @@ Grammar
 - function_def_list function_def
 
 ### function_def
-- VOID ID LPAREN RPAREN function_body
-- type_name ID LPAREN RPAREN function_body
-- VOID ID LPAREN param_list RPAREN function_body
-- type_name ID LPAREN param_list RPAREN function_body
+- function_type ID LPAREN RPAREN function_body
+- function_type ID LPAREN param_list RPAREN function_body
+
+### function_type
+- VOID
+- type_name
 
 ### function_body
 - LBRACE var_decl_list return_stmt RBRACE
