@@ -52,6 +52,7 @@ Grammar
 - type_decl_list global_var_list function_def_list
 
 ### type_decl_list
+- null
 - type_decl
 - type_decl_list type_decl
 
@@ -59,6 +60,7 @@ Grammar
 - TYPEDEF type_name ID SEMICOLON
 
 ### function_def_list
+- null
 - function_def
 - function_def_list function_def
 
