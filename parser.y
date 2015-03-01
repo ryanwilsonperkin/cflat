@@ -20,6 +20,9 @@ void yyerror(const char *);
 %token <ival> CONST_INT
 %token <sval> ID
 
+/* Expect a single shift/reduce conflict for dangling else. */
+%expect 1
+
 %%
 
 program 
