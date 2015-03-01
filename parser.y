@@ -123,63 +123,63 @@ return_stmt :
 ;
 
 expr :
-  expr_l1 { printf("expr_l1\n"); }
+  assign_expr { printf("assign_expr\n"); }
 ;
 
-expr_l1 :
-  expr_l2 { printf("expr_l2\n"); }
-| var ASSIGN expr_l1 { printf("var ASSIGN expr_l1\n"); }
+assign_expr :
+  logical_or_expr { printf("logical_or_expr\n"); }
+| var ASSIGN assign_expr { printf("var ASSIGN assign_expr\n"); }
 ;
 
-expr_l2 :
-  expr_l2 OR expr_l3 { printf("expr_l2 OR expr_l3\n"); }
-| expr_l3 { printf("expr_l3\n"); }
+logical_or_expr :
+  logical_or_expr OR logical_and_expr { printf("logical_or_expr OR logical_and_expr\n"); }
+| logical_and_expr { printf("logical_and_expr\n"); }
 ;
 
-expr_l3 :
-  expr_l3 AND expr_l4 { printf("expr_l3 AND expr_l4\n"); }
-| expr_l4 { printf("expr_l4\n"); }
+logical_and_expr :
+  logical_and_expr AND equality_expr { printf("logical_and_expr AND equality_expr\n"); }
+| equality_expr { printf("equality_expr\n"); }
 ;
 
-expr_l4 :
-  expr_l4 EQ expr_l5 { printf("expr_l4 EQ expr_l5\n"); }
-| expr_l4 NE expr_l5 { printf("expr_l4 NE expr_l5\n"); }
-| expr_l5 { printf("expr_l5\n"); }
+equality_expr :
+  equality_expr EQ relational_expr { printf("equality_expr EQ relational_expr\n"); }
+| equality_expr NE relational_expr { printf("equality_expr NE relational_expr\n"); }
+| relational_expr { printf("relational_expr\n"); }
 ;
 
-expr_l5 :
-  expr_l5 LT expr_l6 { printf("expr_l5 LT expr_l6\n"); }
-| expr_l5 LE expr_l6 { printf("expr_l5 LE expr_l6\n"); }
-| expr_l5 GT expr_l6 { printf("expr_l5 GT expr_l6\n"); }
-| expr_l5 GE expr_l6 { printf("expr_l5 GE expr_l6\n"); }
-| expr_l6 { printf("expr_l6\n"); }
+relational_expr :
+  relational_expr LT additive_expr { printf("relational_expr LT additive_expr\n"); }
+| relational_expr LE additive_expr { printf("relational_expr LE additive_expr\n"); }
+| relational_expr GT additive_expr { printf("relational_expr GT additive_expr\n"); }
+| relational_expr GE additive_expr { printf("relational_expr GE additive_expr\n"); }
+| additive_expr { printf("additive_expr\n"); }
 ;
 
-expr_l6 :
-  expr_l6 PLUS expr_l7 { printf("expr_l6 PLUS expr_l7\n"); }
-| expr_l6 MINUS expr_l7 { printf("expr_l6 MINUS expr_l7\n"); }
-| expr_l7 { printf("expr_l7\n"); }
+additive_expr :
+  additive_expr PLUS multiplicative_expr { printf("additive_expr PLUS multiplicative_expr\n"); }
+| additive_expr MINUS multiplicative_expr { printf("additive_expr MINUS multiplicative_expr\n"); }
+| multiplicative_expr { printf("multiplicative_expr\n"); }
 ;
 
-expr_l7 :
-  expr_l7 ASTERISK expr_l8 { printf("expr_l7 ASTERISK expr_l8\n"); }
-| expr_l7 SLASH expr_l8 { printf("expr_l7 SLASH expr_l8\n"); }
-| expr_l7 PERCENT expr_l8 { printf("expr_l7 PERCENT expr_l8\n"); }
-| expr_l8 { printf("expr_l8\n"); }
+multiplicative_expr :
+  multiplicative_expr ASTERISK unary_expr { printf("multiplicative_expr ASTERISK unary_expr\n"); }
+| multiplicative_expr SLASH unary_expr { printf("multiplicative_expr SLASH unary_expr\n"); }
+| multiplicative_expr PERCENT unary_expr { printf("multiplicative_expr PERCENT unary_expr\n"); }
+| unary_expr { printf("unary_expr\n"); }
 ;
 
-expr_l8 :
-  SIZEOF LPAREN expr_l8 RPAREN { printf("SIZEOF LPAREN expr_l8 RPAREN\n"); }
+unary_expr :
+  SIZEOF LPAREN unary_expr RPAREN { printf("SIZEOF LPAREN unary_expr RPAREN\n"); }
 | SIZEOF LPAREN basic_type RPAREN { printf("SIZEOF LPAREN basic_type RPAREN\n"); }
-| NOT expr_l8 { printf("NOT expr_l8\n"); }
-| PLUS expr_l8 { printf("PLUS expr_l8\n"); }
-| MINUS expr_l8 { printf("MINUS expr_l8\n"); }
+| NOT unary_expr { printf("NOT unary_expr\n"); }
+| PLUS unary_expr { printf("PLUS unary_expr\n"); }
+| MINUS unary_expr { printf("MINUS unary_expr\n"); }
 | INCREMENT var { printf("INCREMENT var\n"); }
 | DECREMENT var { printf("DECREMENT var\n"); }
-| expr_l9 { printf("expr_l9\n"); }
+| postfix_expr { printf("postfix_expr\n"); }
 ;
 
-expr_l9 :
+postfix_expr :
   var { printf("var\n"); }
 | var INCREMENT { printf("var INCREMENT\n"); }
 | var DECREMENT { printf("var DECREMENT\n"); }

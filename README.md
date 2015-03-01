@@ -157,54 +157,54 @@ Grammar
 - RETURN SEMICOLON
 
 ### expr
-- expr_l1
+- assign_expr
 
-### expr_l1
-- expr_l2
-- var ASSIGN expr_l1
+### assign_expr
+- logical_or_expr
+- var ASSIGN assign_expr
 
-### expr_l2
-- expr_l2 OR expr_l3
-- expr_l3
+### logical_or_expr
+- logical_or_expr OR logical_and_expr
+- logical_and_expr
 
-### expr_l3
-- expr_l3 AND expr_l4
-- expr_l4
+### logical_and_expr
+- logical_and_expr AND equality_expr
+- equality_expr
 
-### expr_l4
-- expr_l4 EQ expr_l5
-- expr_l4 NE expr_l5
-- expr_l5
+### equality_expr
+- equality_expr EQ relational_expr
+- equality_expr NE relational_expr
+- relational_expr
 
-### expr_l5
-- expr_l5 LT expr_l6
-- expr_l5 LE expr_l6
-- expr_l5 GT expr_l6
-- expr_l5 GE expr_l6
-- expr_l6
+### relational_expr
+- relational_expr LT additive_expr
+- relational_expr LE additive_expr
+- relational_expr GT additive_expr
+- relational_expr GE additive_expr
+- additive_expr
 
-### expr_l6
-- expr_l6 PLUS expr_l7
-- expr_l6 MINUS expr_l7
-- expr_l7
+### additive_expr
+- additive_expr PLUS multiplicative_expr
+- additive_expr MINUS multiplicative_expr
+- multiplicative_expr
 
-### expr_l7
-- expr_l7 ASTERISK expr_l8
-- expr_l7 SLASH expr_l8
-- expr_l7 PERCENT expr_l8
-- expr_l8
+### multiplicative_expr
+- multiplicative_expr ASTERISK unary_expression
+- multiplicative_expr SLASH unary_expression
+- multiplicative_expr PERCENT unary_expression
+- unary_expression
 
-### expr_l8
-- SIZEOF LPAREN expr_l8 RPAREN
+### unary_expression
+- SIZEOF LPAREN unary_expression RPAREN
 - SIZEOF LPAREN basic_type RPAREN
-- NOT expr_l8
-- PLUS expr_l8
-- MINUS expr_l8
+- NOT unary_expression
+- PLUS unary_expression
+- MINUS unary_expression
 - INCREMENT var
 - DECREMENT var
-- expr_l9
+- postfix_expr
 
-### expr_l9
+### postfix_expr
 - var
 - var INCREMENT
 - var DECREMENT
