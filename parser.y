@@ -185,13 +185,13 @@ expr_l9 :
 | var DECREMENT { printf("var DECREMENT\n"); }
 | LPAREN expr RPAREN { printf("LPAREN expr RPAREN\n"); }
 | function_call { printf("function_call\n"); }
-| constant { printf("constant\n"); }
 ;
 
 var :
   ID { printf("ID\n"); }
 | var LBRACKET expr RBRACKET  { printf("var LBRACKET expr RBRACKET \n"); }
 | var PERIOD var { printf("var PERIOD var\n"); }
+| constant
 ;
 
 constant :
