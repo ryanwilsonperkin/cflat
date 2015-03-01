@@ -80,7 +80,6 @@ Grammar
 
 ### type_decl_list
 - null
-- type_decl
 - type_decl_list type_decl
 
 ### type_decl
@@ -88,7 +87,6 @@ Grammar
 
 ### var_decl_list
 - null
-- var_decl
 - var_decl_list var_decl
 
 ### var_decl
@@ -101,7 +99,6 @@ Grammar
 
 ### function_def_list
 - null
-- function_def
 - function_def_list function_def
 
 ### function_def
@@ -120,7 +117,6 @@ Grammar
 
 ### arg_list
 - null
-- expr
 - arg_list expr
 
 ### stmt_list
