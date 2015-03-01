@@ -2,10 +2,14 @@
 #include "lexeme.h"
 %}
 
-ID	[a-zA-Z_][a-zA-Z_0-9]*
+NATURAL	[1-9]
+DIGIT	[0-9]
+LETTER	[a-zA-Z_]
+
+ID	{LETTER}({LETTER}|{DIGIT})*
 CHAR	'(\\n|\\0|.)'
-FLOAT	(0|[1-9][0-9]*)\.[0-9]+([+-]?[eE][1-9][0-9]*)?
-INT	(0|[1-9][0-9]*)
+FLOAT	{NATURAL}{DIGIT}*\.{DIGIT}+([eE][-+]?{NATURAL}{DIGIT}+)?
+INT	{NATURAL}{DIGIT}*
 
 %%
 
