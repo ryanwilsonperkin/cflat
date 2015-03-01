@@ -53,7 +53,7 @@ var_type :
 ;
 
 function_def_list :
-  /* null */ { printf("null\n"); }
+  /* empty */ { printf("empty\n"); }
 | function_def { printf("function_def\n"); }
 | function_def_list function_def { printf("function_def_list function_def\n"); }
 ;
@@ -77,7 +77,7 @@ function_call :
 ;
 
 arg_list :
-  /* null */ { printf("null\n"); }
+  /* empty */ { printf("empty\n"); }
 | expr { printf("expr\n"); }
 | arg_list expr { printf("arg_list expr\n"); }
 ;
