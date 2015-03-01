@@ -42,7 +42,7 @@ var_decl_list :
 
 var_decl :
   var_type ID SEMICOLON { printf("var_type ID SEMICOLON\n"); }
-| var_type LBRACKET INT RBRACKET ID SEMICOLON { printf("var_type LBRACKET INT RBRACKET ID SEMICOLON\n"); }
+| var_type LBRACKET CONST_INT RBRACKET ID SEMICOLON { printf("var_type LBRACKET CONST_INT RBRACKET ID SEMICOLON\n"); }
 ;
 
 var_type :
