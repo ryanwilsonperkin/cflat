@@ -55,6 +55,10 @@ Grammar
 - function_def
 - function_def_list function_def
 
+### function_def
+- type_name ID LPAREN param_list RPAREN function_body
+- VOID ID LPAREN param_list RPAREN function_body
+
 ### stmt_list
 - stmt
 - stmt_list stmt 
