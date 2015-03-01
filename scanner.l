@@ -1,5 +1,5 @@
 %{
-#include "lexeme.h"
+#include "parser.h"
 %}
 
 NATURAL	[1-9]
@@ -55,4 +55,3 @@ INT	{NATURAL}{DIGIT}*
 "."		{ return PERIOD; }
 {ID}		{ return ID; }
 [ \t\n]+	{ /* Ignore whitespace */ }
-.		{ return OTHER; }

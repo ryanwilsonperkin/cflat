@@ -1,3 +1,10 @@
+%{
+#include <stdio.h>
+extern FILE *yyin;
+extern int yylex(void);
+void yyerror(const char *);
+%}
+
 %union {
     char cval;
     float fval;
@@ -12,4 +19,18 @@
 %token <fval> CONST_FLOAT
 %token <ival> CONST_INT
 %token <sval> ID
+
 %%
+
+program             : CHAR { printf("matched program\n"); }
+
+%%
+
+
+void yyerror(const char *s) { fprintf(stderr, "%s\n", s); }
+
+int main()
+{
+        if (yyin == NULL) yyin = stdin;
+        return yyparse();
+}
