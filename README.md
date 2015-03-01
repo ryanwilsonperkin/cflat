@@ -51,6 +51,13 @@ Grammar
 ### program
 - type_decl_list global_var_list function_def_list
 
+### type_decl_list
+- type_decl
+- type_decl_list type_decl
+
+### type_decl
+- TYPEDEF type_name ID SEMICOLON
+
 ### function_def_list
 - function_def
 - function_def_list function_def
