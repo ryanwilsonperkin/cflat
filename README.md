@@ -49,7 +49,7 @@ Grammar
 ---
 
 ### program
-- type_decl_list global_var_list function_def_list
+- type_decl_list var_decl_list function_def_list
 
 ### type_decl_list
 - null
@@ -58,6 +58,11 @@ Grammar
 
 ### type_decl
 - TYPEDEF type_name ID SEMICOLON
+
+### var_decl_list
+- null
+- var_decl
+- var_decl_list var_decl
 
 ### function_def_list
 - null
@@ -71,10 +76,8 @@ Grammar
 - type_name ID LPAREN param_list RPAREN function_body
 
 ### function_body
-- LBRACE return_stmt RBRACE
-- LBRACE stmt_list return_stmt RBRACE
-- LBRACE local_var_list return_stmt RBRACE
-- LBRACE local_var_list stmt_list return_stmt RBRACE
+- LBRACE var_decl_list return_stmt RBRACE
+- LBRACE var_decl_list stmt_list return_stmt RBRACE
 
 ### function_call
 - ID LPAREN arg_list RPAREN
