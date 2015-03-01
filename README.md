@@ -79,14 +79,14 @@ Grammar
 - type_decl_list var_decl_list function_def_list
 
 ### type_decl_list
-- null
+- type_decl
 - type_decl_list type_decl
 
 ### type_decl
 - TYPEDEF basic_type ID SEMICOLON
 
 ### var_decl_list
-- null
+- var_decl
 - var_decl_list var_decl
 
 ### var_decl
@@ -98,7 +98,7 @@ Grammar
 - STRUCT LBRACE var_decl_list RBRACE
 
 ### function_def_list
-- null
+- function_def
 - function_def_list function_def
 
 ### function_def
