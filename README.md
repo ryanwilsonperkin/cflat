@@ -86,7 +86,7 @@ Grammar
 - TYPEDEF basic_type ID SEMICOLON
 
 ### var_decl_list
-- var_decl
+- null
 - var_decl_list var_decl
 
 ### var_decl
@@ -106,7 +106,6 @@ Grammar
 - VOID ID function_params function_body
 
 ### function_params
-- LPAREN RPAREN
 - LPAREN var_decl_list RPAREN
 
 ### function_body

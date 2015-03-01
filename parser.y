@@ -39,7 +39,7 @@ type_decl
     ;
 
 var_decl_list
-    : var_decl { printf("var_decl\n"); }
+    : /* empty */ { printf("empty\n"); }
     | var_decl_list var_decl { printf("var_decl_list var_decl\n"); }
     ;
 
@@ -68,8 +68,7 @@ function_def
     ;
 
 function_params
-    : LPAREN RPAREN { printf("LPAREN RPAREN\n"); }
-    | LPAREN var_decl_list RPAREN { printf("LPAREN var_decl_list RPAREN\n"); }
+    : LPAREN var_decl_list RPAREN { printf("LPAREN var_decl_list RPAREN\n"); }
     ;
 
 function_body
