@@ -56,12 +56,8 @@ function_def_list :
 ;
 
 function_def :
-  function_type ID LPAREN var_decl_list RPAREN function_body { printf("function_type\n"); }
-;
-
-function_type :
-  VOID { printf("VOID\n"); }
-| basic_type { printf("basic_type\n"); }
+  basic_type ID LPAREN var_decl_list RPAREN function_body { printf("basic_type ID LPAREN var_decl_list RPAREN function_body\n"); }
+  VOID ID LPAREN var_decl_list RPAREN function_body { printf("VOID ID LPAREN var_decl_list RPAREN function_body\n"); }
 ;
 
 function_body :
