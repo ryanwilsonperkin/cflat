@@ -45,6 +45,33 @@ Terminals
 - PERIOD
 - ID
 
+Non-Terminals
+---
+
+- program
+- type_decl_list
+- type_decl
+- var_decl_list
+- ver_decl
+- var_type
+- function_def_list
+- function_def
+- function_type
+- function_body
+- function_call
+- arg_list
+- stmt_list
+- stmt
+- expr_stmt
+- compound_stmt
+- select_stmt
+- iter_stmt
+- return_stmt
+- expr
+- var
+- constant
+- basic_type
+
 Grammar
 ---
 
