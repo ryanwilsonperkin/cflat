@@ -5,6 +5,18 @@ typedef signed int cflat_int;
 typedef unsigned char cflat_char;
 typedef float cflat_float;
 
+union value {
+        cflat_char cval;
+        cflat_float fval;
+        cflat_int ival;
+};
+
+enum basic_type {
+        CHAR_TYPE,
+        FLOAT_TYPE,
+        INT_TYPE
+};
+
 struct program_t {
         struct type_decl_list_t *type_decl_list;
         struct var_decl_list_t *var_decl_list;
@@ -330,18 +342,6 @@ struct var_t {
 struct constant_t {
         enum basic_type type;
         union value val;
-};
-
-union value {
-        cflat_char cval;
-        cflat_float fval;
-        cflat_int ival;
-};
-
-enum basic_type {
-        CHAR_TYPE,
-        FLOAT_TYPE,
-        INT_TYPE
 };
 
 #endif  /* CFLAT_AST_H */
