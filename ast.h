@@ -1,6 +1,10 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+typedef signed int cflat_int;
+typedef unsigned char cflat_char;
+typedef float cflat_float;
+
 struct var_decl_t {
         enum {
                 BASIC_VAR,
@@ -18,7 +22,7 @@ struct struct_type_t {
 }
 
 struct array_specifier_t {
-        signed int size;
+        cflat_int size;
 }
 
 struct function_def_list_t {
@@ -308,9 +312,9 @@ struct constant_t {
 }
 
 union value {
-        unsigned char cval;
-        float fval;
-        signed int ival;
+        cflat_char cval;
+        cflat_float fval;
+        cflat_int ival;
 }
 
 enum basic_type {
