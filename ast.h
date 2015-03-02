@@ -5,6 +5,11 @@ typedef signed int cflat_int;
 typedef unsigned char cflat_char;
 typedef float cflat_float;
 
+struct var_decl_list_t {
+        struct var_decl_t *var_decl;
+        struct var_decl_list_t *var_decl_list;
+}
+
 struct var_decl_t {
         enum {
                 BASIC_VAR,
