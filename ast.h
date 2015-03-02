@@ -1,6 +1,34 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct assign_expr_t {
+        enum {
+                ASSIGN,
+                LOGICAL_OR_EXPR
+        } type;
+        union {
+                struct {
+                        struct var_t *assignee;
+                        struct assign_expr_t *assignment;
+                } assign;
+                struct logical_or_expr *logical_or_expr;
+        } val;
+}
+
+struct logical_or_expr_t {
+        enum {
+                OR,
+                LOGICAL_AND_EXPR 
+        } type;
+        union {
+                struct {
+                        struct logical_or_expr_t *primary;
+                        struct logical_and_expr_t *secondary;
+                } relation;
+                struct equality_expr_t *equality_expr;
+        } val;
+}
+
 struct logical_and_expr_t {
         enum {
                 AND,
