@@ -1,6 +1,24 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct iter_stmt_t {
+        enum {
+                WHILE,
+                FOR_INIT_COND_AFTER,
+                FOR_INIT_AFTER,
+                FOR_INIT_COND,
+                FOR_AFTER,
+                FOR_INIT,
+                FOR_COND,
+                FOR_EMPTY
+        } type;
+        struct {
+                expr_t *init;
+                expr_t *cond;
+                expr_t *after;
+        } val;
+}
+
 struct return_stmt_t {
         enum {
                 RETURN_EXPR,
