@@ -1,6 +1,30 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct multiplicative_expr_t {
+        enum {
+                MULTIPLY,
+                DIVIDE,
+                MODULO,
+                UNARY_EXPR
+        } type;
+        union {
+                struct {
+                        struct multiplicative_expr_t *multiplicand;
+                        struct unary_expr_t *multiplier;
+                } multiply;
+                struct {
+                        struct multiplicative_expr_t *dividend;
+                        struct unary_expr_t *divisor;
+                } divide;
+                struct {
+                        struct multiplicative_expr_t *dividend;
+                        struct unary_expr_t *divisor;
+                } modulo;
+                struct unary_expr_t *unary_expr;
+        } val;
+}
+
 struct unary_expr_t {
         enum {
                 SIZEOF_UNARY,
