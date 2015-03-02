@@ -1,6 +1,25 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct additive_expr_t {
+        enum {
+                ADD,
+                SUBTRACT,
+                MULTIPLICATIVE_EXPR
+        } type;
+        union {
+                struct {
+                        struct additive_expr_t *augend;
+                        struct multiplicate_expr_t *addend;
+                } add;
+                struct {
+                        struct additive_expr_t *minuend;
+                        struct multiplicative_expr_t *subtrahend;
+                } subtract;
+                struct multiplicative_expr_t *multiplicative_expr;
+        } val;
+}
+
 struct multiplicative_expr_t {
         enum {
                 MULTIPLY,
