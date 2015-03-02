@@ -18,7 +18,7 @@ struct struct_type_t {
 }
 
 struct array_specifier_t {
-        constant_t *constant;
+        signed int size;
 }
 
 struct function_def_list_t {
@@ -31,7 +31,7 @@ struct function_def_t {
                 BASIC_TYPE_FUNCTION,
                 VOID_FUNCTION
         } type;
-        basic_type type_specifier;
+        enum basic_type type_specifier;
         struct function_params_t *function_params;
         struct function_body_t *function_body;
 }
