@@ -1,6 +1,16 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct function_def_t {
+        enum {
+                BASIC_TYPE_FUNCTION,
+                VOID_FUNCTION
+        } type;
+        basic_type type_specifier;
+        struct function_params_t *function_params;
+        struct function_body_t *function_body;
+}
+
 struct function_params_t {
         struct var_decl_list_t *var_decl_list;
 }
