@@ -336,12 +336,12 @@ union value {
         cflat_char cval;
         cflat_float fval;
         cflat_int ival;
-}
+};
 
 enum basic_type {
         CHAR_TYPE,
         FLOAT_TYPE,
         INT_TYPE
-}
+};
 
 #endif  /* CFLAT_AST_H */
