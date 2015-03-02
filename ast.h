@@ -1,6 +1,10 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct struct_type_t {
+        struct var_decl_list_t *var_decl_list;
+}
+
 struct array_specifier_t {
         constant_t *constant;
 }
