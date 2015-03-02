@@ -1,10 +1,29 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
-typedef struct constant_t {
+struct var_t {
+        enum {
+                IDENTIFIER,
+                FIELD,
+                SUBSCRIPT
+        } type;
+        union {
+                char *id;
+                struct {
+                        struct var_t *var;
+                        char *id;
+                } field;
+                struct {
+                        struct var_t *var;
+                        struct expr_t *exp;
+                } subscript;
+        } val;
+}
+
+struct constant_t {
         enum basic_type type;
         union value val;
-} constant;
+}
 
 union value {
         unsigned char cval;
