@@ -137,7 +137,7 @@ struct select_stmt_t {
 
 struct iter_stmt_t {
         enum {
-                WHILE,
+                WHILE_EXPR,
                 FOR_INIT_COND_AFTER,
                 FOR_INIT_AFTER,
                 FOR_INIT_COND,
@@ -163,7 +163,7 @@ struct expr_t {
 
 struct assign_expr_t {
         enum {
-                ASSIGN,
+                ASSIGN_EXPR,
                 LOGICAL_OR_EXPR
         } type;
         union {
@@ -177,7 +177,7 @@ struct assign_expr_t {
 
 struct logical_or_expr_t {
         enum {
-                OR,
+                OR_EXPR,
                 LOGICAL_AND_EXPR 
         } type;
         union {
@@ -191,7 +191,7 @@ struct logical_or_expr_t {
 
 struct logical_and_expr_t {
         enum {
-                AND,
+                AND_EXPR,
                 EQUALITY_EXPR
         } type;
         union {
