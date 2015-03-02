@@ -1,6 +1,29 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct stmt_list_t {
+        struct stmt_t *stmt;
+        struct stmt_list_t *stmt_list;
+}
+
+struct stmt_t {
+        enum {
+                EXPR_STMT,
+                COMPOUND_STMT,
+                SELECT_STMT,
+                ITER_STMT,
+                RETURN_STMT,
+                EMPTY_STMT
+        } type;
+        union {
+                struct expr_stmt_t *expr_stmt;
+                struct compound_stmt_t *compound_stmt;
+                struct select_stmt_t *select_stmt;
+                struct iter_stmt_t *iter_stmt;
+                struct return_stmt_t *return_stmt;
+        } val;
+}
+
 struct expr_stmt_t {
         struct expr_t *expr;
 }
