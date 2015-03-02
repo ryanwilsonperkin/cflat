@@ -1,6 +1,11 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct function_def_list_t {
+        struct function_def_t *function_def;
+        struct function_def_list_t *function_def_list;
+}
+
 struct function_def_t {
         enum {
                 BASIC_TYPE_FUNCTION,
