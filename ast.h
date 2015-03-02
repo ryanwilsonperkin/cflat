@@ -1,6 +1,11 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+typedef struct constant_t {
+        enum basic_type type;
+        union value val;
+} constant;
+
 union value {
         unsigned char cval;
         float fval;
