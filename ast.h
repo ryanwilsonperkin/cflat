@@ -1,6 +1,21 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct equality_expr_t {
+        enum {
+                EQUAL,
+                NOT_EQUAL,
+                RELATIONAL_EXPR
+        } type;
+        union {
+                struct {
+                        struct equality_expr_t *primary;
+                        struct relational_expr_t *secondary;
+                } equality;
+                struct relational_expr_t *relational_expr;
+        } val;
+}
+
 struct relational_expr_t {
         enum {
                 LESS_THAN,
