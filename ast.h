@@ -1,6 +1,29 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct unary_expr_t {
+        enum {
+                SIZEOF_UNARY,
+                SIZEOF_BASIC,
+                NOT_UNARY,
+                POSITIVE,
+                NEGATIVE,
+                PRE_INCREMENT,
+                PRE_DECREMENT,
+                POSTFIX_EXPR
+        } type;
+        union {
+                struct unary_expr_t *sizeof_unary;
+                enum basic_type sizeof_basic;
+                struct unary_expr_t *not_unary;
+                struct unary_expr_t *positive;
+                struct unary_expr_t *negative;
+                struct unary_expr_t *pre_increment;
+                struct unary_expr_t *post_increment;
+                struct postfix_expr_t *postfix_expr;
+        } val;
+}
+
 struct postfix_expr_t {
         enum {
                 VAR,
