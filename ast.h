@@ -1,6 +1,10 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct compound_stmt_t {
+       struct stmt_list_t *stmt_list;
+}
+
 struct select_stmt_t {
         enum {
                 IF_THEN,
