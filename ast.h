@@ -40,10 +40,6 @@ struct iter_stmt_t {
 }
 
 struct return_stmt_t {
-        enum {
-                RETURN_EXPR,
-                RETURN
-        } type;
         struct expr_t *expr;
 }
 
