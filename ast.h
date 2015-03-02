@@ -98,7 +98,7 @@ struct stmt_list_t {
 };
 
 struct stmt_t {
-        enum {
+        enum stmt_type {
                 EXPR_STMT,
                 COMPOUND_STMT,
                 SELECT_STMT,
