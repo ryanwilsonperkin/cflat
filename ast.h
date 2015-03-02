@@ -185,7 +185,7 @@ struct logical_or_expr_t {
                         struct logical_or_expr_t *primary;
                         struct logical_and_expr_t *secondary;
                 } relation;
-                struct equality_expr_t *equality_expr;
+                struct logical_and_expr_t *logical_and_expr;
         } val;
 };
 
