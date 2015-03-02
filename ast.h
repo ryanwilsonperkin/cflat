@@ -9,22 +9,22 @@ struct program_t {
         struct type_decl_list_t *type_decl_list;
         struct var_decl_list_t *var_decl_list;
         struct function_def_list_t *function_def_list;
-}
+};
 
 struct type_decl_list_t {
         struct type_decl_t *type_decl;
         struct type_decl_list_t *type_decl_list;
-}
+};
 
 struct type_decl_t {
         enum basic_type type;
         char *id;
-}
+};
 
 struct var_decl_list_t {
         struct var_decl_t *var_decl;
         struct var_decl_list_t *var_decl_list;
-}
+};
 
 struct var_decl_t {
         enum {
@@ -36,20 +36,20 @@ struct var_decl_t {
                 struct struct_type_t *struct_var; 
         } val;
         struct array_specifier_t *array_specifier;
-}
+};
 
 struct struct_type_t {
         struct var_decl_list_t *var_decl_list;
-}
+};
 
 struct array_specifier_t {
         cflat_int size;
-}
+};
 
 struct function_def_list_t {
         struct function_def_t *function_def;
         struct function_def_list_t *function_def_list;
-}
+};
 
 struct function_def_t {
         enum {
@@ -59,31 +59,31 @@ struct function_def_t {
         enum basic_type type_specifier;
         struct function_params_t *function_params;
         struct function_body_t *function_body;
-}
+};
 
 struct function_params_t {
         struct var_decl_list_t *var_decl_list;
-}
+};
 
 struct function_body_t {
         struct var_decl_list_t *var_decl_list;
         struct stmt_list_t *stmt_list;
         struct return_stmt_t *return_stmt;
-}
+};
 
 struct function_call_t {
         struct arg_list_t *arg_list;
-}
+};
 
 struct arg_list_t {
         struct expr_t *expr;
         struct arg_list_t *arg_list;
-}
+};
 
 struct stmt_list_t {
         struct stmt_t *stmt;
         struct stmt_list_t *stmt_list;
-}
+};
 
 struct stmt_t {
         enum {
@@ -101,15 +101,15 @@ struct stmt_t {
                 struct iter_stmt_t *iter_stmt;
                 struct return_stmt_t *return_stmt;
         } val;
-}
+};
 
 struct expr_stmt_t {
         struct expr_t *expr;
-}
+};
 
 struct compound_stmt_t {
        struct stmt_list_t *stmt_list;
-}
+};
 
 struct select_stmt_t {
         enum {
@@ -121,7 +121,7 @@ struct select_stmt_t {
                 struct stmt_t *stmt_if_true;
                 struct stmt_t *stmt_if_false;
         } val;
-}
+};
 
 struct iter_stmt_t {
         enum {
@@ -139,15 +139,15 @@ struct iter_stmt_t {
                 struct expr_t *cond;
                 struct expr_t *after;
         } val;
-}
+};
 
 struct return_stmt_t {
         struct expr_t *expr;
-}
+};
 
 struct expr_t {
         struct assign_expr_t *assign_expr;
-}
+};
 
 struct assign_expr_t {
         enum {
@@ -161,7 +161,7 @@ struct assign_expr_t {
                 } assign;
                 struct logical_or_expr *logical_or_expr;
         } val;
-}
+};
 
 struct logical_or_expr_t {
         enum {
@@ -175,7 +175,7 @@ struct logical_or_expr_t {
                 } relation;
                 struct equality_expr_t *equality_expr;
         } val;
-}
+};
 
 struct logical_and_expr_t {
         enum {
@@ -189,7 +189,7 @@ struct logical_and_expr_t {
                 } relation;
                 struct equality_expr_t *equality_expr;
         } val;
-}
+};
 
 struct equality_expr_t {
         enum {
@@ -204,7 +204,7 @@ struct equality_expr_t {
                 } equality;
                 struct relational_expr_t *relational_expr;
         } val;
-}
+};
 
 struct relational_expr_t {
         enum {
@@ -221,7 +221,7 @@ struct relational_expr_t {
                 } relation;
                 struct additive_expr_t *additive_expr;
         } val;
-}
+};
 
 struct additive_expr_t {
         enum {
@@ -240,7 +240,7 @@ struct additive_expr_t {
                 } subtract;
                 struct multiplicative_expr_t *multiplicative_expr;
         } val;
-}
+};
 
 struct multiplicative_expr_t {
         enum {
@@ -264,7 +264,7 @@ struct multiplicative_expr_t {
                 } modulo;
                 struct unary_expr_t *unary_expr;
         } val;
-}
+};
 
 struct unary_expr_t {
         enum {
@@ -287,7 +287,7 @@ struct unary_expr_t {
                 struct unary_expr_t *post_increment;
                 struct postfix_expr_t *postfix_expr;
         } val;
-}
+};
 
 struct postfix_expr_t {
         enum {
@@ -306,7 +306,7 @@ struct postfix_expr_t {
                 struct expr_t *enclosed;
                 struct function_call_t *function_call;
         } val;
-}
+};
 
 struct var_t {
         enum {
@@ -325,12 +325,12 @@ struct var_t {
                         struct expr_t *exp;
                 } subscript;
         } val;
-}
+};
 
 struct constant_t {
         enum basic_type type;
         union value val;
-}
+};
 
 union value {
         cflat_char cval;
