@@ -2,7 +2,7 @@
 #define CFLAT_AST_H
 
 struct expr_stmt_t {
-        expr_t *expr;
+        struct expr_t *expr;
 }
 
 struct compound_stmt_t {
@@ -15,7 +15,7 @@ struct select_stmt_t {
                 IF_THEN_ELSE
         } type;
         struct {
-                expr_t *cond;
+                struct expr_t *cond;
                 struct stmt_t *stmt_if_true;
                 struct stmt_t *stmt_if_false;
         } val;
@@ -33,9 +33,9 @@ struct iter_stmt_t {
                 FOR_EMPTY
         } type;
         struct {
-                expr_t *init;
-                expr_t *cond;
-                expr_t *after;
+                struct expr_t *init;
+                struct expr_t *cond;
+                struct expr_t *after;
         } val;
 }
 
@@ -44,10 +44,12 @@ struct return_stmt_t {
                 RETURN_EXPR,
                 RETURN
         } type;
-        expr_t *expr;
+        struct expr_t *expr;
 }
 
-typedef expr_t assign_expr_t;
+struct expr_t {
+        struct assign_expr_t *assign_expr;
+}
 
 struct assign_expr_t {
         enum {
