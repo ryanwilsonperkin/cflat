@@ -204,7 +204,7 @@ struct logical_and_expr_t {
 };
 
 struct equality_expr_t {
-        enum {
+        enum equality_expr_type {
                 EQUAL,
                 NOT_EQUAL,
                 RELATIONAL_EXPR
@@ -219,7 +219,7 @@ struct equality_expr_t {
 };
 
 struct relational_expr_t {
-        enum {
+        enum relational_expr_type {
                 LESS_THAN,
                 LESS_THAN_OR_EQUAL,
                 GREATER_THAN,
@@ -236,7 +236,7 @@ struct relational_expr_t {
 };
 
 struct additive_expr_t {
-        enum {
+        enum additive_expr_type {
                 ADD,
                 SUBTRACT,
                 MULTIPLICATIVE_EXPR
@@ -255,7 +255,7 @@ struct additive_expr_t {
 };
 
 struct multiplicative_expr_t {
-        enum {
+        enum multiplicative_expr_type {
                 MULTIPLY,
                 DIVIDE,
                 MODULO,
@@ -279,7 +279,7 @@ struct multiplicative_expr_t {
 };
 
 struct unary_expr_t {
-        enum {
+        enum unary_expr_type {
                 SIZEOF_UNARY,
                 SIZEOF_BASIC,
                 NOT_UNARY,
@@ -302,7 +302,7 @@ struct unary_expr_t {
 };
 
 struct postfix_expr_t {
-        enum {
+        enum postfix_expr_type {
                 VAR,
                 CONSTANT,
                 POST_INCREMENT,
@@ -343,5 +343,54 @@ struct constant_t {
         enum basic_type type;
         union value val;
 };
+
+struct program_t *create_program(struct type_decl_list_t *, struct var_decl_list_t *, struct function_def_list_t *);
+struct type_decl_list_t *create_type_decl_list(struct type_decl_t *, struct type_decl_list_t *);
+struct type_decl_t *create_type_decl(enum basic_type, char *);
+struct var_decl_list_t *create_var_decl_list(struct var_decl_t *, struct var_decl_list_t *);
+struct var_decl_t *create_var_decl(enum basic_type, struct struct_type_t *, struct array_specifier_t *); 
+struct struct_type_t *create_struct_type(struct var_decl_list_t *);
+struct array_specifier_t *create_array_specifier(cflat_int);
+struct function_def_list_t *create_function_def_list(struct function_def_t *, struct function_def_list_t *);
+struct function_def_t *create_basic_function_def(enum basic_type, struct function_params_t *, struct function_body_t *);
+struct function_def_t *create_void_function_def(struct function_params_t *, struct function_body_t *);
+struct function_params_t *create_function_params(struct var_decl_list_t *);
+struct function_body_t *create_function_body(struct var_decl_list_t *, struct stmt_list_t *, struct return_stmt_t *);
+struct function_call_t *create_function_call(struct arg_list_t *);
+struct arg_list_t *create_arg_list(struct expr_t *, struct arg_list_t *);
+struct stmt_list_t *create_stmt_list(struct stmt_t *, struct stmt_list_t *);
+struct stmt_t *create_stmt(enum stmt_type, void *);
+struct expr_stmt_t *create_expr_stmt(struct expr_t *);
+struct compound_stmt_t *create_compound_stmt(struct stmt_list_t *);
+struct select_stmt_t *create_select_stmt(struct expr_t *, struct stmt_t *, struct stmt_t *);
+struct iter_stmt_t *create_iter_stmt(struct expr_t *, struct expr_t *, struct expr_t *);
+struct return_stmt_t *create_return_stmt(struct expr_t *);
+struct expr_t *create_expr_t(struct assign_expr_t *);
+struct assign_expr_t *create_assign_expr(struct var_t *, struct assign_expr_t *);
+struct assign_expr_t *wrap_logical_or_expr(struct logical_or_expr_t *);
+struct logical_or_expr_t *create_logical_or_expr(struct logical_or_expr_t *, struct logical_and_expr_t *);
+struct logical_or_expr_t *wrap_logical_and_expr(struct logical_and_expr_t *);
+struct logical_and_expr_t *create_logical_and_expr(struct logical_and_expr_t *, struct equality_expr_t *);
+struct logical_and_expr_t *wrap_equality_expr(struct equality_expr_t *);
+struct equality_expr_t *create_equality_expr(enum equality_expr_type, struct equality_expr_t *, struct relational_expr_t *);
+struct equality_expr_t *wrap_relational_expr(struct relational_expr_t *);
+struct relational_expr_t *create_relational_expr(enum relational_expr_type, struct relational_expr_t *, struct additive_expr_t *);
+struct relational_expr_t *wrap_additive_expr(struct additive_expr_t *);
+struct additive_expr_t *create_additive_expr(enum additive_expr_type, struct additive_expr_t *, struct multiplicative_expr_t *);
+struct additive_expr_t *wrap_multiplicative_expr(struct multiplicative_expr_t *);
+struct multiplicative_expr_t *create_multiplicative_expr(enum multiplicative_expr_type, struct multiplicative_expr_t *, struct unary_expr_t *);
+struct multiplicative_expr_t *wrap_unary_expr(struct unary_expr_t *);
+struct unary_expr_t *create_unary_expr_sizeof_basic(enum basic_type);
+struct unary_expr_t *create_unary_expr(enum unary_expr_type, struct unary_expr_t *);
+struct unary_expr_t *wrap_postfix_expr(struct postfix_expr_t *);
+struct postfix_expr_t *create_postfix_expr(enum postfix_expr_type, struct postfix_expr_t *);
+struct postfix_expr_t *wrap_var(struct var_t *);
+struct postfix_expr_t *wrap_constant(struct constant_t *);
+struct postfix_expr_t *wrap_enclosed(struct expr_t *);
+struct postfix_expr_t *wrap_function_call(struct function_call_t *);
+struct var_t *create_var_identifier(char *);
+struct var_t *create_var_field(struct var_t *, char *);
+struct var_t *create_var_subscript(struct var_t *, struct expr_t *);
+struct constant_t *create_constant(enum basic_type, union value);
 
 #endif  /* CFLAT_AST_H */
