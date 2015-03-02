@@ -1,6 +1,20 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct logical_and_expr_t {
+        enum {
+                AND,
+                EQUALITY_EXPR
+        } type;
+        union {
+                struct {
+                        struct logical_and_expr_t *primary;
+                        struct equality_expr_t *secondary;
+                } relation;
+                struct equality_expr_t *equality_expr;
+        } val;
+}
+
 struct equality_expr_t {
         enum {
                 EQUAL,
