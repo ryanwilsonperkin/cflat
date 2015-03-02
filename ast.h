@@ -1,6 +1,10 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct function_params_t {
+        struct var_decl_list_t *var_decl_list;
+}
+
 struct function_body_t {
         struct var_decl_list_t *var_decl_list;
         struct stmt_list_t *stmt_list;
