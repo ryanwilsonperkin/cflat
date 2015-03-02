@@ -1,6 +1,14 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct return_stmt_t {
+        enum {
+                RETURN_EXPR,
+                RETURN
+        } type;
+        expr_t *expr;
+}
+
 typedef expr_t assign_expr_t;
 
 struct assign_expr_t {
