@@ -1,6 +1,10 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct array_specifier_t {
+        constant_t *constant;
+}
+
 struct function_def_list_t {
         struct function_def_t *function_def;
         struct function_def_list_t *function_def_list;
