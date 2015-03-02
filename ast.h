@@ -1,6 +1,23 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct relational_expr_t {
+        enum {
+                LESS_THAN,
+                LESS_THAN_OR_EQUAL,
+                GREATER_THAN,
+                GREATER_THAN_OR_EQUAL,
+                ADDITIVE_EXPR
+        } type;
+        union {
+                struct {
+                        struct relational_expr_t *primary;
+                        struct additive_expr_t *secondary;
+                } relation;
+                struct additive_expr_t *additive_expr;
+        } val;
+}
+
 struct additive_expr_t {
         enum {
                 ADD,
