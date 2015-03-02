@@ -1,6 +1,18 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct var_decl_t {
+        enum {
+                BASIC_VAR,
+                STRUCT_VAR
+        } type;
+        union {
+                enum basic_type basic_var;
+                struct struct_type_t *struct_var; 
+        } val;
+        struct array_specifier_t *array_specifier;
+}
+
 struct struct_type_t {
         struct var_decl_list_t *var_decl_list;
 }
