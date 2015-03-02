@@ -1,6 +1,8 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+typedef expr_t assign_expr_t;
+
 struct assign_expr_t {
         enum {
                 ASSIGN,
