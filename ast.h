@@ -1,6 +1,18 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct select_stmt_t {
+        enum {
+                IF_THEN,
+                IF_THEN_ELSE
+        } type;
+        struct {
+                expr_t *cond;
+                struct stmt_t *stmt_if_true;
+                struct stmt_t *stmt_if_false;
+        } val;
+}
+
 struct iter_stmt_t {
         enum {
                 WHILE,
