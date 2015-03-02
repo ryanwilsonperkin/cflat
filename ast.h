@@ -1,6 +1,11 @@
 #ifndef CFLAT_AST_H
 #define CFLAT_AST_H
 
+struct arg_list_t {
+        struct expr_t *expr;
+        struct arg_list_t *arg_list;
+}
+
 struct stmt_list_t {
         struct stmt_t *stmt;
         struct stmt_list_t *stmt_list;
