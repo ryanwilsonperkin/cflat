@@ -241,9 +241,9 @@ var
     ;
 
 constant
-    : CONST_CHAR { printf("CONST_CHAR\n"); }
-    | CONST_FLOAT { printf("CONST_FLOAT\n"); }
-    | CONST_INT { printf("CONST_INT\n"); }
+    : CONST_CHAR { $$ = create_constant_char($1); }
+    | CONST_FLOAT { $$ = create_constant_float($1); }
+    | CONST_INT { $$ = create_constant_int($1); }
     ;
 
 basic_type
