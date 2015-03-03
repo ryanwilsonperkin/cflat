@@ -107,7 +107,7 @@ function_def
     ;
 
 function_params
-    : LPAREN var_decl_list RPAREN { printf("LPAREN var_decl_list RPAREN\n"); }
+    : LPAREN var_decl_list RPAREN { $$ = create_function_params($2); }
     ;
 
 function_body
