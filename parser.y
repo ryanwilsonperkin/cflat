@@ -111,8 +111,8 @@ function_params
     ;
 
 function_body
-    : LBRACE var_decl_list return_stmt RBRACE { printf("LBRACE var_decl_list return_stmt RBRACE\n"); }
-    | LBRACE var_decl_list stmt_list return_stmt RBRACE { printf("LBRACE var_decl_list stmt_list return_stmt RBRACE\n"); }
+    : LBRACE var_decl_list return_stmt RBRACE { $$ = create_function_body($2, NULL, $3); }
+    | LBRACE var_decl_list stmt_list return_stmt RBRACE { $$ = create_function_body($2, $3, $4); }
     ;
 
 function_call
