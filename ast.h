@@ -296,9 +296,8 @@ struct postfix_expr_t {
         union {
                 struct var_t *var;
                 struct constant_t *constant;
-                struct postfix_expr_t *post_increment;
-                struct postfix_expr_t *post_decrement;
-                struct expr_t *enclosed;
+                struct postfix_expr_t *postfix_expr;
+                struct expr_t *expr;
                 struct function_call_t *function_call;
         } val;
 };
