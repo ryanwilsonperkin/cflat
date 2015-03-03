@@ -106,8 +106,7 @@ struct stmt_t {
                 COMPOUND_STMT,
                 SELECT_STMT,
                 ITER_STMT,
-                RETURN_STMT,
-                EMPTY_STMT
+                RETURN_STMT
         } type;
         union {
                 struct expr_stmt_t *expr_stmt;
