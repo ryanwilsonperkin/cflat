@@ -147,8 +147,8 @@ compound_stmt
     ;
 
 select_stmt
-    : IF LPAREN expr RPAREN stmt { printf("IF LPAREN expr RPAREN stmt\n"); }
-    | IF LPAREN expr RPAREN stmt ELSE stmt { printf("IF LPAREN expr RPAREN stmt ELSE stmt\n"); }
+    : IF LPAREN expr RPAREN stmt { $$ = create_select_stmt($3, $5, NULL); }
+    | IF LPAREN expr RPAREN stmt ELSE stmt { $$ = create_select_stmt($3, $5, $7); }
     ;
 
 iter_stmt
