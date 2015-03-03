@@ -102,8 +102,8 @@ function_def_list
     ;
 
 function_def
-    : basic_type ID function_params function_body { printf("basic_type ID function_params function_body\n"); }
-    | VOID ID function_params function_body { printf("VOID ID function_params function_body\n"); }
+    : basic_type ID function_params function_body { $$ = create_basic_function_def($1, $2, $3, $4); }
+    | VOID ID function_params function_body { $$ = create_void_function_def($2, $3, $4); }
     ;
 
 function_params
