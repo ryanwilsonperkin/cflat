@@ -8,6 +8,7 @@ extern int yylex(void);
 void yyerror(const char *);
 
 struct program_t *program;
+int n_errors = 0;
 %}
 
 %union {
@@ -21,6 +22,7 @@ struct program_t *program;
 %token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON
 %token ASSIGN OR AND NOT EQ NE LT LE GT GE PLUS MINUS ASTERISK SLASH PERCENT
 %token SIZEOF INCREMENT DECREMENT PERIOD
+%token UNRECOGNIZED
 %token <cval> CONST_CHAR
 %token <fval> CONST_FLOAT
 %token <ival> CONST_INT
@@ -255,10 +257,15 @@ basic_type
 %%
 
 
-void yyerror(const char *s) { fprintf(stderr, "%s\n", s); }
+void yyerror(const char *s) { n_errors++; }
 
 int main()
 {
         if (yyin == NULL) yyin = stdin;
         yyparse();
+        if (n_errors) {
+            fprintf(stderr, "%d syntax errors\n", n_errors);
+            return 1;
+        }
+        return 0;
 }
