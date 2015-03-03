@@ -1,8 +1,13 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include "ast.h"
+
 extern FILE *yyin;
 extern int yylex(void);
 void yyerror(const char *);
+
+struct program_t *program;
 %}
 
 %union {
@@ -10,6 +15,7 @@ void yyerror(const char *);
     float fval;
     int ival;
     char *sval;
+    void *pval;
 }
 %token CHAR ELSE FLOAT FOR IF INT RETURN STRUCT TYPEDEF VOID WHILE 
 %token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON
@@ -20,18 +26,51 @@ void yyerror(const char *);
 %token <ival> CONST_INT
 %token <sval> ID
 
+%type <pval> type_decl_list
+%type <pval> type_decl
+%type <pval> var_decl_list
+%type <pval> var_decl
+%type <pval> struct_type
+%type <pval> array_specifier
+%type <pval> function_def_list
+%type <pval> function_def
+%type <pval> function_params
+%type <pval> function_body
+%type <pval> function_call
+%type <pval> arg_list
+%type <pval> stmt_list
+%type <pval> stmt
+%type <pval> expr_stmt
+%type <pval> compound_stmt
+%type <pval> select_stmt
+%type <pval> iter_stmt
+%type <pval> return_stmt
+%type <pval> expr
+%type <pval> assign_expr
+%type <pval> logical_or_expr
+%type <pval> logical_and_expr
+%type <pval> equality_expr
+%type <pval> relational_expr
+%type <pval> additive_expr
+%type <pval> multiplicative_expr
+%type <pval> unary_expr
+%type <pval> postfix_expr
+%type <pval> var
+%type <pval> constant
+%type <pval> basic_type
+
 /* Expect a single shift/reduce conflict for dangling else. */
 %expect 1
 
 %%
 
 program 
-    : type_decl_list var_decl_list function_def_list { printf("type_decl_list var_decl_list function_def_list\n"); }
+    : type_decl_list var_decl_list function_def_list { program = create_program($1, NULL, NULL); }
     ; 
 
 type_decl_list
-    : /* empty */ { printf("empty\n"); }
-    | type_decl_list type_decl { printf("type_decl_list type_decl\n"); }
+    : /* empty */ { $$ = NULL; }
+    | type_decl_list type_decl { $$ = NULL; }
     ;
 
 type_decl
@@ -54,7 +93,7 @@ struct_type
 
 array_specifier
     : /* empty */ { printf("empty\n"); }
-    | LBRACKET CONST_INT RBRACKET
+    | LBRACKET CONST_INT RBRACKET { printf("LBRACKET CONST_INT RBRACKET\n"); }
     ;
 
 function_def_list
@@ -221,5 +260,5 @@ void yyerror(const char *s) { fprintf(stderr, "%s\n", s); }
 int main()
 {
         if (yyin == NULL) yyin = stdin;
-        return yyparse();
+        yyparse();
 }
