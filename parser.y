@@ -173,13 +173,13 @@ expr
     ;
 
 assign_expr
-    : logical_or_expr { printf("logical_or_expr\n"); }
-    | var ASSIGN assign_expr { printf("var ASSIGN assign_expr\n"); }
+    : logical_or_expr { $$ = wrap_logical_or_expr($1); }
+    | var ASSIGN assign_expr { $$ = create_assign_expr($1, $3); }
     ;
 
 logical_or_expr
-    : logical_or_expr OR logical_and_expr { printf("logical_or_expr OR logical_and_expr\n"); }
-    | logical_and_expr { printf("logical_and_expr\n"); }
+    : logical_or_expr OR logical_and_expr { $$ = create_logical_or_expr($1, $3); }
+    | logical_and_expr { $$ = wrap_logical_and_expr($1); }
     ;
 
 logical_and_expr
