@@ -171,7 +171,7 @@ struct assign_expr_t {
                         struct var_t *assignee;
                         struct assign_expr_t *assignment;
                 } assign;
-                struct logical_or_expr *logical_or_expr;
+                struct logical_or_expr_t *logical_or_expr;
         } val;
 };
 
