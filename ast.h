@@ -150,6 +150,7 @@ struct iter_stmt_t {
         struct expr_t *init;
         struct expr_t *cond;
         struct expr_t *after;
+        struct stmt_t *body;
 };
 
 struct return_stmt_t {
