@@ -97,8 +97,8 @@ array_specifier
     ;
 
 function_def_list
-    : function_def { printf("function_def\n"); }
-    | function_def_list function_def { printf("function_def_list function_def\n"); }
+    : function_def { $$ = create_function_def_list($1, NULL); }
+    | function_def_list function_def { $$ = create_function_def_list($2, $1); }
     ;
 
 function_def
