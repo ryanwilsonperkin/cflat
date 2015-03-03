@@ -164,8 +164,8 @@ iter_stmt
     ;
 
 return_stmt
-    : RETURN expr SEMICOLON { printf("RETURN expr SEMICOLON\n"); }
-    | RETURN SEMICOLON { printf("RETURN SEMICOLON\n"); }
+    : RETURN expr SEMICOLON { $$ = create_return_stmt($2); }
+    | RETURN SEMICOLON { $$ = create_return_stmt(NULL); }
     ;
 
 expr
