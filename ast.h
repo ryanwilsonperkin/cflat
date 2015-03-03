@@ -145,7 +145,7 @@ struct iter_stmt_t {
                 FOR_INIT_COND,
                 FOR_AFTER,
                 FOR_INIT,
-                FOR_COND,
+                /* FOR_COND is equivalent to WHILE */
                 FOR_EMPTY
         } type;
         struct {
