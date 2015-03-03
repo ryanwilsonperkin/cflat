@@ -18,11 +18,11 @@ struct var_decl_list_t *create_var_decl_list
 { return NULL; }
 
 struct var_decl_t *create_var_decl_basic
-(enum basic_type type, struct array_specifier_t *array_specifier)
+(enum basic_type type, char *id, struct array_specifier_t *array_specifier)
 { return NULL; } 
 
 struct var_decl_t *create_var_decl_struct
-(struct struct_type_t *struct_type, struct array_specifier_t *array_specifier)
+(struct struct_type_t *struct_type, char *id, struct array_specifier_t *array_specifier)
 { return NULL; } 
 
 struct struct_type_t *create_struct_type
