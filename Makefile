@@ -9,7 +9,7 @@ all: cflatc
 test: scanner_test
 
 cflatc: parser.o scanner.o ast.o
-	$(CC) $(LDFLAGS) -o $@ $^
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 scanner.o: scanner.c
 	$(CC) -o $@ -c $^
