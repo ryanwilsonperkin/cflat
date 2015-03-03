@@ -116,7 +116,7 @@ function_body
     ;
 
 function_call
-    : ID LPAREN arg_list RPAREN { printf("ID LPAREN arg_list RPAREN\n"); }
+    : ID LPAREN arg_list RPAREN { $$ = create_function_call($1, $3); }
     ;
 
 arg_list
