@@ -4,3 +4,4 @@ cflatc
 # Intermediate files
 scanner.c
 parser.c
+parser.h
