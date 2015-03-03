@@ -78,13 +78,13 @@ type_decl
     ;
 
 var_decl_list
-    : /* empty */ { printf("empty\n"); }
-    | var_decl_list var_decl { printf("var_decl_list var_decl\n"); }
+    : /* empty */ { $$ = NULL; }
+    | var_decl_list var_decl { $$ = create_var_decl_list($1, $2); }
     ;
 
 var_decl
-    : basic_type ID array_specifier SEMICOLON { printf("basic_type ID SEMICOLON\n"); }
-    | struct_type ID array_specifier SEMICOLON { printf("struct_type ID SEMICOLON\n"); }
+    : basic_type ID array_specifier SEMICOLON { $$ = create_var_decl_basic($1, $2, $3); }
+    | struct_type ID array_specifier SEMICOLON { $$ = create_var_decl_struct($1, $2, $3); }
     ;
 
 struct_type
