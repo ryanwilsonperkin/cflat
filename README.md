@@ -226,3 +226,9 @@ Grammar
 - CHAR
 - FLOAT
 - INT
+
+TODO
+---
+
+- Add comments to syntax
+- Match "unrecognized" tokens for better error handling
