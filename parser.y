@@ -235,9 +235,9 @@ postfix_expr
     ;
 
 var
-    : ID { printf("ID\n"); }
-    | var LBRACKET expr RBRACKET  { printf("ID LBRACKET expr RBRACKET \n"); }
-    | var PERIOD ID { printf("ID PERIOD var\n"); }
+    : ID { $$ = create_var_identifier($1); }
+    | var LBRACKET expr RBRACKET  { $$ = create_var_subscript($1, $3); }
+    | var PERIOD ID { $$ = create_var_field($1, $3); }
     ;
 
 constant
