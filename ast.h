@@ -348,7 +348,8 @@ struct program_t *create_program(struct type_decl_list_t *, struct var_decl_list
 struct type_decl_list_t *create_type_decl_list(struct type_decl_t *, struct type_decl_list_t *);
 struct type_decl_t *create_type_decl(enum basic_type, char *);
 struct var_decl_list_t *create_var_decl_list(struct var_decl_t *, struct var_decl_list_t *);
-struct var_decl_t *create_var_decl(enum basic_type, struct struct_type_t *, struct array_specifier_t *); 
+struct var_decl_t *create_var_decl_basic(enum basic_type, struct array_specifier_t *); 
+struct var_decl_t *create_var_decl_struct(struct struct_type_t *, struct array_specifier_t *); 
 struct struct_type_t *create_struct_type(struct var_decl_list_t *);
 struct array_specifier_t *create_array_specifier(cflat_int);
 struct function_def_list_t *create_function_def_list(struct function_def_t *, struct function_def_list_t *);
