@@ -82,7 +82,7 @@ struct select_stmt_t *create_select_stmt
 { return NULL; }
 
 struct iter_stmt_t *create_iter_stmt
-(struct expr_t *init, struct expr_t *cond, struct expr_t *after)
+(struct expr_t *init, struct expr_t *cond, struct expr_t *after, struct stmt_t *body)
 { return NULL; }
 
 struct return_stmt_t *create_return_stmt
