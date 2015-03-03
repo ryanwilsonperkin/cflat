@@ -125,8 +125,8 @@ arg_list
     ;
 
 stmt_list
-    : stmt { printf("stmt\n"); }
-    | stmt_list stmt  { printf("stmt_list stmt \n"); }
+    : stmt { $$ = create_stmt_list($1, NULL); }
+    | stmt_list stmt  { $$ = create_stmt_list($2, $1); }
     ;
 
 stmt
