@@ -244,7 +244,7 @@ struct additive_expr_t {
         union {
                 struct {
                         struct additive_expr_t *primary;
-                        struct multiplicate_expr_t *secondary;
+                        struct multiplicative_expr_t *secondary;
                 } operation;
                 struct multiplicative_expr_t *multiplicative_expr;
         } val;
