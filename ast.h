@@ -316,7 +316,7 @@ struct var_t {
                 } field;
                 struct {
                         struct var_t *var;
-                        struct expr_t *exp;
+                        struct expr_t *expr;
                 } subscript;
         } val;
 };
