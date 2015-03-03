@@ -183,55 +183,55 @@ logical_or_expr
     ;
 
 logical_and_expr
-    : logical_and_expr AND equality_expr { printf("logical_and_expr AND equality_expr\n"); }
-    | equality_expr { printf("equality_expr\n"); }
+    : logical_and_expr AND equality_expr { $$ = create_logical_and_expr($1, $3); }
+    | equality_expr { $$ = wrap_equality_expr($1); }
     ;
 
 equality_expr
-    : equality_expr EQ relational_expr { printf("equality_expr EQ relational_expr\n"); }
-    | equality_expr NE relational_expr { printf("equality_expr NE relational_expr\n"); }
-    | relational_expr { printf("relational_expr\n"); }
+    : equality_expr EQ relational_expr { $$ = create_equality_expr(EQUAL, $1, $3); }
+    | equality_expr NE relational_expr { $$ = create_equality_expr(NOT_EQUAL, $1, $3); }
+    | relational_expr { $$ = wrap_relational_expr($1); }
     ;
 
 relational_expr
-    : relational_expr LT additive_expr { printf("relational_expr LT additive_expr\n"); }
-    | relational_expr LE additive_expr { printf("relational_expr LE additive_expr\n"); }
-    | relational_expr GT additive_expr { printf("relational_expr GT additive_expr\n"); }
-    | relational_expr GE additive_expr { printf("relational_expr GE additive_expr\n"); }
-    | additive_expr { printf("additive_expr\n"); }
+    : relational_expr LT additive_expr { $$ = create_relational_expr(LESS_THAN, $1, $3); }
+    | relational_expr LE additive_expr { $$ = create_relational_expr(LESS_THAN_OR_EQUAL, $1, $3); }
+    | relational_expr GT additive_expr { $$ = create_relational_expr(GREATER_THAN, $1, $3); }
+    | relational_expr GE additive_expr { $$ = create_relational_expr(GREATER_THAN_OR_EQUAL, $1, $3); }
+    | additive_expr { $$ = wrap_additive_expr($1); }
     ;
 
 additive_expr
-    : additive_expr PLUS multiplicative_expr { printf("additive_expr PLUS multiplicative_expr\n"); }
-    | additive_expr MINUS multiplicative_expr { printf("additive_expr MINUS multiplicative_expr\n"); }
-    | multiplicative_expr { printf("multiplicative_expr\n"); }
+    : additive_expr PLUS multiplicative_expr { $$ = create_additive_expr(ADD, $1, $3); }
+    | additive_expr MINUS multiplicative_expr { $$ = create_additive_expr(SUBTRACT, $1, $3); }
+    | multiplicative_expr { $$ = wrap_multiplicative_expr($1); }
     ;
 
 multiplicative_expr
-    : multiplicative_expr ASTERISK unary_expr { printf("multiplicative_expr ASTERISK unary_expr\n"); }
-    | multiplicative_expr SLASH unary_expr { printf("multiplicative_expr SLASH unary_expr\n"); }
-    | multiplicative_expr PERCENT unary_expr { printf("multiplicative_expr PERCENT unary_expr\n"); }
-    | unary_expr { printf("unary_expr\n"); }
+    : multiplicative_expr ASTERISK unary_expr { $$ = create_multiplicative_expr(MULTIPLY, $1, $3); }
+    | multiplicative_expr SLASH unary_expr { $$ = create_multiplicative_expr(DIVIDE, $1, $3); }
+    | multiplicative_expr PERCENT unary_expr { $$ = create_multiplicative_expr(MODULO, $1, $3); }
+    | unary_expr { $$ = wrap_unary_expr($1); }
     ;
 
 unary_expr
-    : SIZEOF LPAREN unary_expr RPAREN { printf("SIZEOF LPAREN unary_expr RPAREN\n"); }
-    | SIZEOF LPAREN basic_type RPAREN { printf("SIZEOF LPAREN basic_type RPAREN\n"); }
-    | NOT unary_expr { printf("NOT unary_expr\n"); }
-    | PLUS unary_expr { printf("PLUS unary_expr\n"); }
-    | MINUS unary_expr { printf("MINUS unary_expr\n"); }
-    | INCREMENT unary_expr { printf("INCREMENT unary_expr\n"); }
-    | DECREMENT unary_expr { printf("DECREMENT unary_expr\n"); }
-    | postfix_expr { printf("postfix_expr\n"); }
+    : SIZEOF LPAREN unary_expr RPAREN { $$ = create_unary_expr(SIZEOF_UNARY, $3); }
+    | SIZEOF LPAREN basic_type RPAREN { $$ = create_unary_expr_sizeof_basic($3); }
+    | NOT unary_expr { $$ = create_unary_expr(NOT_UNARY, $2); }
+    | PLUS unary_expr { $$ = create_unary_expr(POSITIVE, $2); }
+    | MINUS unary_expr { $$ = create_unary_expr(NEGATIVE, $2); }
+    | INCREMENT unary_expr { $$ = create_unary_expr(PRE_INCREMENT, $2); }
+    | DECREMENT unary_expr { $$ = create_unary_expr(PRE_DECREMENT, $2); }
+    | postfix_expr { $$ = wrap_postfix_expr($1); }
     ;
 
 postfix_expr
-    : var { printf("var\n"); }
-    | constant { printf("constant\n"); }
-    | postfix_expr INCREMENT { printf("var INCREMENT\n"); }
-    | postfix_expr DECREMENT { printf("var DECREMENT\n"); }
-    | LPAREN expr RPAREN { printf("LPAREN expr RPAREN\n"); }
-    | function_call { printf("function_call\n"); }
+    : var { $$ = wrap_var($1); }
+    | constant { $$ = wrap_constant($1); }
+    | postfix_expr INCREMENT { create_postfix_expr(POST_INCREMENT, $1); }
+    | postfix_expr DECREMENT { create_postfix_expr(POST_DECREMENT, $1); }
+    | LPAREN expr RPAREN { $$ = wrap_enclosed($2); }
+    | function_call { $$ = wrap_function_call($1); }
     ;
 
 var
