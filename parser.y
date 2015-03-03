@@ -247,9 +247,9 @@ constant
     ;
 
 basic_type
-    : CHAR { printf("CHAR\n"); }
-    | FLOAT { printf("FLOAT\n"); }
-    | INT { printf("INT\n"); }
+    : CHAR { $$ = CHAR_TYPE; }
+    | FLOAT { $$ = FLOAT_TYPE; }
+    | INT { $$ = INT_TYPE; }
     ;
 
 %%
