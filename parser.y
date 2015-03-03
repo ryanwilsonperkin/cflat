@@ -143,7 +143,7 @@ expr_stmt
     ;
 
 compound_stmt
-    : LBRACE stmt_list RBRACE { printf("LBRACE stmt_list RBRACE\n"); }
+    : LBRACE stmt_list RBRACE { $$ = create_compound_stmt($2); }
     ;
 
 select_stmt
