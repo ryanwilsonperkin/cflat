@@ -169,7 +169,7 @@ return_stmt
     ;
 
 expr
-    : assign_expr { printf("assign_expr\n"); }
+    : assign_expr { $$ = create_expr($1); }
     ;
 
 assign_expr
