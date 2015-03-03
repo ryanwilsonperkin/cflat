@@ -33,4 +33,4 @@ scanner_test.o: scanner_test.c
 	$(CC) -o $@ -c $^
 
 clean:
-	$(RM) *.o scanner.c parser.c
+	$(RM) *.o scanner.c parser.c parser.h
