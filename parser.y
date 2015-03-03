@@ -152,15 +152,15 @@ select_stmt
     ;
 
 iter_stmt
-    : WHILE LPAREN expr RPAREN stmt  { printf("WHILE LPAREN expr RPAREN stmt \n"); }
-    | FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt { printf("FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt\n"); }
-    | FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt { printf("FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt\n"); }
-    | FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt { printf("FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt\n"); }
-    | FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt { printf("FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt\n"); }
-    | FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt { printf("FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt\n"); }
-    | FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt { printf("FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt\n"); }
-    | FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt { printf("FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt\n"); }
-    | FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt  { printf("FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt \n"); }
+    : WHILE LPAREN expr RPAREN stmt  { $$ = create_iter_stmt(NULL, $3, NULL, $5); }
+    | FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt { $$ = create_iter_stmt($3, $5, $7, $9); }
+    | FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt { $$ = create_iter_stmt(NULL, $4, $6, $8); }
+    | FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt { $$ = create_iter_stmt($3, NULL, $6, $8); }
+    | FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt { $$ = create_iter_stmt($3, $5, NULL, $8); }
+    | FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt { $$ = create_iter_stmt(NULL, NULL, $5, $7); }
+    | FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt { $$ = create_iter_stmt($3, NULL, NULL, $7); }
+    | FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt { $$ = create_iter_stmt(NULL, $4, NULL,  $7); }
+    | FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt  { $$ = create_iter_stmt(NULL, NULL, NULL, $6); }
     ;
 
 return_stmt
