@@ -57,7 +57,7 @@ struct program_t *program;
 %type <pval> postfix_expr
 %type <pval> var
 %type <pval> constant
-%type <pval> basic_type
+%type <ival> basic_type
 
 /* Expect a single shift/reduce conflict for dangling else. */
 %expect 1
@@ -70,11 +70,11 @@ program
 
 type_decl_list
     : /* empty */ { $$ = NULL; }
-    | type_decl_list type_decl { $$ = NULL; }
+    | type_decl_list type_decl { $$ = create_type_decl_list($1, $2); }
     ;
 
 type_decl
-    : TYPEDEF basic_type ID SEMICOLON { printf("TYPEDEF basic_type ID SEMICOLON\n"); }
+    : TYPEDEF basic_type ID SEMICOLON { $$ = create_type_decl($2, $3); }
     ;
 
 var_decl_list
