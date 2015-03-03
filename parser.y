@@ -88,7 +88,7 @@ var_decl
     ;
 
 struct_type
-    : STRUCT LBRACE var_decl_list RBRACE { printf("STRUCT LBRACE var_decl_list RBRACE\n"); }
+    : STRUCT LBRACE var_decl_list RBRACE { $$ = create_struct_type($3); }
     ;
 
 array_specifier
