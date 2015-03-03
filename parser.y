@@ -92,8 +92,8 @@ struct_type
     ;
 
 array_specifier
-    : /* empty */ { printf("empty\n"); }
-    | LBRACKET CONST_INT RBRACKET { printf("LBRACKET CONST_INT RBRACKET\n"); }
+    : /* empty */ { $$ = NULL; }
+    | LBRACKET CONST_INT RBRACKET { $$ = create_array_specifier($2); }
     ;
 
 function_def_list
