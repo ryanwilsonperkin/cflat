@@ -86,6 +86,7 @@ struct function_body_t {
 };
 
 struct function_call_t {
+        char *id;
         struct arg_list_t *arg_list;
 };
 
@@ -359,7 +360,7 @@ struct function_def_t *create_basic_function_def(enum basic_type, char *, struct
 struct function_def_t *create_void_function_def(char *, struct function_params_t *, struct function_body_t *);
 struct function_params_t *create_function_params(struct var_decl_list_t *);
 struct function_body_t *create_function_body(struct var_decl_list_t *, struct stmt_list_t *, struct return_stmt_t *);
-struct function_call_t *create_function_call(struct arg_list_t *);
+struct function_call_t *create_function_call(char *id, struct arg_list_t *);
 struct arg_list_t *create_arg_list(struct expr_t *, struct arg_list_t *);
 struct stmt_list_t *create_stmt_list(struct stmt_t *, struct stmt_list_t *);
 struct stmt_t *create_stmt(enum stmt_type, void *);

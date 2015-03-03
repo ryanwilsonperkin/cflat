@@ -54,7 +54,7 @@ struct function_body_t *create_function_body
 { return NULL; }
 
 struct function_call_t *create_function_call
-(struct arg_list_t *arg_list)
+(char *id, struct arg_list_t *arg_list)
 { return NULL; }
 
 struct arg_list_t *create_arg_list
