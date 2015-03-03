@@ -232,3 +232,6 @@ TODO
 
 - Add comments to syntax
 - Match "unrecognized" tokens for better error handling
+- Do CONST_CHAR/CONST_FLOAT/CONST_INT need to be explicitly converted?
+- Any benefit to having many similar structs in union? (for readability)
+- Semicolons only as separators in arg list
