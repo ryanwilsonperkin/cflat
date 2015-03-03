@@ -130,11 +130,9 @@ struct select_stmt_t {
                 IF_THEN,
                 IF_THEN_ELSE
         } type;
-        struct {
-                struct expr_t *cond;
-                struct stmt_t *stmt_if_true;
-                struct stmt_t *stmt_if_false;
-        } val;
+        struct expr_t *cond;
+        struct stmt_t *stmt_if_true;
+        struct stmt_t *stmt_if_false;
 };
 
 struct iter_stmt_t {
@@ -148,11 +146,9 @@ struct iter_stmt_t {
                 /* FOR_COND is equivalent to WHILE */
                 FOR_EMPTY
         } type;
-        struct {
-                struct expr_t *init;
-                struct expr_t *cond;
-                struct expr_t *after;
-        } val;
+        struct expr_t *init;
+        struct expr_t *cond;
+        struct expr_t *after;
 };
 
 struct return_stmt_t {
