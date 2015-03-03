@@ -141,6 +141,7 @@ struct iter_stmt_t {
                 FOR_INIT_COND_AFTER,
                 FOR_INIT_AFTER,
                 FOR_INIT_COND,
+                FOR_COND_AFTER
                 FOR_AFTER,
                 FOR_INIT,
                 /* FOR_COND is equivalent to WHILE */
