@@ -278,8 +278,8 @@ struct unary_expr_t {
                 POSTFIX_EXPR
         } type;
         union {
-                enum basic_type sizeof_basic;
-                struct unary_expr_t *not_unary;
+                enum basic_type type;
+                struct unary_expr_t *unary_expr;
                 struct postfix_expr_t *postfix_expr;
         } val;
 };
