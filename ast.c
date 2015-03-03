@@ -38,11 +38,11 @@ struct function_def_list_t *create_function_def_list
 { return NULL; }
 
 struct function_def_t *create_basic_function_def
-(enum basic_type type, struct function_params_t *function_params, struct function_body_t *function_body)
+(enum basic_type type, char *id, struct function_params_t *function_params, struct function_body_t *function_body)
 { return NULL; }
 
 struct function_def_t *create_void_function_def
-(struct function_params_t *function_params, struct function_body_t *function_body)
+(struct function_params_t *function_params, char *id, struct function_body_t *function_body)
 { return NULL; }
 
 struct function_params_t *create_function_params
