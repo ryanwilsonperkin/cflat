@@ -243,13 +243,9 @@ struct additive_expr_t {
         } type;
         union {
                 struct {
-                        struct additive_expr_t *augend;
-                        struct multiplicate_expr_t *addend;
-                } add;
-                struct {
-                        struct additive_expr_t *minuend;
-                        struct multiplicative_expr_t *subtrahend;
-                } subtract;
+                        struct additive_expr_t *primary;
+                        struct multiplicate_expr_t *secondary;
+                } operation;
                 struct multiplicative_expr_t *multiplicative_expr;
         } val;
 };
@@ -263,17 +259,9 @@ struct multiplicative_expr_t {
         } type;
         union {
                 struct {
-                        struct multiplicative_expr_t *multiplicand;
-                        struct unary_expr_t *multiplier;
-                } multiply;
-                struct {
-                        struct multiplicative_expr_t *dividend;
-                        struct unary_expr_t *divisor;
-                } divide;
-                struct {
-                        struct multiplicative_expr_t *dividend;
-                        struct unary_expr_t *divisor;
-                } modulo;
+                        struct multiplicative_expr_t *primary;
+                        struct unary_expr_t *secondary;
+                } operation;
                 struct unary_expr_t *unary_expr;
         } val;
 };
@@ -290,13 +278,8 @@ struct unary_expr_t {
                 POSTFIX_EXPR
         } type;
         union {
-                struct unary_expr_t *sizeof_unary;
                 enum basic_type sizeof_basic;
                 struct unary_expr_t *not_unary;
-                struct unary_expr_t *positive;
-                struct unary_expr_t *negative;
-                struct unary_expr_t *pre_increment;
-                struct unary_expr_t *post_increment;
                 struct postfix_expr_t *postfix_expr;
         } val;
 };
