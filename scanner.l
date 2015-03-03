@@ -1,4 +1,5 @@
 %{
+#include <string.h>
 #include "parser.h"
 %}
 
@@ -53,5 +54,5 @@ INT	{NATURAL}{DIGIT}*
 ")"		{ return RPAREN; }
 ";"		{ return SEMICOLON; }
 "."		{ return PERIOD; }
-{ID}		{ return ID; }
+{ID}		{ yylval.sval = strdup(yytext); return ID; }
 [ \t\n]+	{ /* Ignore whitespace */ }
