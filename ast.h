@@ -368,7 +368,7 @@ struct compound_stmt_t *create_compound_stmt(struct stmt_list_t *);
 struct select_stmt_t *create_select_stmt(struct expr_t *, struct stmt_t *, struct stmt_t *);
 struct iter_stmt_t *create_iter_stmt(struct expr_t *, struct expr_t *, struct expr_t *, struct stmt_t *);
 struct return_stmt_t *create_return_stmt(struct expr_t *);
-struct expr_t *create_expr_t(struct assign_expr_t *);
+struct expr_t *create_expr(struct assign_expr_t *);
 struct assign_expr_t *create_assign_expr(struct var_t *, struct assign_expr_t *);
 struct assign_expr_t *wrap_logical_or_expr(struct logical_or_expr_t *);
 struct logical_or_expr_t *create_logical_or_expr(struct logical_or_expr_t *, struct logical_and_expr_t *);

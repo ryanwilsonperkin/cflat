@@ -89,7 +89,7 @@ struct return_stmt_t *create_return_stmt
 (struct expr_t *expr)
 { return NULL; }
 
-struct expr_t *create_expr_t
+struct expr_t *create_expr
 (struct assign_expr_t *assign_expr)
 { return NULL; }
 
