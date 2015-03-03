@@ -130,16 +130,16 @@ stmt_list
     ;
 
 stmt
-    : expr_stmt { printf("expr_stmt\n"); }
-    | compound_stmt { printf("compound_stmt\n"); }
-    | select_stmt { printf("select_stmt\n"); }
-    | iter_stmt { printf("iter_stmt\n"); }
-    | return_stmt { printf("return_stmt\n"); }
-    | SEMICOLON { printf("SEMICOLON\n"); }
+    : expr_stmt { $$ = create_stmt(EXPR_STMT, $1); }
+    | compound_stmt { $$ = create_stmt(COMPOUND_STMT, $1); }
+    | select_stmt { $$ = create_stmt(SELECT_STMT, $1); }
+    | iter_stmt { $$ = create_stmt(ITER_STMT, $1); }
+    | return_stmt { $$ = create_stmt(RETURN_STMT, $1); }
+    | SEMICOLON { $$ = NULL; }
     ;
 
 expr_stmt
-    : expr SEMICOLON  { printf("expr SEMICOLON \n"); }
+    : expr SEMICOLON  { $$ = create_expr_stmt($1); }
     ;
 
 compound_stmt
