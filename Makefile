@@ -6,8 +6,6 @@ YFLAGS+=-d
 
 all: cflatc
 
-test: scanner_test
-
 cflatc: parser.o scanner.o ast.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
@@ -24,12 +22,6 @@ parser.c: parser.y
 	$(YACC) $(YFLAGS) -o $@ $^
 
 ast.o: ast.c
-	$(CC) -o $@ -c $^
-
-scanner_test: scanner_test.o scanner.o
-	$(CC) $(LDFLAGS) -o $@ $^
-
-scanner_test.o: scanner_test.c
 	$(CC) -o $@ -c $^
 
 clean:
