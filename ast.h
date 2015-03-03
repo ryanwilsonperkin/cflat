@@ -391,6 +391,9 @@ struct postfix_expr_t *wrap_function_call(struct function_call_t *);
 struct var_t *create_var_identifier(char *);
 struct var_t *create_var_field(struct var_t *, char *);
 struct var_t *create_var_subscript(struct var_t *, struct expr_t *);
-struct constant_t *create_constant(enum basic_type, union value);
+struct constant_t *create_constant_char(cflat_char);
+struct constant_t *create_constant_float(cflat_float);
+struct constant_t *create_constant_int(cflat_int);
+enum basic_type recognize_basic_type(char *);
 
 #endif  /* CFLAT_AST_H */

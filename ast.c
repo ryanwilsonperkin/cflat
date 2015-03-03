@@ -189,6 +189,18 @@ struct var_t *create_var_subscript
 (struct var_t *var, struct expr_t *expr)
 { return NULL; }
 
-struct constant_t *create_constant
-(enum basic_type type, union value val)
+struct constant_t *create_constant_char
+(cflat_char val)
 { return NULL; }
+
+struct constant_t *create_constant_float
+(cflat_float val)
+{ return NULL; }
+
+struct constant_t *create_constant_int
+(cflat_int val)
+{ return NULL; }
+
+enum basic_type recognize_basic_type
+(char *type_name)
+{ return CHAR_TYPE; }
