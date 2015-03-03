@@ -120,8 +120,8 @@ function_call
     ;
 
 arg_list
-    : /* empty */ { printf("empty\n"); }
-    | arg_list expr SEMICOLON { printf("arg_list expr\n"); }
+    : /* empty */ { $$ = NULL; }
+    | arg_list expr SEMICOLON { $$ = create_arg_list($2, $1); }
     ;
 
 stmt_list
