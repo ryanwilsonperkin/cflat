@@ -90,12 +90,15 @@ Grammar
 - var_decl_list var_decl
 
 ### var_decl
-- var_type ID SEMICOLON
-- var_type ID LBRACKET CONST_INT RBRACKET SEMICOLON
+- basic_type ID array_specifier SEMICOLON
+- struct_type ID array_specifier SEMICOLON
 
-### var_type
-- basic_type
+### struct_type
 - STRUCT LBRACE var_decl_list RBRACE
+
+### array_specifier
+- null
+- LBRACKET CONST_INT RBRACKET
 
 ### function_def_list
 - function_def
