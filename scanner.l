@@ -54,6 +54,7 @@ INT	-?0|({NATURAL}{DIGIT}*)
 ")"		{ return RPAREN; }
 ";"		{ return SEMICOLON; }
 "."		{ return PERIOD; }
+","		{ return COMMA; }
 {ID}		{ yylval.sval = strdup(yytext); return ID; }
 [ \t\n]+	{ /* Ignore whitespace */ }
 .		{ return UNRECOGNIZED; }

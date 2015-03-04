@@ -42,6 +42,7 @@ Terminals
 - LPAREN
 - RPAREN
 - SEMICOLON
+- COMMA
 - PERIOD
 - ID
 
