@@ -74,7 +74,7 @@ int n_errors = 0;
 %%
 
 program 
-    : type_decl_list var_decl_stmt_list function_def_list { program = create_program($1, NULL, NULL); }
+    : type_decl_list var_decl_stmt_list function_def_list { program = create_program($1, $2, $3); }
     ; 
 
 type_decl_list
