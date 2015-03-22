@@ -272,7 +272,7 @@ basic_type
 
 void yyerror(const char *s)
 {
-        fprintf(stderr, "stdin:%d:%d: error: unexpected token: %s\n", line_num, col_num, yytext);
+        fprintf(stderr, "stdin:%d:%d: error: unexpected token '%s'\n", line_num, col_num, yytext);
         fprintf(stderr, "%s\n", line_buf);
 }
 
