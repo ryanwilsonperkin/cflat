@@ -108,7 +108,7 @@ struct_type
 
 array_specifier
     : /* empty */ { $$ = NULL; }
-    | LBRACKET CONST_INT RBRACKET array_specifier { $$ = create_array_specifier($2, $4); }
+    | LBRACKET constant RBRACKET array_specifier { $$ = create_array_specifier($2, $4); }
     ;
 
 function_def_list

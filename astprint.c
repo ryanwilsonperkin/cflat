@@ -110,7 +110,8 @@ void print_array_specifier
 (FILE *out, struct array_specifier_t *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "array_specifier: %d", this->size);
+        print_at_depth(out, depth, "array_specifier");
+        print_constant(out, this->constant, depth+1);
         print_array_specifier(out, this->array_specifier, depth+1);
 }
 
