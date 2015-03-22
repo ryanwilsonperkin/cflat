@@ -19,7 +19,7 @@ enum basic_type {
 
 struct program_t {
         struct type_decl_list_t *type_decl_list;
-        struct var_decl_list_t *var_decl_list;
+        struct var_decl_stmt_list_t *var_decl_stmt_list;
         struct function_def_list_t *function_def_list;
 };
 
@@ -33,9 +33,9 @@ struct type_decl_t {
         char *id;
 };
 
-struct var_decl_list_t {
+struct var_decl_stmt_list_t {
         struct var_decl_t *var_decl;
-        struct var_decl_list_t *var_decl_list;
+        struct var_decl_stmt_list_t *var_decl_stmt_list;
 };
 
 struct var_decl_t {
@@ -52,7 +52,7 @@ struct var_decl_t {
 };
 
 struct struct_type_t {
-        struct var_decl_list_t *var_decl_list;
+        struct var_decl_stmt_list_t *var_decl_stmt_list;
 };
 
 struct array_specifier_t {
@@ -81,7 +81,7 @@ struct function_param_list_t {
 };
 
 struct function_body_t {
-        struct var_decl_list_t *var_decl_list;
+        struct var_decl_stmt_list_t *var_decl_stmt_list;
         struct stmt_list_t *stmt_list;
         struct return_stmt_t *return_stmt;
 };
@@ -246,19 +246,19 @@ struct constant_t {
         union value val;
 };
 
-struct program_t *create_program(struct type_decl_list_t *, struct var_decl_list_t *, struct function_def_list_t *);
+struct program_t *create_program(struct type_decl_list_t *, struct var_decl_stmt_list_t *, struct function_def_list_t *);
 struct type_decl_list_t *create_type_decl_list(struct type_decl_t *, struct type_decl_list_t *);
 struct type_decl_t *create_type_decl(enum basic_type, char *);
-struct var_decl_list_t *create_var_decl_list(struct var_decl_t *, struct var_decl_list_t *);
+struct var_decl_stmt_list_t *create_var_decl_stmt_list(struct var_decl_t *, struct var_decl_stmt_list_t *);
 struct var_decl_t *create_var_decl_basic(enum basic_type, char *, struct array_specifier_t *); 
 struct var_decl_t *create_var_decl_struct(struct struct_type_t *, char *, struct array_specifier_t *); 
-struct struct_type_t *create_struct_type(struct var_decl_list_t *);
+struct struct_type_t *create_struct_type(struct var_decl_stmt_list_t *);
 struct array_specifier_t *create_array_specifier(cflat_int);
 struct function_def_list_t *create_function_def_list(struct function_def_t *, struct function_def_list_t *);
 struct function_def_t *create_basic_function_def(enum basic_type, char *, struct function_param_list_t *, struct function_body_t *);
 struct function_def_t *create_void_function_def(char *, struct function_param_list_t *, struct function_body_t *);
 struct function_param_list_t *create_function_param_list(struct var_decl_t *, struct function_param_list_t *);
-struct function_body_t *create_function_body(struct var_decl_list_t *, struct stmt_list_t *, struct return_stmt_t *);
+struct function_body_t *create_function_body(struct var_decl_stmt_list_t *, struct stmt_list_t *, struct return_stmt_t *);
 struct function_call_t *create_function_call(char *id, struct arg_list_t *);
 struct arg_list_t *create_arg_list(struct expr_t *, struct arg_list_t *);
 struct stmt_list_t *create_stmt_list(struct stmt_t *, struct stmt_list_t *);

@@ -2,11 +2,11 @@
 #include "ast.h"
 
 struct program_t *create_program
-(struct type_decl_list_t *type_decl_list, struct var_decl_list_t *var_decl_list, struct function_def_list_t *function_def_list)
+(struct type_decl_list_t *type_decl_list, struct var_decl_stmt_list_t *var_decl_stmt_list, struct function_def_list_t *function_def_list)
 { 
         struct program_t *this = malloc(sizeof(struct program_t));
         this->type_decl_list = type_decl_list;
-        this->var_decl_list = var_decl_list;
+        this->var_decl_stmt_list = var_decl_stmt_list;
         this->function_def_list = function_def_list;
         return this;
 }
@@ -29,12 +29,12 @@ struct type_decl_t *create_type_decl
         return this;
 }
 
-struct var_decl_list_t *create_var_decl_list
-(struct var_decl_t *var_decl, struct var_decl_list_t *var_decl_list)
+struct var_decl_stmt_list_t *create_var_decl_stmt_list
+(struct var_decl_t *var_decl, struct var_decl_stmt_list_t *var_decl_stmt_list)
 { 
-        struct var_decl_list_t *this = malloc(sizeof(struct var_decl_list_t));
+        struct var_decl_stmt_list_t *this = malloc(sizeof(struct var_decl_stmt_list_t));
         this->var_decl = var_decl;
-        this->var_decl_list = var_decl_list;
+        this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
 }
 
@@ -61,10 +61,10 @@ struct var_decl_t *create_var_decl_struct
 } 
 
 struct struct_type_t *create_struct_type
-(struct var_decl_list_t *var_decl_list)
+(struct var_decl_stmt_list_t *var_decl_stmt_list)
 { 
         struct struct_type_t *this = malloc(sizeof(struct struct_type_t));
-        this->var_decl_list = var_decl_list;
+        this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
 }
 
@@ -118,10 +118,10 @@ struct function_param_list_t *create_function_param_list
 }
 
 struct function_body_t *create_function_body
-(struct var_decl_list_t *var_decl_list, struct stmt_list_t *stmt_list, struct return_stmt_t *return_stmt)
+(struct var_decl_stmt_list_t *var_decl_stmt_list, struct stmt_list_t *stmt_list, struct return_stmt_t *return_stmt)
 {
         struct function_body_t *this = malloc(sizeof(struct function_body_t));
-        this->var_decl_list = var_decl_list;
+        this->var_decl_stmt_list = var_decl_stmt_list;
         this->stmt_list = stmt_list;
         this->return_stmt = return_stmt;
         return this;

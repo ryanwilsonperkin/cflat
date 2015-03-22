@@ -34,7 +34,7 @@ int n_errors = 0;
 
 %type <pval> type_decl_list
 %type <pval> type_decl
-%type <pval> var_decl_list
+%type <pval> var_decl_stmt_list
 %type <pval> var_decl_stmt
 %type <pval> var_decl
 %type <pval> struct_type
@@ -72,7 +72,7 @@ int n_errors = 0;
 %%
 
 program 
-    : type_decl_list var_decl_list function_def_list { program = create_program($1, NULL, NULL); }
+    : type_decl_list var_decl_stmt_list function_def_list { program = create_program($1, NULL, NULL); }
     ; 
 
 type_decl_list
@@ -84,9 +84,9 @@ type_decl
     : TYPEDEF basic_type ID SEMICOLON { $$ = create_type_decl($2, $3); }
     ;
 
-var_decl_list
+var_decl_stmt_list
     : /* empty */ { $$ = NULL; }
-    | var_decl_list var_decl_stmt { $$ = create_var_decl_list($1, $2); }
+    | var_decl_stmt_list var_decl_stmt { $$ = create_var_decl_stmt_list($1, $2); }
     ;
 
 var_decl_stmt
@@ -99,7 +99,7 @@ var_decl
     ;
 
 struct_type
-    : STRUCT LBRACE var_decl_list RBRACE { $$ = create_struct_type($3); }
+    : STRUCT LBRACE var_decl_stmt_list RBRACE { $$ = create_struct_type($3); }
     ;
 
 array_specifier
@@ -125,8 +125,8 @@ function_param_list
     ;
 
 function_body
-    : LBRACE var_decl_list return_stmt RBRACE { $$ = create_function_body($2, NULL, $3); }
-    | LBRACE var_decl_list stmt_list return_stmt RBRACE { $$ = create_function_body($2, $3, $4); }
+    : LBRACE var_decl_stmt_list return_stmt RBRACE { $$ = create_function_body($2, NULL, $3); }
+    | LBRACE var_decl_stmt_list stmt_list return_stmt RBRACE { $$ = create_function_body($2, $3, $4); }
     ;
 
 function_call
