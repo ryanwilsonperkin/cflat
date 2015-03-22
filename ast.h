@@ -29,8 +29,7 @@ struct type_decl_list_t {
 };
 
 struct type_decl_t {
-        enum basic_type type;
-        char *id;
+        struct var_decl_t *var_decl;
 };
 
 struct var_decl_stmt_list_t {
@@ -248,7 +247,7 @@ struct constant_t {
 
 struct program_t *create_program(struct type_decl_list_t *, struct var_decl_stmt_list_t *, struct function_def_list_t *);
 struct type_decl_list_t *create_type_decl_list(struct type_decl_t *, struct type_decl_list_t *);
-struct type_decl_t *create_type_decl(enum basic_type, char *);
+struct type_decl_t *create_type_decl(struct var_decl_t *var_decl);
 struct var_decl_stmt_list_t *create_var_decl_stmt_list(struct var_decl_t *, struct var_decl_stmt_list_t *);
 struct var_decl_t *create_var_decl_basic(enum basic_type, char *, struct array_specifier_t *); 
 struct var_decl_t *create_var_decl_struct(struct struct_type_t *, char *, struct array_specifier_t *); 

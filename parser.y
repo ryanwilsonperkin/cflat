@@ -81,7 +81,7 @@ type_decl_list
     ;
 
 type_decl
-    : TYPEDEF basic_type ID SEMICOLON { $$ = create_type_decl($2, $3); }
+    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl($2); }
     ;
 
 var_decl_stmt_list

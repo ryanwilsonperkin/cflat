@@ -21,11 +21,10 @@ struct type_decl_list_t *create_type_decl_list
 }
 
 struct type_decl_t *create_type_decl
-(enum basic_type type, char *id)
+(struct var_decl_t *var_decl)
 {
         struct type_decl_t *this = malloc(sizeof(struct type_decl_t));
-        this->type = type;
-        this->id = id;
+        this->var_decl = var_decl;
         return this;
 }
 

@@ -1,0 +1,19 @@
+typedef char char1[10];
+typedef int int1[10];
+typedef float float1[100];
+
+typedef struct {
+        char c;
+} type1;
+
+typedef struct {
+        char c;
+} type2[10];
+
+typedef struct {
+        struct {
+                char c;
+        } s;
+} type3;
+
+void placeholder() { return; }

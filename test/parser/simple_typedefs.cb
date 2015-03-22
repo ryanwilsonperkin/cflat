@@ -1,0 +1,5 @@
+typedef char char1;
+typedef int int1;
+typedef float float1;
+
+void placeholder() { return; }
