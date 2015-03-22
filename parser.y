@@ -94,8 +94,8 @@ var_decl_stmt
     ;
 
 var_decl
-    : basic_type ID array_specifier SEMICOLON { $$ = create_var_decl_basic($1, $2, $3); }
-    | struct_type ID array_specifier SEMICOLON { $$ = create_var_decl_struct($1, $2, $3); }
+    : basic_type ID array_specifier { $$ = create_var_decl_basic($1, $2, $3); }
+    | struct_type ID array_specifier { $$ = create_var_decl_struct($1, $2, $3); }
     ;
 
 struct_type
