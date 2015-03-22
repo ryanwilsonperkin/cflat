@@ -125,8 +125,7 @@ function_param_list
     ;
 
 function_body
-    : LBRACE var_decl_stmt_list return_stmt RBRACE { $$ = create_function_body($2, NULL, $3); }
-    | LBRACE var_decl_stmt_list stmt_list return_stmt RBRACE { $$ = create_function_body($2, $3, $4); }
+    : LBRACE var_decl_stmt_list stmt_list return_stmt RBRACE { $$ = create_function_body($2, $3, $4); }
     ;
 
 function_call
@@ -140,7 +139,7 @@ arg_list
     ;
 
 stmt_list
-    : stmt { $$ = create_stmt_list($1, NULL); }
+    : /* empty */ { $$ = NULL; }
     | stmt_list stmt  { $$ = create_stmt_list($2, $1); }
     ;
 
