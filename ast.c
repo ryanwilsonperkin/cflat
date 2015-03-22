@@ -68,10 +68,11 @@ struct struct_type_t *create_struct_type
 }
 
 struct array_specifier_t *create_array_specifier
-(cflat_int size)
+(cflat_int size, struct array_specifier_t *array_specifier)
 {
         struct array_specifier_t *this = malloc(sizeof(struct array_specifier_t));
         this->size = size;
+        this->array_specifier = array_specifier;
         return this;
 }
 

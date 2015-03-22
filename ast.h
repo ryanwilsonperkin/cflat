@@ -56,6 +56,7 @@ struct struct_type_t {
 
 struct array_specifier_t {
         cflat_int size;
+        struct array_specifier_t *array_specifier;
 };
 
 struct function_def_list_t {
@@ -252,7 +253,7 @@ struct var_decl_stmt_list_t *create_var_decl_stmt_list(struct var_decl_t *, stru
 struct var_decl_t *create_var_decl_basic(enum basic_type, char *, struct array_specifier_t *); 
 struct var_decl_t *create_var_decl_struct(struct struct_type_t *, char *, struct array_specifier_t *); 
 struct struct_type_t *create_struct_type(struct var_decl_stmt_list_t *);
-struct array_specifier_t *create_array_specifier(cflat_int);
+struct array_specifier_t *create_array_specifier(cflat_int, struct array_specifier_t *);
 struct function_def_list_t *create_function_def_list(struct function_def_t *, struct function_def_list_t *);
 struct function_def_t *create_basic_function_def(enum basic_type, char *, struct function_param_list_t *, struct function_body_t *);
 struct function_def_t *create_void_function_def(char *, struct function_param_list_t *, struct function_body_t *);
