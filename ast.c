@@ -242,216 +242,107 @@ struct return_stmt_t *create_return_stmt
         return this;
 }
 
-struct expr_t *create_expr
-(struct assign_expr_t *assign_expr)
+struct expr_t *create_assign_expr
+(struct var_t *var, struct expr_t *expr)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
-        this->assign_expr = assign_expr;
-        return this;
-}
-
-struct assign_expr_t *create_assign_expr
-(struct var_t *var, struct assign_expr_t *assign_expr)
-{
-        struct assign_expr_t *this = malloc(sizeof(struct assign_expr_t));
         this->type = ASSIGN_EXPR;
         this->val.assign.assignee = var;
-        this->val.assign.assignment = assign_expr;
+        this->val.assign.assignment = expr;
         return this;
 }
 
-struct assign_expr_t *wrap_logical_or_expr
-(struct logical_or_expr_t *logical_or_expr)
+struct expr_t *create_logical_or_expr
+(struct expr_t *primary, struct expr_t *secondary)
 {
-        struct assign_expr_t *this = malloc(sizeof(struct assign_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = LOGICAL_OR_EXPR;
-        this->val.logical_or_expr = logical_or_expr;
+        this->val.relation.primary = primary;
+        this->val.relation.secondary = secondary;
         return this;
 }
 
-struct logical_or_expr_t *create_logical_or_expr
-(struct logical_or_expr_t *logical_or_expr, struct logical_and_expr_t *logical_and_expr)
+struct expr_t *create_logical_and_expr
+(struct expr_t *primary, struct expr_t *secondary)
 {
-        struct logical_or_expr_t *this = malloc(sizeof(struct logical_or_expr_t));
-        this->type = OR_EXPR;
-        this->val.relation.primary = logical_or_expr;
-        this->val.relation.secondary = logical_and_expr;
-        return this;
-}
-
-struct logical_or_expr_t *wrap_logical_and_expr
-(struct logical_and_expr_t *logical_and_expr)
-{
-        struct logical_or_expr_t *this = malloc(sizeof(struct logical_or_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = LOGICAL_AND_EXPR;
-        this->val.logical_and_expr = logical_and_expr;
+        this->val.relation.primary = primary;
+        this->val.relation.secondary = secondary;
         return this;
 }
 
-struct logical_and_expr_t *create_logical_and_expr
-(struct logical_and_expr_t *logical_and_expr, struct equality_expr_t *equality_expr)
+struct expr_t *create_equality_expr
+(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
-        struct logical_and_expr_t *this = malloc(sizeof(struct logical_and_expr_t));
-        this->type = AND_EXPR;
-        this->val.relation.primary = logical_and_expr;
-        this->val.relation.secondary = equality_expr;
-        return this;
-}
-
-struct logical_and_expr_t *wrap_equality_expr
-(struct equality_expr_t *equality_expr)
-{
-        struct logical_and_expr_t *this = malloc(sizeof(struct logical_and_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = EQUALITY_EXPR;
-        this->val.equality_expr = equality_expr;
+        this->subtype = subtype;
+        this->val.relation.primary = primary;
+        this->val.relation.secondary = secondary;
         return this;
 }
 
-struct equality_expr_t *create_equality_expr
-(enum equality_expr_type type, struct equality_expr_t *equality_expr, struct relational_expr_t *relational_expr)
+struct expr_t *create_relational_expr
+(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
-        struct equality_expr_t *this = malloc(sizeof(struct equality_expr_t));
-        this->type = type;
-        this->val.equality.primary = equality_expr;
-        this->val.equality.secondary = relational_expr;
-        return this;
-}
-
-struct equality_expr_t *wrap_relational_expr
-(struct relational_expr_t *relational_expr)
-{
-        struct equality_expr_t *this = malloc(sizeof(struct equality_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = RELATIONAL_EXPR;
-        this->val.relational_expr = relational_expr;
+        this->subtype = subtype;
+        this->val.relation.primary = primary;
+        this->val.relation.secondary = secondary;
         return this;
 }
 
-struct relational_expr_t *create_relational_expr
-(enum relational_expr_type type, struct relational_expr_t *relational_expr, struct additive_expr_t *additive_expr)
+struct expr_t *create_additive_expr
+(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
-        struct relational_expr_t *this = malloc(sizeof(struct relational_expr_t));
-        this->type = type;
-        this->val.relation.primary = relational_expr;
-        this->val.relation.secondary = additive_expr;
-        return this;
-}
-
-struct relational_expr_t *wrap_additive_expr
-(struct additive_expr_t *additive_expr)
-{
-        struct relational_expr_t *this = malloc(sizeof(struct relational_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = ADDITIVE_EXPR;
-        this->val.additive_expr = additive_expr;
+        this->subtype = subtype;
+        this->val.binary_op.primary = primary;
+        this->val.binary_op.secondary = secondary;
         return this;
 }
 
-struct additive_expr_t *create_additive_expr
-(enum additive_expr_type type, struct additive_expr_t *additive_expr, struct multiplicative_expr_t *multiplicative_expr)
+struct expr_t *create_multiplicative_expr
+(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
-        struct additive_expr_t *this = malloc(sizeof(struct additive_expr_t));
-        this->type = type;
-        this->val.operation.primary = additive_expr;
-        this->val.operation.secondary = multiplicative_expr;
-        return this;
-}
-
-struct additive_expr_t *wrap_multiplicative_expr
-(struct multiplicative_expr_t *multiplicative_expr)
-{
-        struct additive_expr_t *this = malloc(sizeof(struct additive_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = MULTIPLICATIVE_EXPR;
-        this->val.multiplicative_expr = multiplicative_expr;
+        this->subtype = subtype;
+        this->val.binary_op.primary = primary;
+        this->val.binary_op.secondary = secondary;
         return this;
 }
 
-struct multiplicative_expr_t *create_multiplicative_expr
-(enum multiplicative_expr_type type, struct multiplicative_expr_t *multiplicative_expr, struct unary_expr_t *unary_expr)
-{
-        struct multiplicative_expr_t *this = malloc(sizeof(struct multiplicative_expr_t));
-        this->type = type;
-        this->val.operation.primary = multiplicative_expr;
-        this->val.operation.secondary = unary_expr;
-        return this;
-}
-
-struct multiplicative_expr_t *wrap_unary_expr
-(struct unary_expr_t *unary_expr)
-{
-        struct multiplicative_expr_t *this = malloc(sizeof(struct multiplicative_expr_t));
-        this->type = UNARY_EXPR;
-        this->val.unary_expr = unary_expr;
-        return this;
-}
-
-struct unary_expr_t *create_unary_expr_sizeof_basic
+struct expr_t *create_unary_expr_sizeof_basic
 (enum basic_type type)
 {
-        struct unary_expr_t *this = malloc(sizeof(struct unary_expr_t));
-        this->type = SIZEOF_BASIC;
-        this->val.type = type;
+        struct expr_t *this = malloc(sizeof(struct expr_t));
+        this->type = UNARY_EXPR;
+        this->subtype = UNARY_EXPR_SIZEOF_BASIC;
+        this->val.unary_op.type = type;
         return this;
 }
 
-struct unary_expr_t *create_unary_expr
-(enum unary_expr_type type, struct unary_expr_t *unary_expr)
+struct expr_t *create_unary_expr
+(enum expr_subtype subtype, struct expr_t *expr)
 {
-        struct unary_expr_t *this = malloc(sizeof(struct unary_expr_t));
-        this->type = type;
-        this->val.unary_expr = unary_expr;
+        struct expr_t *this = malloc(sizeof(struct expr_t));
+        this->type = UNARY_EXPR;
+        this->subtype = subtype;
+        this->val.unary_op.expr = expr;
         return this;
 }
 
-struct unary_expr_t *wrap_postfix_expr
-(struct postfix_expr_t *postfix_expr)
+struct expr_t *create_postfix_expr
+(enum expr_subtype subtype, void *ptr)
 {
-        struct unary_expr_t *this = malloc(sizeof(struct unary_expr_t));
+        struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = POSTFIX_EXPR;
-        this->val.postfix_expr = postfix_expr;
-        return this;
-}
-
-struct postfix_expr_t *create_postfix_expr
-(enum postfix_expr_type type, struct postfix_expr_t *postfix_expr)
-{
-        struct postfix_expr_t *this = malloc(sizeof(struct postfix_expr_t));
-        this->type = type;
-        this->val.postfix_expr = postfix_expr;
-        return this;
-}
-
-struct postfix_expr_t *wrap_var
-(struct var_t *var)
-{
-        struct postfix_expr_t *this = malloc(sizeof(struct postfix_expr_t));
-        this->type = VAR;
-        this->val.var = var;
-        return this;
-}
-
-struct postfix_expr_t *wrap_constant
-(struct constant_t *constant)
-{
-        struct postfix_expr_t *this = malloc(sizeof(struct postfix_expr_t));
-        this->type = CONSTANT;
-        this->val.constant = constant;
-        return this;
-}
-
-struct postfix_expr_t *wrap_enclosed
-(struct expr_t *expr)
-{
-        struct postfix_expr_t *this = malloc(sizeof(struct postfix_expr_t));
-        this->type = ENCLOSED;
-        this->val.expr = expr;
-        return this;
-}
-
-struct postfix_expr_t *wrap_function_call
-(struct function_call_t *function_call)
-{
-        struct postfix_expr_t *this = malloc(sizeof(struct postfix_expr_t));
-        this->type = FUNCTION_CALL;
-        this->val.function_call = function_call;
+        this->subtype = subtype;
+        this->val.postfix_op.var = ptr;
         return this;
 }
 

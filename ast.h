@@ -159,147 +159,66 @@ struct return_stmt_t {
 };
 
 struct expr_t {
-        struct assign_expr_t *assign_expr;
-};
-
-struct assign_expr_t {
         enum {
                 ASSIGN_EXPR,
-                LOGICAL_OR_EXPR
+                LOGICAL_OR_EXPR,
+                LOGICAL_AND_EXPR,
+                EQUALITY_EXPR,
+                RELATIONAL_EXPR,
+                ADDITIVE_EXPR,
+                MULTIPLICATIVE_EXPR,
+                UNARY_EXPR,
+                POSTFIX_EXPR
         } type;
+        enum expr_subtype {
+                EQUALITY_EXPR_EQUAL,
+                EQUALITY_EXPR_NOT_EQUAL,
+                RELATIONAL_EXPR_LESS_THAN,
+                RELATIONAL_EXPR_LESS_THAN_OR_EQUAL,
+                RELATIONAL_EXPR_GREATER_THAN,
+                RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL,
+                ADDITIVE_EXPR_ADD,
+                ADDITIVE_EXPR_SUBTRACT,
+                MULTIPLICATIVE_EXPR_MULTIPLY,
+                MULTIPLICATIVE_EXPR_DIVIDE,
+                MULTIPLICATIVE_EXPR_MODULO,
+                UNARY_EXPR_SIZEOF_UNARY,
+                UNARY_EXPR_SIZEOF_BASIC,
+                UNARY_EXPR_NOT_UNARY,
+                UNARY_EXPR_POSITIVE,
+                UNARY_EXPR_NEGATIVE,
+                UNARY_EXPR_PRE_INCREMENT,
+                UNARY_EXPR_PRE_DECREMENT,
+                POSTFIX_EXPR_VAR,
+                POSTFIX_EXPR_CONSTANT,
+                POSTFIX_EXPR_POST_INCREMENT,
+                POSTFIX_EXPR_POST_DECREMENT,
+                POSTFIX_EXPR_ENCLOSED,
+                POSTFIX_EXPR_FUNCTION_CALL
+        } subtype;
         union {
                 struct {
                         struct var_t *assignee;
-                        struct assign_expr_t *assignment;
+                        struct expr_t *assignment;
                 } assign;
-                struct logical_or_expr_t *logical_or_expr;
-        } val;
-};
-
-struct logical_or_expr_t {
-        enum {
-                OR_EXPR,
-                LOGICAL_AND_EXPR 
-        } type;
-        union {
                 struct {
-                        struct logical_or_expr_t *primary;
-                        struct logical_and_expr_t *secondary;
+                        struct expr_t *primary;
+                        struct expr_t *secondary;
                 } relation;
-                struct logical_and_expr_t *logical_and_expr;
-        } val;
-};
-
-struct logical_and_expr_t {
-        enum {
-                AND_EXPR,
-                EQUALITY_EXPR
-        } type;
-        union {
                 struct {
-                        struct logical_and_expr_t *primary;
-                        struct equality_expr_t *secondary;
-                } relation;
-                struct equality_expr_t *equality_expr;
-        } val;
-};
-
-struct equality_expr_t {
-        enum equality_expr_type {
-                EQUAL,
-                NOT_EQUAL,
-                RELATIONAL_EXPR
-        } type;
-        union {
-                struct {
-                        struct equality_expr_t *primary;
-                        struct relational_expr_t *secondary;
-                } equality;
-                struct relational_expr_t *relational_expr;
-        } val;
-};
-
-struct relational_expr_t {
-        enum relational_expr_type {
-                LESS_THAN,
-                LESS_THAN_OR_EQUAL,
-                GREATER_THAN,
-                GREATER_THAN_OR_EQUAL,
-                ADDITIVE_EXPR
-        } type;
-        union {
-                struct {
-                        struct relational_expr_t *primary;
-                        struct additive_expr_t *secondary;
-                } relation;
-                struct additive_expr_t *additive_expr;
-        } val;
-};
-
-struct additive_expr_t {
-        enum additive_expr_type {
-                ADD,
-                SUBTRACT,
-                MULTIPLICATIVE_EXPR
-        } type;
-        union {
-                struct {
-                        struct additive_expr_t *primary;
-                        struct multiplicative_expr_t *secondary;
-                } operation;
-                struct multiplicative_expr_t *multiplicative_expr;
-        } val;
-};
-
-struct multiplicative_expr_t {
-        enum multiplicative_expr_type {
-                MULTIPLY,
-                DIVIDE,
-                MODULO,
-                UNARY_EXPR
-        } type;
-        union {
-                struct {
-                        struct multiplicative_expr_t *primary;
-                        struct unary_expr_t *secondary;
-                } operation;
-                struct unary_expr_t *unary_expr;
-        } val;
-};
-
-struct unary_expr_t {
-        enum unary_expr_type {
-                SIZEOF_UNARY,
-                SIZEOF_BASIC,
-                NOT_UNARY,
-                POSITIVE,
-                NEGATIVE,
-                PRE_INCREMENT,
-                PRE_DECREMENT,
-                POSTFIX_EXPR
-        } type;
-        union {
-                enum basic_type type;
-                struct unary_expr_t *unary_expr;
-                struct postfix_expr_t *postfix_expr;
-        } val;
-};
-
-struct postfix_expr_t {
-        enum postfix_expr_type {
-                VAR,
-                CONSTANT,
-                POST_INCREMENT,
-                POST_DECREMENT,
-                ENCLOSED,
-                FUNCTION_CALL
-        } type;
-        union {
-                struct var_t *var;
-                struct constant_t *constant;
-                struct postfix_expr_t *postfix_expr;
-                struct expr_t *expr;
-                struct function_call_t *function_call;
+                        struct expr_t *primary;
+                        struct expr_t *secondary;
+                } binary_op;
+                union {
+                        enum basic_type type;
+                        struct expr_t *expr;
+                } unary_op;
+                union {
+                        struct var_t *var;
+                        struct constant_t *constant;
+                        struct expr_t *expr;
+                        struct function_call_t *function_call;
+                } postfix_op;
         } val;
 };
 
@@ -349,29 +268,16 @@ struct compound_stmt_t *create_compound_stmt(struct stmt_list_t *);
 struct select_stmt_t *create_select_stmt(struct expr_t *, struct stmt_t *, struct stmt_t *);
 struct iter_stmt_t *create_iter_stmt(struct expr_t *, struct expr_t *, struct expr_t *, struct stmt_t *);
 struct return_stmt_t *create_return_stmt(struct expr_t *);
-struct expr_t *create_expr(struct assign_expr_t *);
-struct assign_expr_t *create_assign_expr(struct var_t *, struct assign_expr_t *);
-struct assign_expr_t *wrap_logical_or_expr(struct logical_or_expr_t *);
-struct logical_or_expr_t *create_logical_or_expr(struct logical_or_expr_t *, struct logical_and_expr_t *);
-struct logical_or_expr_t *wrap_logical_and_expr(struct logical_and_expr_t *);
-struct logical_and_expr_t *create_logical_and_expr(struct logical_and_expr_t *, struct equality_expr_t *);
-struct logical_and_expr_t *wrap_equality_expr(struct equality_expr_t *);
-struct equality_expr_t *create_equality_expr(enum equality_expr_type, struct equality_expr_t *, struct relational_expr_t *);
-struct equality_expr_t *wrap_relational_expr(struct relational_expr_t *);
-struct relational_expr_t *create_relational_expr(enum relational_expr_type, struct relational_expr_t *, struct additive_expr_t *);
-struct relational_expr_t *wrap_additive_expr(struct additive_expr_t *);
-struct additive_expr_t *create_additive_expr(enum additive_expr_type, struct additive_expr_t *, struct multiplicative_expr_t *);
-struct additive_expr_t *wrap_multiplicative_expr(struct multiplicative_expr_t *);
-struct multiplicative_expr_t *create_multiplicative_expr(enum multiplicative_expr_type, struct multiplicative_expr_t *, struct unary_expr_t *);
-struct multiplicative_expr_t *wrap_unary_expr(struct unary_expr_t *);
-struct unary_expr_t *create_unary_expr_sizeof_basic(enum basic_type);
-struct unary_expr_t *create_unary_expr(enum unary_expr_type, struct unary_expr_t *);
-struct unary_expr_t *wrap_postfix_expr(struct postfix_expr_t *);
-struct postfix_expr_t *create_postfix_expr(enum postfix_expr_type, struct postfix_expr_t *);
-struct postfix_expr_t *wrap_var(struct var_t *);
-struct postfix_expr_t *wrap_constant(struct constant_t *);
-struct postfix_expr_t *wrap_enclosed(struct expr_t *);
-struct postfix_expr_t *wrap_function_call(struct function_call_t *);
+struct expr_t *create_assign_expr(struct var_t *, struct expr_t *);
+struct expr_t *create_logical_or_expr(struct expr_t *, struct expr_t *);
+struct expr_t *create_logical_and_expr(struct expr_t *, struct expr_t *);
+struct expr_t *create_equality_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_relational_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_additive_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_multiplicative_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_unary_expr_sizeof_basic(enum basic_type);
+struct expr_t *create_unary_expr(enum expr_subtype, struct expr_t *);
+struct expr_t *create_postfix_expr(enum expr_subtype, void *);
 struct var_t *create_var_identifier(char *);
 struct var_t *create_var_field(struct var_t *, char *);
 struct var_t *create_var_subscript(struct var_t *, struct expr_t *);

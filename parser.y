@@ -180,69 +180,69 @@ return_stmt
     ;
 
 expr
-    : assign_expr { $$ = create_expr($1); }
+    : assign_expr { $$ = $1; }
     ;
 
 assign_expr
-    : logical_or_expr { $$ = wrap_logical_or_expr($1); }
+    : logical_or_expr { $$ = $1; }
     | var ASSIGN assign_expr { $$ = create_assign_expr($1, $3); }
     ;
 
 logical_or_expr
     : logical_or_expr OR logical_and_expr { $$ = create_logical_or_expr($1, $3); }
-    | logical_and_expr { $$ = wrap_logical_and_expr($1); }
+    | logical_and_expr { $$ = $1; }
     ;
 
 logical_and_expr
     : logical_and_expr AND equality_expr { $$ = create_logical_and_expr($1, $3); }
-    | equality_expr { $$ = wrap_equality_expr($1); }
+    | equality_expr { $$ = $1; }
     ;
 
 equality_expr
-    : equality_expr EQ relational_expr { $$ = create_equality_expr(EQUAL, $1, $3); }
-    | equality_expr NE relational_expr { $$ = create_equality_expr(NOT_EQUAL, $1, $3); }
-    | relational_expr { $$ = wrap_relational_expr($1); }
+    : equality_expr EQ relational_expr { $$ = create_equality_expr(EQUALITY_EXPR_EQUAL, $1, $3); }
+    | equality_expr NE relational_expr { $$ = create_equality_expr(EQUALITY_EXPR_NOT_EQUAL, $1, $3); }
+    | relational_expr { $$ = $1; }
     ;
 
 relational_expr
-    : relational_expr LT additive_expr { $$ = create_relational_expr(LESS_THAN, $1, $3); }
-    | relational_expr LE additive_expr { $$ = create_relational_expr(LESS_THAN_OR_EQUAL, $1, $3); }
-    | relational_expr GT additive_expr { $$ = create_relational_expr(GREATER_THAN, $1, $3); }
-    | relational_expr GE additive_expr { $$ = create_relational_expr(GREATER_THAN_OR_EQUAL, $1, $3); }
-    | additive_expr { $$ = wrap_additive_expr($1); }
+    : relational_expr LT additive_expr { $$ = create_relational_expr(RELATIONAL_EXPR_LESS_THAN, $1, $3); }
+    | relational_expr LE additive_expr { $$ = create_relational_expr(RELATIONAL_EXPR_LESS_THAN_OR_EQUAL, $1, $3); }
+    | relational_expr GT additive_expr { $$ = create_relational_expr(RELATIONAL_EXPR_GREATER_THAN, $1, $3); }
+    | relational_expr GE additive_expr { $$ = create_relational_expr(RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL, $1, $3); }
+    | additive_expr { $$ = $1; }
     ;
 
 additive_expr
-    : additive_expr PLUS multiplicative_expr { $$ = create_additive_expr(ADD, $1, $3); }
-    | additive_expr MINUS multiplicative_expr { $$ = create_additive_expr(SUBTRACT, $1, $3); }
-    | multiplicative_expr { $$ = wrap_multiplicative_expr($1); }
+    : additive_expr PLUS multiplicative_expr { $$ = create_additive_expr(ADDITIVE_EXPR_ADD, $1, $3); }
+    | additive_expr MINUS multiplicative_expr { $$ = create_additive_expr(ADDITIVE_EXPR_SUBTRACT, $1, $3); }
+    | multiplicative_expr { $$ = $1; }
     ;
 
 multiplicative_expr
-    : multiplicative_expr ASTERISK unary_expr { $$ = create_multiplicative_expr(MULTIPLY, $1, $3); }
-    | multiplicative_expr SLASH unary_expr { $$ = create_multiplicative_expr(DIVIDE, $1, $3); }
-    | multiplicative_expr PERCENT unary_expr { $$ = create_multiplicative_expr(MODULO, $1, $3); }
-    | unary_expr { $$ = wrap_unary_expr($1); }
+    : multiplicative_expr ASTERISK unary_expr { $$ = create_multiplicative_expr(MULTIPLICATIVE_EXPR_MULTIPLY, $1, $3); }
+    | multiplicative_expr SLASH unary_expr { $$ = create_multiplicative_expr(MULTIPLICATIVE_EXPR_DIVIDE, $1, $3); }
+    | multiplicative_expr PERCENT unary_expr { $$ = create_multiplicative_expr(MULTIPLICATIVE_EXPR_MODULO, $1, $3); }
+    | unary_expr { $$ = $1; }
     ;
 
 unary_expr
-    : SIZEOF LPAREN unary_expr RPAREN { $$ = create_unary_expr(SIZEOF_UNARY, $3); }
+    : SIZEOF LPAREN unary_expr RPAREN { $$ = create_unary_expr(UNARY_EXPR_SIZEOF_UNARY, $3); }
     | SIZEOF LPAREN basic_type RPAREN { $$ = create_unary_expr_sizeof_basic($3); }
-    | NOT unary_expr { $$ = create_unary_expr(NOT_UNARY, $2); }
-    | PLUS unary_expr { $$ = create_unary_expr(POSITIVE, $2); }
-    | MINUS unary_expr { $$ = create_unary_expr(NEGATIVE, $2); }
-    | INCREMENT unary_expr { $$ = create_unary_expr(PRE_INCREMENT, $2); }
-    | DECREMENT unary_expr { $$ = create_unary_expr(PRE_DECREMENT, $2); }
-    | postfix_expr { $$ = wrap_postfix_expr($1); }
+    | NOT unary_expr { $$ = create_unary_expr(UNARY_EXPR_NOT_UNARY, $2); }
+    | PLUS unary_expr { $$ = create_unary_expr(UNARY_EXPR_POSITIVE, $2); }
+    | MINUS unary_expr { $$ = create_unary_expr(UNARY_EXPR_NEGATIVE, $2); }
+    | INCREMENT unary_expr { $$ = create_unary_expr(UNARY_EXPR_PRE_INCREMENT, $2); }
+    | DECREMENT unary_expr { $$ = create_unary_expr(UNARY_EXPR_PRE_DECREMENT, $2); }
+    | postfix_expr { $$ = $1; }
     ;
 
 postfix_expr
-    : var { $$ = wrap_var($1); }
-    | constant { $$ = wrap_constant($1); }
-    | postfix_expr INCREMENT { create_postfix_expr(POST_INCREMENT, $1); }
-    | postfix_expr DECREMENT { create_postfix_expr(POST_DECREMENT, $1); }
-    | LPAREN expr RPAREN { $$ = wrap_enclosed($2); }
-    | function_call { $$ = wrap_function_call($1); }
+    : var { $$ = create_postfix_expr(POSTFIX_EXPR_VAR, $1); }
+    | constant { $$ = create_postfix_expr(POSTFIX_EXPR_CONSTANT, $1); }
+    | postfix_expr INCREMENT { create_postfix_expr(POSTFIX_EXPR_POST_INCREMENT, $1); }
+    | postfix_expr DECREMENT { create_postfix_expr(POSTFIX_EXPR_POST_DECREMENT, $1); }
+    | LPAREN expr RPAREN { $$ = create_postfix_expr(POSTFIX_EXPR_ENCLOSED, $2); }
+    | function_call { $$ = create_postfix_expr(POSTFIX_EXPR_FUNCTION_CALL, $1); }
     ;
 
 var
