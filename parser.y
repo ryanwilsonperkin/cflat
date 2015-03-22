@@ -19,7 +19,7 @@ int n_errors = 0;
     void *pval;
 }
 %token CHAR ELSE FLOAT FOR IF INT RETURN STRUCT TYPEDEF VOID WHILE 
-%token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON
+%token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON COMMA
 %token ASSIGN OR AND NOT EQ NE LT LE GT GE PLUS MINUS ASTERISK SLASH PERCENT
 %token SIZEOF INCREMENT DECREMENT PERIOD
 %token UNRECOGNIZED
@@ -119,11 +119,12 @@ function_body
 
 function_call
     : ID LPAREN arg_list RPAREN { $$ = create_function_call($1, $3); }
+    | ID LPAREN RPAREN { $$ = create_function_call($1, NULL); }
     ;
 
 arg_list
-    : /* empty */ { $$ = NULL; }
-    | arg_list expr SEMICOLON { $$ = create_arg_list($2, $1); }
+    : expr { $$ = $1; }
+    | arg_list COMMA expr { $$ = create_arg_list($3, $1); }
     ;
 
 stmt_list

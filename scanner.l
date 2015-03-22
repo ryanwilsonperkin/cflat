@@ -53,8 +53,8 @@ INT	-?0|({NATURAL}{DIGIT}*)
 "("		{ return LPAREN; }
 ")"		{ return RPAREN; }
 ";"		{ return SEMICOLON; }
-"."		{ return PERIOD; }
 ","		{ return COMMA; }
+"."		{ return PERIOD; }
 {ID}		{ yylval.sval = strdup(yytext); return ID; }
 [ \t\n]+	{ /* Ignore whitespace */ }
 .		{ return UNRECOGNIZED; }
