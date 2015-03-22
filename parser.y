@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include "ast.h"
 
+extern int line_num;
+extern int col_num;
+extern char *line_buf;
+extern char *yytext;
 extern FILE *yyin;
 extern int yylex(void);
 void yyerror(const char *);
@@ -266,7 +270,11 @@ basic_type
 %%
 
 
-void yyerror(const char *s) { n_errors++; }
+void yyerror(const char *s)
+{
+        fprintf(stderr, "stdin:%d:%d: error: unexpected token: %s\n", line_num, col_num, yytext);
+        fprintf(stderr, "%s\n", line_buf);
+}
 
 int main()
 {

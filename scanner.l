@@ -1,6 +1,18 @@
 %{
 #include <string.h>
 #include "parser.h"
+
+int col_num = 1;
+int next_col_num = 1;
+int line_num = 1;
+int next_line_num = 1;
+char *line_buf = NULL;
+
+void reset_line_buf();
+void append_line_buf();
+void increment_col_num();
+void increment_line_num();
+void reset_col_num();
 %}
 
 NATURAL	[1-9]
@@ -14,47 +26,85 @@ INT	-?0|({NATURAL}{DIGIT}*)
 
 %%
 
-{CHAR}		{ return CONST_CHAR; }
-{FLOAT}		{ return CONST_FLOAT; }
-{INT}		{ return CONST_INT; }
-"char"		{ return CHAR; }
-"float"		{ return FLOAT; }
-"int"		{ return INT;}
-"else"		{ return ELSE; }
-"for"		{ return FOR; }
-"if"		{ return IF; }
-"return"	{ return RETURN; }
-"struct"	{ return STRUCT; }
-"typedef"	{ return TYPEDEF; }
-"void"		{ return VOID; }
-"while"		{ return WHILE; }
-"sizeof"	{ return SIZEOF; }
-"+"		{ return PLUS; }
-"-"		{ return MINUS; }
-"*"		{ return ASTERISK; }
-"/"		{ return SLASH; }
-"%"		{ return PERCENT; }
-"=="		{ return EQ; }
-"!="		{ return NE; }
-"<"		{ return LT; }
-">"		{ return GT; }
-"<="		{ return LE; }
-">="		{ return GE; }
-"&&"		{ return AND; }
-"||"		{ return OR; }
-"!"		{ return NOT; }
-"="		{ return ASSIGN; }
-"++"		{ return INCREMENT; }
-"--"		{ return DECREMENT; }
-"{"		{ return LBRACE; }
-"}"		{ return RBRACE; }
-"["		{ return LBRACKET; }
-"]"		{ return RBRACKET; }
-"("		{ return LPAREN; }
-")"		{ return RPAREN; }
-";"		{ return SEMICOLON; }
-","		{ return COMMA; }
-"."		{ return PERIOD; }
-{ID}		{ yylval.sval = strdup(yytext); return ID; }
-[ \t\n]+	{ /* Ignore whitespace */ }
-.		{ return UNRECOGNIZED; }
+{CHAR}		{ append_line_buf(); increment_col_num(); return CONST_CHAR; }
+{FLOAT}		{ append_line_buf(); increment_col_num(); return CONST_FLOAT; }
+{INT}		{ append_line_buf(); increment_col_num(); return CONST_INT; }
+"char"		{ append_line_buf(); increment_col_num(); return CHAR; }
+"float"		{ append_line_buf(); increment_col_num(); return FLOAT; }
+"int"		{ append_line_buf(); increment_col_num(); return INT;}
+"else"		{ append_line_buf(); increment_col_num(); return ELSE; }
+"for"		{ append_line_buf(); increment_col_num(); return FOR; }
+"if"		{ append_line_buf(); increment_col_num(); return IF; }
+"return"	{ append_line_buf(); increment_col_num(); return RETURN; }
+"struct"	{ append_line_buf(); increment_col_num(); return STRUCT; }
+"typedef"	{ append_line_buf(); increment_col_num(); return TYPEDEF; }
+"void"		{ append_line_buf(); increment_col_num(); return VOID; }
+"while"		{ append_line_buf(); increment_col_num(); return WHILE; }
+"sizeof"	{ append_line_buf(); increment_col_num(); return SIZEOF; }
+"+"		{ append_line_buf(); increment_col_num(); return PLUS; }
+"-"		{ append_line_buf(); increment_col_num(); return MINUS; }
+"*"		{ append_line_buf(); increment_col_num(); return ASTERISK; }
+"/"		{ append_line_buf(); increment_col_num(); return SLASH; }
+"%"		{ append_line_buf(); increment_col_num(); return PERCENT; }
+"=="		{ append_line_buf(); increment_col_num(); return EQ; }
+"!="		{ append_line_buf(); increment_col_num(); return NE; }
+"<"		{ append_line_buf(); increment_col_num(); return LT; }
+">"		{ append_line_buf(); increment_col_num(); return GT; }
+"<="		{ append_line_buf(); increment_col_num(); return LE; }
+">="		{ append_line_buf(); increment_col_num(); return GE; }
+"&&"		{ append_line_buf(); increment_col_num(); return AND; }
+"||"		{ append_line_buf(); increment_col_num(); return OR; }
+"!"		{ append_line_buf(); increment_col_num(); return NOT; }
+"="		{ append_line_buf(); increment_col_num(); return ASSIGN; }
+"++"		{ append_line_buf(); increment_col_num(); return INCREMENT; }
+"--"		{ append_line_buf(); increment_col_num(); return DECREMENT; }
+"{"		{ append_line_buf(); increment_col_num(); return LBRACE; }
+"}"		{ append_line_buf(); increment_col_num(); return RBRACE; }
+"["		{ append_line_buf(); increment_col_num(); return LBRACKET; }
+"]"		{ append_line_buf(); increment_col_num(); return RBRACKET; }
+"("		{ append_line_buf(); increment_col_num(); return LPAREN; }
+")"		{ append_line_buf(); increment_col_num(); return RPAREN; }
+";"		{ append_line_buf(); increment_col_num(); return SEMICOLON; }
+","		{ append_line_buf(); increment_col_num(); return COMMA; }
+"."		{ append_line_buf(); increment_col_num(); return PERIOD; }
+{ID}		{ append_line_buf(); increment_col_num(); yylval.sval = strdup(yytext); return ID; }
+[ \t]+          { append_line_buf(); increment_col_num(); /* Ignore whitespace */ }
+\n              { reset_line_buf(); reset_col_num(); increment_line_num(); }
+.		{ append_line_buf(); increment_col_num(); return UNRECOGNIZED; }
+
+%%
+
+void reset_line_buf()
+{
+    free(line_buf);
+    line_buf = malloc(1);
+    line_buf[0] = 0;
+}
+
+void append_line_buf()
+{
+    if (line_buf) {
+        line_buf = realloc(line_buf, strlen(line_buf) + yyleng + 1);
+    } else {
+        line_buf = malloc(yyleng + 1);
+    }
+    line_buf = strcat(line_buf, yytext);
+}
+
+void increment_col_num()
+{
+        col_num = next_col_num;
+        next_col_num += yyleng;
+}
+
+void increment_line_num()
+{
+        line_num = next_line_num;
+        next_line_num++;
+}
+
+void reset_col_num()
+{
+        col_num = next_col_num;
+        next_col_num = 1;
+}
