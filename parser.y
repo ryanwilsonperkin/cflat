@@ -88,7 +88,7 @@ type_decl
 
 var_decl_stmt_list
     : /* empty */ { $$ = NULL; }
-    | var_decl_stmt_list var_decl_stmt { $$ = create_var_decl_stmt_list($1, $2); }
+    | var_decl_stmt_list var_decl_stmt { $$ = create_var_decl_stmt_list($2, $1); }
     ;
 
 var_decl_stmt
