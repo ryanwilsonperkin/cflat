@@ -22,7 +22,29 @@ int n_errors = 0;
     float fval;
     int ival;
     char *sval;
-    void *pval;
+
+    struct type_decl_list_t *type_decl_list_p;
+    struct type_decl_t *type_decl_p;
+    struct var_decl_stmt_list_t *var_decl_stmt_list_p;
+    struct var_decl_t *var_decl_p;
+    struct struct_type_t *struct_type_p;
+    struct array_specifier_t *array_specifier_p;
+    struct function_def_list_t *function_def_list_p;
+    struct function_def_t *function_def_p;
+    struct function_param_list_t *function_param_list_p;
+    struct function_body_t *function_body_p;
+    struct function_call_t *function_call_p;
+    struct function_arg_list_t *function_arg_list_p;
+    struct stmt_list_t *stmt_list_p;
+    struct stmt_t *stmt_p;
+    struct expr_stmt_t *expr_stmt_p;
+    struct compound_stmt_t *compound_stmt_p;
+    struct select_stmt_t *select_stmt_p;
+    struct iter_stmt_t *iter_stmt_p;
+    struct return_stmt_t *return_stmt_p;
+    struct expr_t *expr_p;
+    struct var_t *var_p;
+    struct constant_t *constant_p;
 }
 %token CHAR ELSE FLOAT FOR IF INT RETURN STRUCT TYPEDEF VOID WHILE 
 %token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON COMMA
@@ -35,38 +57,38 @@ int n_errors = 0;
 %token <sval> ID
 %token <sval> TYPE_NAME
 
-%type <pval> type_decl_list
-%type <pval> type_decl
-%type <pval> var_decl_stmt_list
-%type <pval> var_decl_stmt
-%type <pval> var_decl
-%type <pval> struct_type
-%type <pval> array_specifier
-%type <pval> function_def_list
-%type <pval> function_def
-%type <pval> function_param_list
-%type <pval> function_body
-%type <pval> function_call
-%type <pval> function_arg_list
-%type <pval> stmt_list
-%type <pval> stmt
-%type <pval> expr_stmt
-%type <pval> compound_stmt
-%type <pval> select_stmt
-%type <pval> iter_stmt
-%type <pval> return_stmt
-%type <pval> expr
-%type <pval> assign_expr
-%type <pval> logical_or_expr
-%type <pval> logical_and_expr
-%type <pval> equality_expr
-%type <pval> relational_expr
-%type <pval> additive_expr
-%type <pval> multiplicative_expr
-%type <pval> unary_expr
-%type <pval> postfix_expr
-%type <pval> var
-%type <pval> constant
+%type <type_decl_list_p> type_decl_list;
+%type <type_decl_p> type_decl;
+%type <var_decl_stmt_list_p> var_decl_stmt_list;
+%type <var_decl_p> var_decl;
+%type <var_decl_p> var_decl_stmt;
+%type <struct_type_p> struct_type;
+%type <array_specifier_p> array_specifier;
+%type <function_def_list_p> function_def_list;
+%type <function_def_p> function_def;
+%type <function_param_list_p> function_param_list;
+%type <function_body_p> function_body;
+%type <function_call_p> function_call;
+%type <function_arg_list_p> function_arg_list;
+%type <stmt_list_p> stmt_list;
+%type <stmt_p> stmt;
+%type <expr_stmt_p> expr_stmt;
+%type <compound_stmt_p> compound_stmt;
+%type <select_stmt_p> select_stmt;
+%type <iter_stmt_p> iter_stmt;
+%type <return_stmt_p> return_stmt;
+%type <expr_p> expr;
+%type <expr_p> assign_expr;
+%type <expr_p> logical_or_expr;
+%type <expr_p> logical_and_expr;
+%type <expr_p> equality_expr;
+%type <expr_p> relational_expr;
+%type <expr_p> additive_expr;
+%type <expr_p> multiplicative_expr;
+%type <expr_p> unary_expr;
+%type <expr_p> postfix_expr;
+%type <var_p> var;
+%type <constant_p> constant;
 %type <ival> basic_type
 
 /* Expect a single shift/reduce conflict for dangling else. */
@@ -80,7 +102,7 @@ program
 
 type_decl_list
     : /* empty */ { $$ = NULL; }
-    | type_decl_list type_decl { $$ = create_type_decl_list($1, $2); }
+    | type_decl_list type_decl { $$ = create_type_decl_list($2, $1); }
     ;
 
 type_decl
@@ -138,7 +160,7 @@ function_call
     ;
 
 function_arg_list
-    : expr { $$ = $1; }
+    : expr { $$ = create_function_arg_list($1, NULL); }
     | function_arg_list COMMA expr { $$ = create_function_arg_list($3, $1); }
     ;
 
