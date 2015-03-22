@@ -16,4 +16,11 @@ typedef struct {
         } s;
 } type3;
 
+char1 c1;
+int1 i1;
+float1 f1;
+type1 t1;
+type2 t2;
+type3 t3;
+
 void placeholder() { return; }
