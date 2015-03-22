@@ -292,7 +292,10 @@ struct expr_t *create_additive_expr(enum additive_expr_subtype, struct expr_t *,
 struct expr_t *create_multiplicative_expr(enum multiplicative_expr_subtype, struct expr_t *, struct expr_t *);
 struct expr_t *create_unary_expr_sizeof_basic(enum basic_type);
 struct expr_t *create_unary_expr(enum unary_expr_subtype, struct expr_t *);
-struct expr_t *create_postfix_expr(enum postfix_expr_subtype, void *);
+struct expr_t *create_postfix_expr(enum postfix_expr_subtype, struct expr_t *);
+struct expr_t *create_postfix_expr_var(struct var_t *);
+struct expr_t *create_postfix_expr_constant(struct constant_t *);
+struct expr_t *create_postfix_expr_function_call(struct function_call_t *);
 struct var_t *create_var_identifier(char *);
 struct var_t *create_var_field(struct var_t *, char *);
 struct var_t *create_var_subscript(struct var_t *, struct expr_t *);

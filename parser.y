@@ -244,12 +244,12 @@ unary_expr
     ;
 
 postfix_expr
-    : var { $$ = create_postfix_expr(POSTFIX_EXPR_VAR, $1); }
-    | constant { $$ = create_postfix_expr(POSTFIX_EXPR_CONSTANT, $1); }
+    : var { $$ = create_postfix_expr_var($1); }
+    | constant { $$ = create_postfix_expr_constant($1); }
     | postfix_expr INCREMENT { create_postfix_expr(POSTFIX_EXPR_POST_INCREMENT, $1); }
     | postfix_expr DECREMENT { create_postfix_expr(POSTFIX_EXPR_POST_DECREMENT, $1); }
     | LPAREN expr RPAREN { $$ = create_postfix_expr(POSTFIX_EXPR_ENCLOSED, $2); }
-    | function_call { $$ = create_postfix_expr(POSTFIX_EXPR_FUNCTION_CALL, $1); }
+    | function_call { $$ = create_postfix_expr_function_call($1); }
     ;
 
 var

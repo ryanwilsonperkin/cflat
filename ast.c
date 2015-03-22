@@ -348,12 +348,42 @@ struct expr_t *create_unary_expr
 }
 
 struct expr_t *create_postfix_expr
-(enum postfix_expr_subtype subtype, void *ptr)
+(enum postfix_expr_subtype subtype, struct expr_t *expr)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = POSTFIX_EXPR;
         this->subtype.postfix_expr_subtype = subtype;
-        this->val.postfix_op.var = ptr;
+        this->val.postfix_op.expr = expr;
+        return this;
+}
+
+struct expr_t *create_postfix_expr_var
+(struct var_t *var)
+{
+        struct expr_t *this = malloc(sizeof(struct expr_t));
+        this->type = POSTFIX_EXPR;
+        this->subtype.postfix_expr_subtype = POSTFIX_EXPR_VAR;
+        this->val.postfix_op.var = var;
+        return this;
+}
+
+struct expr_t *create_postfix_expr_constant
+(struct constant_t *constant)
+{
+        struct expr_t *this = malloc(sizeof(struct expr_t));
+        this->type = POSTFIX_EXPR;
+        this->subtype.postfix_expr_subtype = POSTFIX_EXPR_CONSTANT;
+        this->val.postfix_op.constant = constant;
+        return this;
+}
+
+struct expr_t *create_postfix_expr_function_call
+(struct function_call_t *function_call)
+{
+        struct expr_t *this = malloc(sizeof(struct expr_t));
+        this->type = POSTFIX_EXPR;
+        this->subtype.postfix_expr_subtype = POSTFIX_EXPR_FUNCTION_CALL;
+        this->val.postfix_op.function_call = function_call;
         return this;
 }
 
