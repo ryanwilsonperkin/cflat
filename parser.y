@@ -8,7 +8,6 @@ extern int line_num;
 extern int col_num;
 extern char *line_buf;
 extern char *yytext;
-extern FILE *yyin;
 extern void add_type(char *);
 extern int yylex(void);
 void yyerror(const char *);
@@ -299,17 +298,4 @@ void yyerror(const char *s)
 {
         fprintf(stderr, "stdin:%d:%d: error: unexpected token '%s'\n", line_num, col_num, yytext);
         fprintf(stderr, "%s\n", line_buf);
-}
-
-int main()
-{
-        if (yyin == NULL) yyin = stdin;
-        yyparse();
-        if (n_errors) {
-            fprintf(stderr, "%d syntax errors\n", n_errors);
-            return 1;
-        } else {
-            print_ast(stdout, program);
-        }
-        return 0;
 }

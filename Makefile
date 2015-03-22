@@ -7,8 +7,11 @@ YFLAGS+=-d -v
 
 all: cflatc
 
-cflatc: parser.o scanner.o ast.o astprint.o
+cflatc: parser.o scanner.o ast.o astprint.o cflatc.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+cflatc.o: cflatc.c
+	$(CC) $(CFLAGS) -o $@ -c $^
 
 scanner.o: scanner.c
 	$(CC) $(CFLAGS) -o $@ -c $^
