@@ -172,31 +172,43 @@ struct expr_t {
                 UNARY_EXPR,
                 POSTFIX_EXPR
         } type;
-        enum expr_subtype {
-                EQUALITY_EXPR_EQUAL,
-                EQUALITY_EXPR_NOT_EQUAL,
-                RELATIONAL_EXPR_LESS_THAN,
-                RELATIONAL_EXPR_LESS_THAN_OR_EQUAL,
-                RELATIONAL_EXPR_GREATER_THAN,
-                RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL,
-                ADDITIVE_EXPR_ADD,
-                ADDITIVE_EXPR_SUBTRACT,
-                MULTIPLICATIVE_EXPR_MULTIPLY,
-                MULTIPLICATIVE_EXPR_DIVIDE,
-                MULTIPLICATIVE_EXPR_MODULO,
-                UNARY_EXPR_SIZEOF_UNARY,
-                UNARY_EXPR_SIZEOF_BASIC,
-                UNARY_EXPR_NOT_UNARY,
-                UNARY_EXPR_POSITIVE,
-                UNARY_EXPR_NEGATIVE,
-                UNARY_EXPR_PRE_INCREMENT,
-                UNARY_EXPR_PRE_DECREMENT,
-                POSTFIX_EXPR_VAR,
-                POSTFIX_EXPR_CONSTANT,
-                POSTFIX_EXPR_POST_INCREMENT,
-                POSTFIX_EXPR_POST_DECREMENT,
-                POSTFIX_EXPR_ENCLOSED,
-                POSTFIX_EXPR_FUNCTION_CALL
+        union {
+                enum equality_expr_subtype {
+                        EQUALITY_EXPR_EQUAL,
+                        EQUALITY_EXPR_NOT_EQUAL
+                } equality_expr_subtype;
+                enum relational_expr_subtype {
+                        RELATIONAL_EXPR_LESS_THAN,
+                        RELATIONAL_EXPR_LESS_THAN_OR_EQUAL,
+                        RELATIONAL_EXPR_GREATER_THAN,
+                        RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL
+                } relational_expr_subtype;
+                enum additive_expr_subtype {
+                        ADDITIVE_EXPR_ADD,
+                        ADDITIVE_EXPR_SUBTRACT
+                } additive_expr_subtype;
+                enum multiplicative_expr_subtype {
+                        MULTIPLICATIVE_EXPR_MULTIPLY,
+                        MULTIPLICATIVE_EXPR_DIVIDE,
+                        MULTIPLICATIVE_EXPR_MODULO
+                } multiplicative_expr_subtype;
+                enum unary_expr_subtype {
+                        UNARY_EXPR_SIZEOF_UNARY,
+                        UNARY_EXPR_SIZEOF_BASIC,
+                        UNARY_EXPR_NOT_UNARY,
+                        UNARY_EXPR_POSITIVE,
+                        UNARY_EXPR_NEGATIVE,
+                        UNARY_EXPR_PRE_INCREMENT,
+                        UNARY_EXPR_PRE_DECREMENT
+                } unary_expr_subtype;
+                enum postfix_expr_subtype {
+                        POSTFIX_EXPR_VAR,
+                        POSTFIX_EXPR_CONSTANT,
+                        POSTFIX_EXPR_POST_INCREMENT,
+                        POSTFIX_EXPR_POST_DECREMENT,
+                        POSTFIX_EXPR_ENCLOSED,
+                        POSTFIX_EXPR_FUNCTION_CALL
+                } postfix_expr_subtype;
         } subtype;
         union {
                 struct {
@@ -274,13 +286,13 @@ struct return_stmt_t *create_return_stmt(struct expr_t *);
 struct expr_t *create_assign_expr(struct var_t *, struct expr_t *);
 struct expr_t *create_logical_or_expr(struct expr_t *, struct expr_t *);
 struct expr_t *create_logical_and_expr(struct expr_t *, struct expr_t *);
-struct expr_t *create_equality_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
-struct expr_t *create_relational_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
-struct expr_t *create_additive_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
-struct expr_t *create_multiplicative_expr(enum expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_equality_expr(enum equality_expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_relational_expr(enum relational_expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_additive_expr(enum additive_expr_subtype, struct expr_t *, struct expr_t *);
+struct expr_t *create_multiplicative_expr(enum multiplicative_expr_subtype, struct expr_t *, struct expr_t *);
 struct expr_t *create_unary_expr_sizeof_basic(enum basic_type);
-struct expr_t *create_unary_expr(enum expr_subtype, struct expr_t *);
-struct expr_t *create_postfix_expr(enum expr_subtype, void *);
+struct expr_t *create_unary_expr(enum unary_expr_subtype, struct expr_t *);
+struct expr_t *create_postfix_expr(enum postfix_expr_subtype, void *);
 struct var_t *create_var_identifier(char *);
 struct var_t *create_var_field(struct var_t *, char *);
 struct var_t *create_var_subscript(struct var_t *, struct expr_t *);

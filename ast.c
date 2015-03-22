@@ -284,44 +284,44 @@ struct expr_t *create_logical_and_expr
 }
 
 struct expr_t *create_equality_expr
-(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+(enum equality_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = EQUALITY_EXPR;
-        this->subtype = subtype;
+        this->subtype.equality_expr_subtype = subtype;
         this->val.relation.primary = primary;
         this->val.relation.secondary = secondary;
         return this;
 }
 
 struct expr_t *create_relational_expr
-(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+(enum relational_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = RELATIONAL_EXPR;
-        this->subtype = subtype;
+        this->subtype.relational_expr_subtype = subtype;
         this->val.relation.primary = primary;
         this->val.relation.secondary = secondary;
         return this;
 }
 
 struct expr_t *create_additive_expr
-(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+(enum additive_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = ADDITIVE_EXPR;
-        this->subtype = subtype;
+        this->subtype.additive_expr_subtype = subtype;
         this->val.binary_op.primary = primary;
         this->val.binary_op.secondary = secondary;
         return this;
 }
 
 struct expr_t *create_multiplicative_expr
-(enum expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+(enum multiplicative_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = MULTIPLICATIVE_EXPR;
-        this->subtype = subtype;
+        this->subtype.multiplicative_expr_subtype = subtype;
         this->val.binary_op.primary = primary;
         this->val.binary_op.secondary = secondary;
         return this;
@@ -332,27 +332,27 @@ struct expr_t *create_unary_expr_sizeof_basic
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = UNARY_EXPR;
-        this->subtype = UNARY_EXPR_SIZEOF_BASIC;
+        this->subtype.unary_expr_subtype = UNARY_EXPR_SIZEOF_BASIC;
         this->val.unary_op.type = type;
         return this;
 }
 
 struct expr_t *create_unary_expr
-(enum expr_subtype subtype, struct expr_t *expr)
+(enum unary_expr_subtype subtype, struct expr_t *expr)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = UNARY_EXPR;
-        this->subtype = subtype;
+        this->subtype.unary_expr_subtype = subtype;
         this->val.unary_op.expr = expr;
         return this;
 }
 
 struct expr_t *create_postfix_expr
-(enum expr_subtype subtype, void *ptr)
+(enum postfix_expr_subtype subtype, void *ptr)
 {
         struct expr_t *this = malloc(sizeof(struct expr_t));
         this->type = POSTFIX_EXPR;
-        this->subtype = subtype;
+        this->subtype.postfix_expr_subtype = subtype;
         this->val.postfix_op.var = ptr;
         return this;
 }
