@@ -5,3 +5,4 @@ cflatc
 scanner.c
 parser.c
 parser.h
+parser.output
