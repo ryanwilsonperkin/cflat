@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
+#include "astprint.h"
 
 extern int line_num;
 extern int col_num;
@@ -285,6 +286,8 @@ int main()
         if (n_errors) {
             fprintf(stderr, "%d syntax errors\n", n_errors);
             return 1;
+        } else {
+            print_ast(stdout, program);
         }
         return 0;
 }

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "ast.h"
 
+void print_ast(FILE *, struct program_t *);
 void print_basic_type(FILE *, enum basic_type, int);
 void print_program(FILE *, struct program_t *, int);
 void print_type_decl_list(FILE *, struct type_decl_list_t *, int);
