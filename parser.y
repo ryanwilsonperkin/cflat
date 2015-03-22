@@ -8,6 +8,7 @@ extern int col_num;
 extern char *line_buf;
 extern char *yytext;
 extern FILE *yyin;
+extern void add_type(char *);
 extern int yylex(void);
 void yyerror(const char *);
 
@@ -31,6 +32,7 @@ int n_errors = 0;
 %token <fval> CONST_FLOAT
 %token <ival> CONST_INT
 %token <sval> ID
+%token <sval> TYPE_NAME
 
 %type <pval> type_decl_list
 %type <pval> type_decl
@@ -81,7 +83,7 @@ type_decl_list
     ;
 
 type_decl
-    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl($2); }
+    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl($2); add_type(((struct var_decl_t *)$2)->id); }
     ;
 
 var_decl_stmt_list
@@ -96,6 +98,7 @@ var_decl_stmt
 var_decl
     : basic_type ID array_specifier { $$ = create_var_decl_basic($1, $2, $3); }
     | struct_type ID array_specifier { $$ = create_var_decl_struct($1, $2, $3); }
+    | TYPE_NAME ID array_specifier { $$ = create_var_decl_typedef($1, $2, $3); }
     ;
 
 struct_type

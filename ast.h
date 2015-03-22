@@ -40,11 +40,13 @@ struct var_decl_stmt_list_t {
 struct var_decl_t {
         enum {
                 BASIC_VAR,
-                STRUCT_VAR
+                STRUCT_VAR,
+                TYPEDEF_VAR
         } type;
         union {
                 enum basic_type basic_var;
                 struct struct_type_t *struct_var; 
+                char *typedef_id;
         } val;
         char *id;
         struct array_specifier_t *array_specifier;
@@ -252,6 +254,7 @@ struct type_decl_t *create_type_decl(struct var_decl_t *var_decl);
 struct var_decl_stmt_list_t *create_var_decl_stmt_list(struct var_decl_t *, struct var_decl_stmt_list_t *);
 struct var_decl_t *create_var_decl_basic(enum basic_type, char *, struct array_specifier_t *); 
 struct var_decl_t *create_var_decl_struct(struct struct_type_t *, char *, struct array_specifier_t *); 
+struct var_decl_t *create_var_decl_typedef(char *, char *, struct array_specifier_t *); 
 struct struct_type_t *create_struct_type(struct var_decl_stmt_list_t *);
 struct array_specifier_t *create_array_specifier(cflat_int, struct array_specifier_t *);
 struct function_def_list_t *create_function_def_list(struct function_def_t *, struct function_def_list_t *);

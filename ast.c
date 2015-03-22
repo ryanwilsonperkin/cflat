@@ -59,6 +59,17 @@ struct var_decl_t *create_var_decl_struct
         return this;
 } 
 
+struct var_decl_t *create_var_decl_typedef
+(char *typedef_id, char *id, struct array_specifier_t *array_specifier)
+{
+        struct var_decl_t *this = malloc(sizeof(struct var_decl_t));
+        this->type = TYPEDEF_VAR;
+        this->val.typedef_id = typedef_id;
+        this->id = id;
+        this->array_specifier = array_specifier;
+        return this;
+}
+
 struct struct_type_t *create_struct_type
 (struct var_decl_stmt_list_t *var_decl_stmt_list)
 { 
