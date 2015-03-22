@@ -1,4 +1,5 @@
 %{
+#include <stdlib.h>
 #include <string.h>
 #include "parser.h"
 
@@ -30,9 +31,9 @@ INT	-?0|({NATURAL}{DIGIT}*)
 
 %%
 
-{CHAR}		{ append_line_buf(); increment_col_num(); return CONST_CHAR; }
-{FLOAT}		{ append_line_buf(); increment_col_num(); return CONST_FLOAT; }
-{INT}		{ append_line_buf(); increment_col_num(); return CONST_INT; }
+{CHAR}		{ append_line_buf(); increment_col_num(); yylval.cval = yytext[0]; return CONST_CHAR; }
+{FLOAT}		{ append_line_buf(); increment_col_num(); yylval.fval = atof(yytext); return CONST_FLOAT; }
+{INT}		{ append_line_buf(); increment_col_num(); yylval.ival = atoi(yytext); return CONST_INT; }
 "char"		{ append_line_buf(); increment_col_num(); return CHAR; }
 "float"		{ append_line_buf(); increment_col_num(); return FLOAT; }
 "int"		{ append_line_buf(); increment_col_num(); return INT;}
