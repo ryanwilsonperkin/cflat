@@ -31,12 +31,13 @@ int n_errors = 0;
 %type <pval> type_decl_list
 %type <pval> type_decl
 %type <pval> var_decl_list
+%type <pval> var_decl_stmt
 %type <pval> var_decl
 %type <pval> struct_type
 %type <pval> array_specifier
 %type <pval> function_def_list
 %type <pval> function_def
-%type <pval> function_params
+%type <pval> function_param_list
 %type <pval> function_body
 %type <pval> function_call
 %type <pval> arg_list
@@ -81,7 +82,11 @@ type_decl
 
 var_decl_list
     : /* empty */ { $$ = NULL; }
-    | var_decl_list var_decl { $$ = create_var_decl_list($1, $2); }
+    | var_decl_list var_decl_stmt { $$ = create_var_decl_list($1, $2); }
+    ;
+
+var_decl_stmt
+    : var_decl SEMICOLON { $$ = $1 }
     ;
 
 var_decl
@@ -104,12 +109,15 @@ function_def_list
     ;
 
 function_def
-    : basic_type ID function_params function_body { $$ = create_basic_function_def($1, $2, $3, $4); }
-    | VOID ID function_params function_body { $$ = create_void_function_def($2, $3, $4); }
+    : basic_type ID LPAREN function_param_list RPAREN function_body { $$ = create_basic_function_def($1, $2, $4, $6); }
+    | VOID ID LPAREN function_param_list RPAREN function_body { $$ = create_void_function_def($2, $4, $6); }
+    | basic_type ID LPAREN RPAREN function_body { $$ = create_basic_function_def($1, $2, NULL, $5); }
+    | VOID ID LPAREN RPAREN function_body { $$ = create_void_function_def($2, NULL, $5); }
     ;
 
-function_params
-    : LPAREN var_decl_list RPAREN { $$ = create_function_params($2); }
+function_param_list
+    : var_decl { $$ = create_function_param_list($1, NULL); }
+    | function_param_list COMMA var_decl { $$ = create_function_param_list($3, $1); }
     ;
 
 function_body

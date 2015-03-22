@@ -86,33 +86,34 @@ struct function_def_list_t *create_function_def_list
 }
 
 struct function_def_t *create_basic_function_def
-(enum basic_type type, char *id, struct function_params_t *function_params, struct function_body_t *function_body)
+(enum basic_type type, char *id, struct function_param_list_t *function_param_list, struct function_body_t *function_body)
 {
         struct function_def_t *this = malloc(sizeof(struct function_def_t));
         this->type = BASIC_TYPE_FUNCTION;
         this->type_specifier = type;
         this->id = id;
-        this->function_params = function_params;
+        this->function_param_list = function_param_list;
         this->function_body = function_body;
         return this;
 }
 
 struct function_def_t *create_void_function_def
-(char *id, struct function_params_t *function_params, struct function_body_t *function_body)
+(char *id, struct function_param_list_t *function_param_list, struct function_body_t *function_body)
 {
         struct function_def_t *this = malloc(sizeof(struct function_def_t));
         this->type = VOID_FUNCTION;
         this->id = id;
-        this->function_params = function_params;
+        this->function_param_list = function_param_list;
         this->function_body = function_body;
         return this;
 }
 
-struct function_params_t *create_function_params
-(struct var_decl_list_t *var_decl_list)
+struct function_param_list_t *create_function_param_list
+(struct var_decl_t *var_decl, struct function_param_list_t *function_param_list)
 {
-        struct function_params_t *this = malloc(sizeof(struct function_params_t));
-        this->var_decl_list = var_decl_list;
+        struct function_param_list_t *this = malloc(sizeof(struct function_param_list_t));
+        this->var_decl = var_decl;
+        this->function_param_list = function_param_list;
         return this;
 }
 

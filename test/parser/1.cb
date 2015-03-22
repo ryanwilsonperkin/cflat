@@ -39,11 +39,11 @@ void void_function()
     return;
 }
 
-char arg_function(char c;) {
+char arg_function(char c) {
     return 'c';
 }
 
-int args_function(char c; int i; float f;)
+int args_function(char c, int i, float f)
 {
     return 0;
 }
