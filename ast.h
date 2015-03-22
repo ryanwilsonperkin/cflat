@@ -88,12 +88,12 @@ struct function_body_t {
 
 struct function_call_t {
         char *id;
-        struct arg_list_t *arg_list;
+        struct function_arg_list_t *function_arg_list;
 };
 
-struct arg_list_t {
+struct function_arg_list_t {
         struct expr_t *expr;
-        struct arg_list_t *arg_list;
+        struct function_arg_list_t *function_arg_list;
 };
 
 struct stmt_list_t {
@@ -259,8 +259,8 @@ struct function_def_t *create_basic_function_def(enum basic_type, char *, struct
 struct function_def_t *create_void_function_def(char *, struct function_param_list_t *, struct function_body_t *);
 struct function_param_list_t *create_function_param_list(struct var_decl_t *, struct function_param_list_t *);
 struct function_body_t *create_function_body(struct var_decl_stmt_list_t *, struct stmt_list_t *, struct return_stmt_t *);
-struct function_call_t *create_function_call(char *id, struct arg_list_t *);
-struct arg_list_t *create_arg_list(struct expr_t *, struct arg_list_t *);
+struct function_call_t *create_function_call(char *id, struct function_arg_list_t *);
+struct function_arg_list_t *create_function_arg_list(struct expr_t *, struct function_arg_list_t *);
 struct stmt_list_t *create_stmt_list(struct stmt_t *, struct stmt_list_t *);
 struct stmt_t *create_stmt(enum stmt_type, void *);
 struct expr_stmt_t *create_expr_stmt(struct expr_t *);

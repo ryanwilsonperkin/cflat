@@ -44,7 +44,7 @@ int n_errors = 0;
 %type <pval> function_param_list
 %type <pval> function_body
 %type <pval> function_call
-%type <pval> arg_list
+%type <pval> function_arg_list
 %type <pval> stmt_list
 %type <pval> stmt
 %type <pval> expr_stmt
@@ -129,13 +129,13 @@ function_body
     ;
 
 function_call
-    : ID LPAREN arg_list RPAREN { $$ = create_function_call($1, $3); }
+    : ID LPAREN function_arg_list RPAREN { $$ = create_function_call($1, $3); }
     | ID LPAREN RPAREN { $$ = create_function_call($1, NULL); }
     ;
 
-arg_list
+function_arg_list
     : expr { $$ = $1; }
-    | arg_list COMMA expr { $$ = create_arg_list($3, $1); }
+    | function_arg_list COMMA expr { $$ = create_function_arg_list($3, $1); }
     ;
 
 stmt_list

@@ -128,20 +128,20 @@ struct function_body_t *create_function_body
 }
 
 struct function_call_t *create_function_call
-(char *id, struct arg_list_t *arg_list)
+(char *id, struct function_arg_list_t *function_arg_list)
 {
         struct function_call_t *this = malloc(sizeof(struct function_call_t));
         this->id = id;
-        this->arg_list = arg_list;
+        this->function_arg_list = function_arg_list;
         return this;
 }
 
-struct arg_list_t *create_arg_list
-(struct expr_t *expr, struct arg_list_t *arg_list)
+struct function_arg_list_t *create_function_arg_list
+(struct expr_t *expr, struct function_arg_list_t *function_arg_list)
 {
-        struct arg_list_t *this = malloc(sizeof(struct arg_list_t));
+        struct function_arg_list_t *this = malloc(sizeof(struct function_arg_list_t));
         this->expr = expr;
-        this->arg_list = arg_list;
+        this->function_arg_list = function_arg_list;
         return this;
 }
 
