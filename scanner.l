@@ -30,7 +30,15 @@ CHAR    '(\\n|\\0|.)'
 FLOAT   -?0|({NATURAL}{DIGIT}*)\.{DIGIT}+([eE][-+]?{NATURAL}{DIGIT}+)?
 INT     -?0|({NATURAL}{DIGIT}*)
 
+%x COMMENT
+
 %%
+
+"/*"    { BEGIN(COMMENT); }
+<COMMENT>"*/"    { BEGIN(INITIAL); }
+<COMMENT>[^*\n]+ { append_line_buf(); increment_col_num(); }
+<COMMENT>"*"     { append_line_buf(); increment_col_num(); }
+<COMMENT>\n      { reset_line_buf(); reset_col_num(); increment_line_num(); }
 
 {CHAR}     { append_line_buf(); increment_col_num(); yylval.cval = get_c_val(yytext); return CONST_CHAR; }
 {FLOAT}    { append_line_buf(); increment_col_num(); yylval.fval = atof(yytext); return CONST_FLOAT; }
