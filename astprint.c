@@ -114,7 +114,6 @@ void print_array_specifier
         if (!this) return;
         print_at_depth(out, depth, "array_specifier");
         print_constant(out, this->constant, depth+1);
-        print_array_specifier(out, this->array_specifier, depth+1);
 }
 
 void print_function_def_list

@@ -103,13 +103,12 @@ struct struct_type *create_struct_type
 }
 
 struct array_specifier *create_array_specifier
-(int line, int column, struct constant *constant, struct array_specifier *array_specifier)
+(int line, int column, struct constant *constant)
 {
         struct array_specifier *this = malloc(sizeof(struct array_specifier));
         this->pos.line = line;
         this->pos.column = column;
         this->constant = constant;
-        this->array_specifier = array_specifier;
         return this;
 }
 

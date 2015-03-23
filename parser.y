@@ -130,7 +130,7 @@ struct_type
 
 array_specifier
     : /* empty */ { $$ = NULL; }
-    | LBRACKET constant RBRACKET array_specifier { $$ = create_array_specifier(line_num, col_num, $2, $4); }
+    | LBRACKET constant RBRACKET { $$ = create_array_specifier(line_num, col_num, $2); }
     ;
 
 function_def_list

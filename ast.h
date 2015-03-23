@@ -71,7 +71,6 @@ struct struct_type {
 struct array_specifier {
         struct pos pos;
         struct constant *constant;
-        struct array_specifier *array_specifier;
 };
 
 struct function_def_list {
@@ -297,7 +296,7 @@ struct var_decl *create_var_decl_basic(int, int, enum basic_type, char *, struct
 struct var_decl *create_var_decl_struct(int, int, struct struct_type *, char *, struct array_specifier *); 
 struct var_decl *create_var_decl_typedef(int, int, char *, char *, struct array_specifier *); 
 struct struct_type *create_struct_type(int, int, char *, struct var_decl_stmt_list *);
-struct array_specifier *create_array_specifier(int, int, struct constant *constant, struct array_specifier *);
+struct array_specifier *create_array_specifier(int, int, struct constant *constant);
 struct function_def_list *create_function_def_list(int, int, struct function_def *, struct function_def_list *);
 struct function_def *create_basic_function_def(int, int, enum basic_type, char *, struct function_param_list *, struct function_body *);
 struct function_def *create_void_function_def(int, int, char *, struct function_param_list *, struct function_body *);
