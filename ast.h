@@ -330,6 +330,5 @@ struct var_t *create_var_subscript(int, int, struct var_t *, struct expr_t *);
 struct constant_t *create_constant_char(int, int, cflat_char);
 struct constant_t *create_constant_float(int, int, cflat_float);
 struct constant_t *create_constant_int(int, int, cflat_int);
-enum basic_type recognize_basic_type(char *);
 
 #endif  /* CFLAT_AST_H */
