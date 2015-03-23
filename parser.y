@@ -8,7 +8,7 @@ extern int line_num;
 extern int col_num;
 extern char *line_buf;
 extern char *yytext;
-extern void add_type(char *);
+extern void add_custom_type(char *);
 extern int yylex(void);
 void yyerror(const char *);
 
@@ -105,7 +105,7 @@ type_decl_list
     ;
 
 type_decl
-    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl(line_num, col_num, $2); add_type(((struct var_decl_t *)$2)->id); }
+    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl(line_num, col_num, $2); add_custom_type(((struct var_decl_t *)$2)->id); }
     ;
 
 var_decl_stmt_list

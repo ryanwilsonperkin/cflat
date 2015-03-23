@@ -9,6 +9,8 @@
 extern struct program_t *program;
 extern FILE *yyin;
 extern int n_errors;
+extern int n_custom_types;
+extern char **custom_types;
 
 extern int yyparse();
 

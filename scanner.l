@@ -8,11 +8,11 @@ int next_col_num = 1;
 int line_num = 1;
 int next_line_num = 1;
 char *line_buf = NULL;
-char **type_names = NULL;
-int n_type_names = 0;
+char **custom_types = NULL;
+int n_custom_types = 0;
 
-int check_type();
-void add_type(char *);
+int check_custom_type();
+void add_custom_type(char *);
 void reset_line_buf();
 void append_line_buf();
 void increment_col_num();
@@ -72,28 +72,28 @@ INT	-?0|({NATURAL}{DIGIT}*)
 ";"		{ append_line_buf(); increment_col_num(); return SEMICOLON; }
 ","		{ append_line_buf(); increment_col_num(); return COMMA; }
 "."		{ append_line_buf(); increment_col_num(); return PERIOD; }
-{ID}		{ append_line_buf(); increment_col_num(); yylval.sval = strdup(yytext); return check_type(); }
+{ID}		{ append_line_buf(); increment_col_num(); yylval.sval = strdup(yytext); return check_custom_type(); }
 [ \t]+          { append_line_buf(); increment_col_num(); /* Ignore whitespace */ }
 \n              { reset_line_buf(); reset_col_num(); increment_line_num(); }
 .		{ append_line_buf(); increment_col_num(); return UNRECOGNIZED; }
 
 %%
 
-void add_type(char *type_name)
+void add_custom_type(char *type_name)
 {
-        if (type_names) {
-            type_names = realloc(type_names, sizeof(char *) * (n_type_names+1));
+        if (custom_types) {
+            custom_types = realloc(custom_types, sizeof(char *) * (n_custom_types+1));
         } else {
-            type_names = malloc(sizeof(char *));
+            custom_types = malloc(sizeof(char *));
         }
-        type_names[n_type_names++] = strdup(type_name);
+        custom_types[n_custom_types++] = strdup(type_name);
 }
 
-int check_type()
+int check_custom_type()
 {
         int i;
-        for (i = 0; i < n_type_names; i++) {
-            if (strcmp(yytext, type_names[i]) == 0) {
+        for (i = 0; i < n_custom_types; i++) {
+            if (strcmp(yytext, custom_types[i]) == 0) {
                 return TYPE_NAME;
             }
         }
