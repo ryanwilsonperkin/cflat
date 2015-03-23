@@ -11,6 +11,7 @@ char *line_buf = NULL;
 char **custom_types = NULL;
 int n_custom_types = 0;
 
+char get_c_val();
 int check_custom_type();
 void add_custom_type(char *);
 void reset_line_buf();
@@ -31,7 +32,7 @@ INT     -?0|({NATURAL}{DIGIT}*)
 
 %%
 
-{CHAR}     { append_line_buf(); increment_col_num(); yylval.cval = yytext[0]; return CONST_CHAR; }
+{CHAR}     { append_line_buf(); increment_col_num(); yylval.cval = get_c_val(yytext); return CONST_CHAR; }
 {FLOAT}    { append_line_buf(); increment_col_num(); yylval.fval = atof(yytext); return CONST_FLOAT; }
 {INT}      { append_line_buf(); increment_col_num(); yylval.ival = atoi(yytext); return CONST_INT; }
 "char"     { append_line_buf(); increment_col_num(); return CHAR; }
@@ -78,6 +79,17 @@ INT     -?0|({NATURAL}{DIGIT}*)
 .          { append_line_buf(); increment_col_num(); return UNRECOGNIZED; }
 
 %%
+
+char get_c_val(char *s)
+{
+        if (s[1] == '\\') {
+                switch (s[2]) {
+                case 'n': return '\n';
+                case '0': return '\0';
+                }
+        }
+        return s[1];
+}
 
 void add_custom_type(char *type_name)
 {
