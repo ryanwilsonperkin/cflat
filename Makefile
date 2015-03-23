@@ -1,7 +1,7 @@
 CC=gcc
 LEX=flex
 YACC=bison
-LDFLAGS=-ll
+LDFLAGS=-ll -largp
 CFLAGS=-g
 YFLAGS+=-d -v
 
