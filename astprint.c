@@ -48,8 +48,11 @@ void print_program
 {
         if (!this) return;
         print_at_depth(out, depth, "program");
+        print_at_depth(out, depth+1, "type_decl_list");
         print_type_decl_list(out, this->type_decl_list, depth+1);
+        print_at_depth(out, depth+1, "var_decl_stmt_list");
         print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth+1);
+        print_at_depth(out, depth+1, "function_def_list");
         print_function_def_list(out, this->function_def_list, depth+1);
 }
 
@@ -57,9 +60,8 @@ void print_type_decl_list
 (FILE *out, struct type_decl_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "type_decl_list");
         print_type_decl(out, this->type_decl, depth+1);
-        print_type_decl_list(out, this->type_decl_list, depth+1);
+        print_type_decl_list(out, this->type_decl_list, depth);
 }
 
 void print_type_decl
@@ -74,9 +76,8 @@ void print_var_decl_stmt_list
 (FILE *out, struct var_decl_stmt_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "var_decl_stmt_list");
         print_var_decl(out, this->var_decl, depth+1);
-        print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth+1);
+        print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth);
 }
 
 void print_var_decl
@@ -103,6 +104,7 @@ void print_struct_type
 {
         if (!this) return;
         print_at_depth(out, depth, "struct_type");
+        print_at_depth(out, depth+1, "var_decl_stmt_list");
         print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth+1);
 }
 
@@ -119,9 +121,8 @@ void print_function_def_list
 (FILE *out, struct function_def_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "function_def_list");
         print_function_def(out, this->function_def, depth+1);
-        print_function_def_list(out, this->function_def_list, depth+1);
+        print_function_def_list(out, this->function_def_list, depth);
 }
 
 void print_function_def
@@ -137,6 +138,7 @@ void print_function_def
                 print_at_depth(out, depth+1, "type: VOID");
                 break;
         }
+        print_at_depth(out, depth+1, "function_param_list");
         print_function_param_list(out, this->function_param_list, depth+1);
         print_function_body(out, this->function_body, depth+1);
 }
@@ -145,9 +147,8 @@ void print_function_param_list
 (FILE *out, struct function_param_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "function_param_list");
         print_var_decl(out, this->var_decl, depth+1);
-        print_function_param_list(out, this->function_param_list, depth+1);
+        print_function_param_list(out, this->function_param_list, depth);
 }
 
 void print_function_body
@@ -155,7 +156,9 @@ void print_function_body
 {
         if (!this) return;
         print_at_depth(out, depth, "function_body");
+        print_at_depth(out, depth+1, "var_decl_stmt_list");
         print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth+1);
+        print_at_depth(out, depth+1, "stmt_list");
         print_stmt_list(out, this->stmt_list, depth+1);
         print_return_stmt(out, this->return_stmt, depth+1);
 }
@@ -165,6 +168,7 @@ void print_function_call
 {
         if (!this) return;
         print_at_depth(out, depth, "function_call: '%s'", this->id);
+        print_at_depth(out, depth+1, "function_arg_list");
         print_function_arg_list(out, this->function_arg_list, depth+1);
 }
 
@@ -172,17 +176,16 @@ void print_function_arg_list
 (FILE *out, struct function_arg_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "function_arg_list");
         print_expr(out, this->expr, depth+1);
+        print_function_arg_list(out, this->function_arg_list, depth);
 }
 
 void print_stmt_list
 (FILE *out, struct stmt_list *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "stmt_list");
         print_stmt(out, this->stmt, depth+1);
-        print_stmt_list(out, this->stmt_list, depth+1);
+        print_stmt_list(out, this->stmt_list, depth);
 }
 
 void print_stmt
@@ -222,6 +225,7 @@ void print_compound_stmt
 {
         if (!this) return;
         print_at_depth(out, depth, "compound_stmt");
+        print_at_depth(out, depth+1, "stmt_list");
         print_stmt_list(out, this->stmt_list, depth+1);
 }
 
