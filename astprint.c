@@ -256,30 +256,37 @@ void print_iter_stmt
         case WHILE_EXPR:
                 print_at_depth(out, depth+1, "type: WHILE_EXPR");
                 print_expr(out, this->cond, depth+1);
+                break;
         case FOR_INIT_COND_AFTER:
                 print_at_depth(out, depth+1, "type: FOR_INIT_COND_AFTER");
                 print_expr(out, this->init, depth+1);
                 print_expr(out, this->cond, depth+1);
                 print_expr(out, this->after, depth+1);
+                break;
         case FOR_INIT_AFTER:
                 print_at_depth(out, depth+1, "type: FOR_INIT_AFTER");
                 print_expr(out, this->init, depth+1);
                 print_expr(out, this->after, depth+1);
+                break;
         case FOR_INIT_COND:
                 print_at_depth(out, depth+1, "type: FOR_INIT_COND");
                 print_expr(out, this->init, depth+1);
                 print_expr(out, this->cond, depth+1);
                 print_expr(out, this->after, depth+1);
+                break;
         case FOR_COND_AFTER:
                 print_at_depth(out, depth+1, "type: FOR_COND_AFTER");
                 print_expr(out, this->cond, depth+1);
                 print_expr(out, this->after, depth+1);
+                break;
         case FOR_AFTER:
                 print_at_depth(out, depth+1, "type: FOR_AFTER");
                 print_expr(out, this->after, depth+1);
+                break;
         case FOR_INIT:
                 print_at_depth(out, depth+1, "type: FOR_INIT");
                 print_expr(out, this->init, depth+1);
+                break;
         case FOR_EMPTY:
                 print_at_depth(out, depth+1, "type: FOR_EMPTY");
                 break;
