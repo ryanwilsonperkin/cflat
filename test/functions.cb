@@ -1,0 +1,87 @@
+/* Function test suite
+ * Tests:
+ *      void function no args
+ *      void function char arg
+ *      void function int arg
+ *      void function float arg
+ *      void function char, int, float args
+ *      void function struct arg
+ *      void function nested struct arg
+ *      void function named struct arg
+ *      void funciton typedef'd arg
+ *      char function no args
+ *      int function no args
+ *      float function no args
+ *      function calls
+ */
+
+typedef char char2;
+
+void f1()
+{
+        return;
+}
+
+void f2(char c)
+{
+        return;
+}
+
+void f3(int i)
+{
+        return;
+}
+
+void f4(float i)
+{
+        return;
+}
+
+void f5(char c, int i, float f)
+{
+        return;
+}
+
+void f6(struct { char c; } s)
+{
+        return;
+}
+
+void f7(struct { struct { char c; } c; } s)
+{
+        return;
+}
+
+void f8(struct sname { char c; } s)
+{
+        return;
+}
+
+void f9(char2 c2)
+{
+        return;
+}
+
+char f10()
+{
+        return 'c';
+}
+
+int f11()
+{
+        return 123;
+}
+
+float f12()
+{
+        return 12.3;
+}
+
+void f13()
+{
+        f2('c');
+        f3(123);
+        f4(12.3);
+        f5('c', 123, 12.3);
+        return;
+}
