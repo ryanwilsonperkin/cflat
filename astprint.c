@@ -32,13 +32,13 @@ void print_basic_type
 {
         switch (type) {
         case CHAR_TYPE:
-                print_at_depth(out, depth+1, "type: CHAR");
+                print_at_depth(out, depth, "type: CHAR");
                 break;
         case FLOAT_TYPE:
-                print_at_depth(out, depth+1, "type: FLOAT");
+                print_at_depth(out, depth, "type: FLOAT");
                 break;
         case INT_TYPE:
-                print_at_depth(out, depth+1, "type: INT");
+                print_at_depth(out, depth, "type: INT");
                 break;
         }
 }
