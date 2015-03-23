@@ -1,5 +1,0 @@
-char c;
-int i;
-float f;
-
-void placeholder() { return; }
