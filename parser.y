@@ -12,7 +12,7 @@ extern void add_custom_type(char *);
 extern int yylex(void);
 void yyerror(const char *);
 
-struct program_t *program;
+struct program *program;
 int n_errors = 0;
 %}
 
@@ -22,28 +22,28 @@ int n_errors = 0;
     int ival;
     char *sval;
 
-    struct type_decl_list_t *type_decl_list_p;
-    struct type_decl_t *type_decl_p;
-    struct var_decl_stmt_list_t *var_decl_stmt_list_p;
-    struct var_decl_t *var_decl_p;
-    struct struct_type_t *struct_type_p;
-    struct array_specifier_t *array_specifier_p;
-    struct function_def_list_t *function_def_list_p;
-    struct function_def_t *function_def_p;
-    struct function_param_list_t *function_param_list_p;
-    struct function_body_t *function_body_p;
-    struct function_call_t *function_call_p;
-    struct function_arg_list_t *function_arg_list_p;
-    struct stmt_list_t *stmt_list_p;
-    struct stmt_t *stmt_p;
-    struct expr_stmt_t *expr_stmt_p;
-    struct compound_stmt_t *compound_stmt_p;
-    struct select_stmt_t *select_stmt_p;
-    struct iter_stmt_t *iter_stmt_p;
-    struct return_stmt_t *return_stmt_p;
-    struct expr_t *expr_p;
-    struct var_t *var_p;
-    struct constant_t *constant_p;
+    struct type_decl_list *type_decl_list_p;
+    struct type_decl *type_decl_p;
+    struct var_decl_stmt_list *var_decl_stmt_list_p;
+    struct var_decl *var_decl_p;
+    struct struct_type *struct_type_p;
+    struct array_specifier *array_specifier_p;
+    struct function_def_list *function_def_list_p;
+    struct function_def *function_def_p;
+    struct function_param_list *function_param_list_p;
+    struct function_body *function_body_p;
+    struct function_call *function_call_p;
+    struct function_arg_list *function_arg_list_p;
+    struct stmt_list *stmt_list_p;
+    struct stmt *stmt_p;
+    struct expr_stmt *expr_stmt_p;
+    struct compound_stmt *compound_stmt_p;
+    struct select_stmt *select_stmt_p;
+    struct iter_stmt *iter_stmt_p;
+    struct return_stmt *return_stmt_p;
+    struct expr *expr_p;
+    struct var *var_p;
+    struct constant *constant_p;
 }
 %token CHAR ELSE FLOAT FOR IF INT RETURN STRUCT TYPEDEF VOID WHILE 
 %token LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN SEMICOLON COMMA
@@ -105,7 +105,7 @@ type_decl_list
     ;
 
 type_decl
-    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl(line_num, col_num, $2); add_custom_type(((struct var_decl_t *)$2)->id); }
+    : TYPEDEF var_decl SEMICOLON { $$ = create_type_decl(line_num, col_num, $2); add_custom_type(((struct var_decl *)$2)->id); }
     ;
 
 var_decl_stmt_list

@@ -6,7 +6,7 @@
 #define INDENT_SIZE 2
 
 void print_ast
-(FILE *out, struct program_t *program)
+(FILE *out, struct program *program)
 {
         print_program(out, program, 0);
 }
@@ -44,7 +44,7 @@ void print_basic_type
 }
 
 void print_program
-(FILE *out, struct program_t *this, int depth)
+(FILE *out, struct program *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "program");
@@ -54,7 +54,7 @@ void print_program
 }
 
 void print_type_decl_list
-(FILE *out, struct type_decl_list_t *this, int depth)
+(FILE *out, struct type_decl_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "type_decl_list");
@@ -63,7 +63,7 @@ void print_type_decl_list
 }
 
 void print_type_decl
-(FILE *out, struct type_decl_t *this, int depth)
+(FILE *out, struct type_decl *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "type_decl");
@@ -71,7 +71,7 @@ void print_type_decl
 }
 
 void print_var_decl_stmt_list
-(FILE *out, struct var_decl_stmt_list_t *this, int depth)
+(FILE *out, struct var_decl_stmt_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "var_decl_stmt_list");
@@ -80,7 +80,7 @@ void print_var_decl_stmt_list
 }
 
 void print_var_decl
-(FILE *out, struct var_decl_t *this, int depth)
+(FILE *out, struct var_decl *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "var_decl: '%s'", this->id);
@@ -99,7 +99,7 @@ void print_var_decl
 }
 
 void print_struct_type
-(FILE *out, struct struct_type_t *this, int depth)
+(FILE *out, struct struct_type *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "struct_type");
@@ -107,7 +107,7 @@ void print_struct_type
 }
 
 void print_array_specifier
-(FILE *out, struct array_specifier_t *this, int depth)
+(FILE *out, struct array_specifier *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "array_specifier");
@@ -116,7 +116,7 @@ void print_array_specifier
 }
 
 void print_function_def_list
-(FILE *out, struct function_def_list_t *this, int depth)
+(FILE *out, struct function_def_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_def_list");
@@ -125,7 +125,7 @@ void print_function_def_list
 }
 
 void print_function_def
-(FILE *out, struct function_def_t *this, int depth)
+(FILE *out, struct function_def *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_def: '%s'", this->id);
@@ -142,7 +142,7 @@ void print_function_def
 }
 
 void print_function_param_list
-(FILE *out, struct function_param_list_t *this, int depth)
+(FILE *out, struct function_param_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_param_list");
@@ -151,7 +151,7 @@ void print_function_param_list
 }
 
 void print_function_body
-(FILE *out, struct function_body_t *this, int depth)
+(FILE *out, struct function_body *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_body");
@@ -161,7 +161,7 @@ void print_function_body
 }
 
 void print_function_call
-(FILE *out, struct function_call_t *this, int depth)
+(FILE *out, struct function_call *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_call: '%s'", this->id);
@@ -169,7 +169,7 @@ void print_function_call
 }
 
 void print_function_arg_list
-(FILE *out, struct function_arg_list_t *this, int depth)
+(FILE *out, struct function_arg_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "function_arg_list");
@@ -177,7 +177,7 @@ void print_function_arg_list
 }
 
 void print_stmt_list
-(FILE *out, struct stmt_list_t *this, int depth)
+(FILE *out, struct stmt_list *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "stmt_list");
@@ -186,7 +186,7 @@ void print_stmt_list
 }
 
 void print_stmt
-(FILE *out, struct stmt_t *this, int depth)
+(FILE *out, struct stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "stmt");
@@ -210,7 +210,7 @@ void print_stmt
 }
 
 void print_expr_stmt
-(FILE *out, struct expr_stmt_t *this, int depth)
+(FILE *out, struct expr_stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "expr_stmt");
@@ -218,7 +218,7 @@ void print_expr_stmt
 }
 
 void print_compound_stmt
-(FILE *out, struct compound_stmt_t *this, int depth)
+(FILE *out, struct compound_stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "compound_stmt");
@@ -226,7 +226,7 @@ void print_compound_stmt
 }
 
 void print_select_stmt
-(FILE *out, struct select_stmt_t *this, int depth)
+(FILE *out, struct select_stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "select_stmt");
@@ -245,7 +245,7 @@ void print_select_stmt
 }
 
 void print_iter_stmt
-(FILE *out, struct iter_stmt_t *this, int depth)
+(FILE *out, struct iter_stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "iter_stmt");
@@ -285,7 +285,7 @@ void print_iter_stmt
 }
 
 void print_return_stmt
-(FILE *out, struct return_stmt_t *this, int depth)
+(FILE *out, struct return_stmt *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "return_stmt");
@@ -293,7 +293,7 @@ void print_return_stmt
 }
 
 void print_expr
-(FILE *out, struct expr_t *this, int depth)
+(FILE *out, struct expr *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "expr");
@@ -440,7 +440,7 @@ void print_expr
 }
 
 void print_var
-(FILE *out, struct var_t *this, int depth)
+(FILE *out, struct var *this, int depth)
 {
         if (!this) return;
         print_at_depth(out, depth, "var");
@@ -461,7 +461,7 @@ void print_var
 }
 
 void print_constant
-(FILE *out, struct constant_t *this, int depth)
+(FILE *out, struct constant *this, int depth)
 {
         if (!this) return;
         switch (this->type) {

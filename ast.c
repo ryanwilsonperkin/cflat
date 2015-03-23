@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include "ast.h"
 
-struct program_t *create_program
-(int line, int column, struct type_decl_list_t *type_decl_list, struct var_decl_stmt_list_t *var_decl_stmt_list, struct function_def_list_t *function_def_list)
+struct program *create_program
+(int line, int column, struct type_decl_list *type_decl_list, struct var_decl_stmt_list *var_decl_stmt_list, struct function_def_list *function_def_list)
 { 
-        struct program_t *this = malloc(sizeof(struct program_t));
+        struct program *this = malloc(sizeof(struct program));
         this->pos.line = line;
         this->pos.column = column;
         this->type_decl_list = type_decl_list;
@@ -13,10 +13,10 @@ struct program_t *create_program
         return this;
 }
 
-struct type_decl_list_t *create_type_decl_list
-(int line, int column, struct type_decl_t *type_decl, struct type_decl_list_t *type_decl_list)
+struct type_decl_list *create_type_decl_list
+(int line, int column, struct type_decl *type_decl, struct type_decl_list *type_decl_list)
 {
-        struct type_decl_list_t *this = malloc(sizeof(struct type_decl_list_t));
+        struct type_decl_list *this = malloc(sizeof(struct type_decl_list));
         this->pos.line = line;
         this->pos.column = column;
         this->type_decl = type_decl;
@@ -24,20 +24,20 @@ struct type_decl_list_t *create_type_decl_list
         return this;
 }
 
-struct type_decl_t *create_type_decl
-(int line, int column, struct var_decl_t *var_decl)
+struct type_decl *create_type_decl
+(int line, int column, struct var_decl *var_decl)
 {
-        struct type_decl_t *this = malloc(sizeof(struct type_decl_t));
+        struct type_decl *this = malloc(sizeof(struct type_decl));
         this->pos.line = line;
         this->pos.column = column;
         this->var_decl = var_decl;
         return this;
 }
 
-struct var_decl_stmt_list_t *create_var_decl_stmt_list
-(int line, int column, struct var_decl_t *var_decl, struct var_decl_stmt_list_t *var_decl_stmt_list)
+struct var_decl_stmt_list *create_var_decl_stmt_list
+(int line, int column, struct var_decl *var_decl, struct var_decl_stmt_list *var_decl_stmt_list)
 { 
-        struct var_decl_stmt_list_t *this = malloc(sizeof(struct var_decl_stmt_list_t));
+        struct var_decl_stmt_list *this = malloc(sizeof(struct var_decl_stmt_list));
         this->pos.line = line;
         this->pos.column = column;
         this->var_decl = var_decl;
@@ -45,10 +45,10 @@ struct var_decl_stmt_list_t *create_var_decl_stmt_list
         return this;
 }
 
-struct var_decl_t *create_var_decl_basic
-(int line, int column, enum basic_type type, char *id, struct array_specifier_t *array_specifier)
+struct var_decl *create_var_decl_basic
+(int line, int column, enum basic_type type, char *id, struct array_specifier *array_specifier)
 { 
-        struct var_decl_t *this = malloc(sizeof(struct var_decl_t));
+        struct var_decl *this = malloc(sizeof(struct var_decl));
         this->pos.line = line;
         this->pos.column = column;
         this->type = BASIC_VAR;
@@ -58,10 +58,10 @@ struct var_decl_t *create_var_decl_basic
         return this;
 } 
 
-struct var_decl_t *create_var_decl_struct
-(int line, int column, struct struct_type_t *struct_type, char *id, struct array_specifier_t *array_specifier)
+struct var_decl *create_var_decl_struct
+(int line, int column, struct struct_type *struct_type, char *id, struct array_specifier *array_specifier)
 { 
-        struct var_decl_t *this = malloc(sizeof(struct var_decl_t));
+        struct var_decl *this = malloc(sizeof(struct var_decl));
         this->pos.line = line;
         this->pos.column = column;
         this->type = STRUCT_VAR;
@@ -71,10 +71,10 @@ struct var_decl_t *create_var_decl_struct
         return this;
 } 
 
-struct var_decl_t *create_var_decl_typedef
-(int line, int column, char *typedef_id, char *id, struct array_specifier_t *array_specifier)
+struct var_decl *create_var_decl_typedef
+(int line, int column, char *typedef_id, char *id, struct array_specifier *array_specifier)
 {
-        struct var_decl_t *this = malloc(sizeof(struct var_decl_t));
+        struct var_decl *this = malloc(sizeof(struct var_decl));
         this->pos.line = line;
         this->pos.column = column;
         this->type = TYPEDEF_VAR;
@@ -84,20 +84,20 @@ struct var_decl_t *create_var_decl_typedef
         return this;
 }
 
-struct struct_type_t *create_struct_type
-(int line, int column, struct var_decl_stmt_list_t *var_decl_stmt_list)
+struct struct_type *create_struct_type
+(int line, int column, struct var_decl_stmt_list *var_decl_stmt_list)
 { 
-        struct struct_type_t *this = malloc(sizeof(struct struct_type_t));
+        struct struct_type *this = malloc(sizeof(struct struct_type));
         this->pos.line = line;
         this->pos.column = column;
         this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
 }
 
-struct array_specifier_t *create_array_specifier
-(int line, int column, struct constant_t *constant, struct array_specifier_t *array_specifier)
+struct array_specifier *create_array_specifier
+(int line, int column, struct constant *constant, struct array_specifier *array_specifier)
 {
-        struct array_specifier_t *this = malloc(sizeof(struct array_specifier_t));
+        struct array_specifier *this = malloc(sizeof(struct array_specifier));
         this->pos.line = line;
         this->pos.column = column;
         this->constant = constant;
@@ -105,10 +105,10 @@ struct array_specifier_t *create_array_specifier
         return this;
 }
 
-struct function_def_list_t *create_function_def_list
-(int line, int column, struct function_def_t *function_def, struct function_def_list_t *function_def_list)
+struct function_def_list *create_function_def_list
+(int line, int column, struct function_def *function_def, struct function_def_list *function_def_list)
 {
-        struct function_def_list_t *this = malloc(sizeof(struct function_def_list_t));
+        struct function_def_list *this = malloc(sizeof(struct function_def_list));
         this->pos.line = line;
         this->pos.column = column;
         this->function_def = function_def;
@@ -116,10 +116,10 @@ struct function_def_list_t *create_function_def_list
         return this;
 }
 
-struct function_def_t *create_basic_function_def
-(int line, int column, enum basic_type type, char *id, struct function_param_list_t *function_param_list, struct function_body_t *function_body)
+struct function_def *create_basic_function_def
+(int line, int column, enum basic_type type, char *id, struct function_param_list *function_param_list, struct function_body *function_body)
 {
-        struct function_def_t *this = malloc(sizeof(struct function_def_t));
+        struct function_def *this = malloc(sizeof(struct function_def));
         this->pos.line = line;
         this->pos.column = column;
         this->type = BASIC_TYPE_FUNCTION;
@@ -130,10 +130,10 @@ struct function_def_t *create_basic_function_def
         return this;
 }
 
-struct function_def_t *create_void_function_def
-(int line, int column, char *id, struct function_param_list_t *function_param_list, struct function_body_t *function_body)
+struct function_def *create_void_function_def
+(int line, int column, char *id, struct function_param_list *function_param_list, struct function_body *function_body)
 {
-        struct function_def_t *this = malloc(sizeof(struct function_def_t));
+        struct function_def *this = malloc(sizeof(struct function_def));
         this->pos.line = line;
         this->pos.column = column;
         this->type = VOID_FUNCTION;
@@ -143,10 +143,10 @@ struct function_def_t *create_void_function_def
         return this;
 }
 
-struct function_param_list_t *create_function_param_list
-(int line, int column, struct var_decl_t *var_decl, struct function_param_list_t *function_param_list)
+struct function_param_list *create_function_param_list
+(int line, int column, struct var_decl *var_decl, struct function_param_list *function_param_list)
 {
-        struct function_param_list_t *this = malloc(sizeof(struct function_param_list_t));
+        struct function_param_list *this = malloc(sizeof(struct function_param_list));
         this->pos.line = line;
         this->pos.column = column;
         this->var_decl = var_decl;
@@ -154,10 +154,10 @@ struct function_param_list_t *create_function_param_list
         return this;
 }
 
-struct function_body_t *create_function_body
-(int line, int column, struct var_decl_stmt_list_t *var_decl_stmt_list, struct stmt_list_t *stmt_list, struct return_stmt_t *return_stmt)
+struct function_body *create_function_body
+(int line, int column, struct var_decl_stmt_list *var_decl_stmt_list, struct stmt_list *stmt_list, struct return_stmt *return_stmt)
 {
-        struct function_body_t *this = malloc(sizeof(struct function_body_t));
+        struct function_body *this = malloc(sizeof(struct function_body));
         this->pos.line = line;
         this->pos.column = column;
         this->var_decl_stmt_list = var_decl_stmt_list;
@@ -166,10 +166,10 @@ struct function_body_t *create_function_body
         return this;
 }
 
-struct function_call_t *create_function_call
-(int line, int column, char *id, struct function_arg_list_t *function_arg_list)
+struct function_call *create_function_call
+(int line, int column, char *id, struct function_arg_list *function_arg_list)
 {
-        struct function_call_t *this = malloc(sizeof(struct function_call_t));
+        struct function_call *this = malloc(sizeof(struct function_call));
         this->pos.line = line;
         this->pos.column = column;
         this->id = id;
@@ -177,10 +177,10 @@ struct function_call_t *create_function_call
         return this;
 }
 
-struct function_arg_list_t *create_function_arg_list
-(int line, int column, struct expr_t *expr, struct function_arg_list_t *function_arg_list)
+struct function_arg_list *create_function_arg_list
+(int line, int column, struct expr *expr, struct function_arg_list *function_arg_list)
 {
-        struct function_arg_list_t *this = malloc(sizeof(struct function_arg_list_t));
+        struct function_arg_list *this = malloc(sizeof(struct function_arg_list));
         this->pos.line = line;
         this->pos.column = column;
         this->expr = expr;
@@ -188,10 +188,10 @@ struct function_arg_list_t *create_function_arg_list
         return this;
 }
 
-struct stmt_list_t *create_stmt_list
-(int line, int column, struct stmt_t *stmt, struct stmt_list_t *stmt_list)
+struct stmt_list *create_stmt_list
+(int line, int column, struct stmt *stmt, struct stmt_list *stmt_list)
 {
-        struct stmt_list_t *this = malloc(sizeof(struct stmt_list_t));
+        struct stmt_list *this = malloc(sizeof(struct stmt_list));
         this->pos.line = line;
         this->pos.column = column;
         this->stmt = stmt;
@@ -199,10 +199,10 @@ struct stmt_list_t *create_stmt_list
         return this;
 }
 
-struct stmt_t *create_stmt
+struct stmt *create_stmt
 (int line, int column, enum stmt_type type, void *stmt)
 {
-        struct stmt_t *this = malloc(sizeof(struct stmt_t));
+        struct stmt *this = malloc(sizeof(struct stmt));
         this->pos.line = line;
         this->pos.column = column;
         this->type = type;
@@ -226,30 +226,30 @@ struct stmt_t *create_stmt
         return this;
 }
 
-struct expr_stmt_t *create_expr_stmt
-(int line, int column, struct expr_t *expr)
+struct expr_stmt *create_expr_stmt
+(int line, int column, struct expr *expr)
 {
-        struct expr_stmt_t *this = malloc(sizeof(struct expr_stmt_t));
+        struct expr_stmt *this = malloc(sizeof(struct expr_stmt));
         this->pos.line = line;
         this->pos.column = column;
         this->expr = expr;
         return this;
 }
 
-struct compound_stmt_t *create_compound_stmt
-(int line, int column, struct stmt_list_t *stmt_list)
+struct compound_stmt *create_compound_stmt
+(int line, int column, struct stmt_list *stmt_list)
 {
-        struct compound_stmt_t *this = malloc(sizeof(struct compound_stmt_t));
+        struct compound_stmt *this = malloc(sizeof(struct compound_stmt));
         this->pos.line = line;
         this->pos.column = column;
         this->stmt_list = stmt_list;
         return this;
 }
 
-struct select_stmt_t *create_select_stmt
-(int line, int column, struct expr_t *expr, struct stmt_t *stmt_if_true, struct stmt_t *stmt_if_false)
+struct select_stmt *create_select_stmt
+(int line, int column, struct expr *expr, struct stmt *stmt_if_true, struct stmt *stmt_if_false)
 {
-        struct select_stmt_t *this = malloc(sizeof(struct select_stmt_t));
+        struct select_stmt *this = malloc(sizeof(struct select_stmt));
         this->pos.line = line;
         this->pos.column = column;
         this->type = (stmt_if_false == NULL) ? IF_THEN : IF_THEN_ELSE;
@@ -259,10 +259,10 @@ struct select_stmt_t *create_select_stmt
         return this;
 }
 
-struct iter_stmt_t *create_iter_stmt
-(int line, int column, struct expr_t *init, struct expr_t *cond, struct expr_t *after, struct stmt_t *body)
+struct iter_stmt *create_iter_stmt
+(int line, int column, struct expr *init, struct expr *cond, struct expr *after, struct stmt *body)
 {
-        struct iter_stmt_t *this = malloc(sizeof(struct iter_stmt_t));
+        struct iter_stmt *this = malloc(sizeof(struct iter_stmt));
         this->pos.line = line;
         this->pos.column = column;
         if (init == NULL && cond == NULL && after == NULL) {
@@ -289,20 +289,20 @@ struct iter_stmt_t *create_iter_stmt
         return this;
 }
 
-struct return_stmt_t *create_return_stmt
-(int line, int column, struct expr_t *expr)
+struct return_stmt *create_return_stmt
+(int line, int column, struct expr *expr)
 {
-        struct return_stmt_t *this = malloc(sizeof(struct return_stmt_t));
+        struct return_stmt *this = malloc(sizeof(struct return_stmt));
         this->pos.line = line;
         this->pos.column = column;
         this->expr = expr;
         return this;
 }
 
-struct expr_t *create_assign_expr
-(int line, int column, struct var_t *var, struct expr_t *expr)
+struct expr *create_assign_expr
+(int line, int column, struct var *var, struct expr *expr)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = ASSIGN_EXPR;
@@ -311,10 +311,10 @@ struct expr_t *create_assign_expr
         return this;
 }
 
-struct expr_t *create_logical_or_expr
-(int line, int column, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_logical_or_expr
+(int line, int column, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = LOGICAL_OR_EXPR;
@@ -323,10 +323,10 @@ struct expr_t *create_logical_or_expr
         return this;
 }
 
-struct expr_t *create_logical_and_expr
-(int line, int column, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_logical_and_expr
+(int line, int column, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = LOGICAL_AND_EXPR;
@@ -335,10 +335,10 @@ struct expr_t *create_logical_and_expr
         return this;
 }
 
-struct expr_t *create_equality_expr
-(int line, int column, enum equality_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_equality_expr
+(int line, int column, enum equality_expr_subtype subtype, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = EQUALITY_EXPR;
@@ -348,10 +348,10 @@ struct expr_t *create_equality_expr
         return this;
 }
 
-struct expr_t *create_relational_expr
-(int line, int column, enum relational_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_relational_expr
+(int line, int column, enum relational_expr_subtype subtype, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = RELATIONAL_EXPR;
@@ -361,10 +361,10 @@ struct expr_t *create_relational_expr
         return this;
 }
 
-struct expr_t *create_additive_expr
-(int line, int column, enum additive_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_additive_expr
+(int line, int column, enum additive_expr_subtype subtype, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = ADDITIVE_EXPR;
@@ -374,10 +374,10 @@ struct expr_t *create_additive_expr
         return this;
 }
 
-struct expr_t *create_multiplicative_expr
-(int line, int column, enum multiplicative_expr_subtype subtype, struct expr_t *primary, struct expr_t *secondary)
+struct expr *create_multiplicative_expr
+(int line, int column, enum multiplicative_expr_subtype subtype, struct expr *primary, struct expr *secondary)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = MULTIPLICATIVE_EXPR;
@@ -387,10 +387,10 @@ struct expr_t *create_multiplicative_expr
         return this;
 }
 
-struct expr_t *create_unary_expr_sizeof_basic
+struct expr *create_unary_expr_sizeof_basic
 (int line, int column, enum basic_type type)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = UNARY_EXPR;
@@ -399,10 +399,10 @@ struct expr_t *create_unary_expr_sizeof_basic
         return this;
 }
 
-struct expr_t *create_unary_expr
-(int line, int column, enum unary_expr_subtype subtype, struct expr_t *expr)
+struct expr *create_unary_expr
+(int line, int column, enum unary_expr_subtype subtype, struct expr *expr)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = UNARY_EXPR;
@@ -411,10 +411,10 @@ struct expr_t *create_unary_expr
         return this;
 }
 
-struct expr_t *create_postfix_expr
-(int line, int column, enum postfix_expr_subtype subtype, struct expr_t *expr)
+struct expr *create_postfix_expr
+(int line, int column, enum postfix_expr_subtype subtype, struct expr *expr)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = POSTFIX_EXPR;
@@ -423,10 +423,10 @@ struct expr_t *create_postfix_expr
         return this;
 }
 
-struct expr_t *create_postfix_expr_var
-(int line, int column, struct var_t *var)
+struct expr *create_postfix_expr_var
+(int line, int column, struct var *var)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = POSTFIX_EXPR;
@@ -435,10 +435,10 @@ struct expr_t *create_postfix_expr_var
         return this;
 }
 
-struct expr_t *create_postfix_expr_constant
-(int line, int column, struct constant_t *constant)
+struct expr *create_postfix_expr_constant
+(int line, int column, struct constant *constant)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = POSTFIX_EXPR;
@@ -447,10 +447,10 @@ struct expr_t *create_postfix_expr_constant
         return this;
 }
 
-struct expr_t *create_postfix_expr_function_call
-(int line, int column, struct function_call_t *function_call)
+struct expr *create_postfix_expr_function_call
+(int line, int column, struct function_call *function_call)
 {
-        struct expr_t *this = malloc(sizeof(struct expr_t));
+        struct expr *this = malloc(sizeof(struct expr));
         this->pos.line = line;
         this->pos.column = column;
         this->type = POSTFIX_EXPR;
@@ -459,10 +459,10 @@ struct expr_t *create_postfix_expr_function_call
         return this;
 }
 
-struct var_t *create_var_identifier
+struct var *create_var_identifier
 (int line, int column, char *id)
 {
-        struct var_t *this = malloc(sizeof(struct var_t));
+        struct var *this = malloc(sizeof(struct var));
         this->pos.line = line;
         this->pos.column = column;
         this->type = IDENTIFIER;
@@ -470,10 +470,10 @@ struct var_t *create_var_identifier
         return this;
 }
 
-struct var_t *create_var_field
-(int line, int column, struct var_t *var, char *id)
+struct var *create_var_field
+(int line, int column, struct var *var, char *id)
 {
-        struct var_t *this = malloc(sizeof(struct var_t));
+        struct var *this = malloc(sizeof(struct var));
         this->pos.line = line;
         this->pos.column = column;
         this->type = FIELD;
@@ -482,10 +482,10 @@ struct var_t *create_var_field
         return this;
 }
 
-struct var_t *create_var_subscript
-(int line, int column, struct var_t *var, struct expr_t *expr)
+struct var *create_var_subscript
+(int line, int column, struct var *var, struct expr *expr)
 {
-        struct var_t *this = malloc(sizeof(struct var_t));
+        struct var *this = malloc(sizeof(struct var));
         this->pos.line = line;
         this->pos.column = column;
         this->type = SUBSCRIPT;
@@ -494,10 +494,10 @@ struct var_t *create_var_subscript
         return this;
 }
 
-struct constant_t *create_constant_char
+struct constant *create_constant_char
 (int line, int column, cflat_char val)
 {
-        struct constant_t *this = malloc(sizeof(struct constant_t));
+        struct constant *this = malloc(sizeof(struct constant));
         this->pos.line = line;
         this->pos.column = column;
         this->type = CHAR_TYPE;
@@ -505,10 +505,10 @@ struct constant_t *create_constant_char
         return this;
 }
 
-struct constant_t *create_constant_float
+struct constant *create_constant_float
 (int line, int column, cflat_float val)
 {
-        struct constant_t *this = malloc(sizeof(struct constant_t));
+        struct constant *this = malloc(sizeof(struct constant));
         this->pos.line = line;
         this->pos.column = column;
         this->type = FLOAT_TYPE;
@@ -516,10 +516,10 @@ struct constant_t *create_constant_float
         return this;
 }
 
-struct constant_t *create_constant_int
+struct constant *create_constant_int
 (int line, int column, cflat_int val)
 {
-        struct constant_t *this = malloc(sizeof(struct constant_t));
+        struct constant *this = malloc(sizeof(struct constant));
         this->pos.line = line;
         this->pos.column = column;
         this->type = INT_TYPE;

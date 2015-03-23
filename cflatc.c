@@ -6,7 +6,7 @@
 #include "astprint.h"
 #include "parser.h"
 
-extern struct program_t *program;
+extern struct program *program;
 extern FILE *yyin;
 extern int n_errors;
 extern int n_custom_types;
