@@ -16,7 +16,6 @@ struct symbol {
         } val;
         int size;
         int array_size;
-        void *address;
         struct symbol_table *scoped_table;
 };
 
@@ -32,9 +31,9 @@ struct symbol_table {
 
 struct symbol_table *create_symbol_table();
 struct symbol_table_item *create_symbol_table_item(char *, struct symbol *);
-struct symbol *create_symbol_basic(enum basic_type, int, int, void *);
+struct symbol *create_symbol_basic(enum basic_type, int, int);
 struct symbol *create_symbol_named(struct symbol *);
-struct symbol *create_symbol_struct(struct struct_type *, int, int, void *);
+struct symbol *create_symbol_struct(struct struct_type *, int, int);
 struct symbol *create_symbol_function(struct function_def *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
 struct symbol *get_symbol(struct symbol_table *, char *);
