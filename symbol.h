@@ -17,6 +17,7 @@ struct symbol {
         int size;
         int array_size;
         void *address;
+        struct symbol_table *scoped_table;
 };
 
 struct symbol_table_item {
@@ -26,7 +27,6 @@ struct symbol_table_item {
 
 struct symbol_table {
         int n_items;
-        char *scope = {0};
         struct symbol_table_item **items;
 };
 

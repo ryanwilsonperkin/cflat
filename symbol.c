@@ -52,6 +52,7 @@ struct symbol *create_symbol_struct
         this->size = size;
         this->array_size = array_size;
         this->address = address;
+        this->scoped_table = create_symbol_table();
         return this;
 }
 
@@ -61,6 +62,7 @@ struct symbol *create_symbol_function
         struct symbol *this = malloc(sizeof(struct symbol));
         this->type = SYMBOL_FUNCTION;
         this->val.function_def = function_def;
+        this->scoped_table = create_symbol_table();
         return this;
 }
 
