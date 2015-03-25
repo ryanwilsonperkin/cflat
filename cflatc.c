@@ -5,6 +5,7 @@
 #include "ast.h"
 #include "astprint.h"
 #include "parser.h"
+#include "symbol.h"
 
 extern struct program *program;
 extern FILE *yyin;
@@ -105,6 +106,7 @@ int main(int argc, char *argv[])
                 .compile_flag = 0,
                 .out_fname = "-"
         };
+        struct symbol_table *symbol_table;
 
         /* Parse command line arguments */
         argp_parse (&argp, argc, argv, 0, 0, &arguments);
@@ -142,6 +144,11 @@ int main(int argc, char *argv[])
         }
 
         /* Output symbol table */
+        if (arguments.symbol_flag) {
+                symbol_table = create_symbol_table();
+                parse_program(symbol_table, program);
+        }
+
         /* Output intermediate representation */
         /* Output assembler */
         return EXIT_SUCCESS;

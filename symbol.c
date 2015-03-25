@@ -40,6 +40,16 @@ struct symbol *create_symbol_named
         return this;
 }
 
+struct symbol *create_symbol_array
+(struct symbol *symbol, int size)
+{
+        struct symbol *this = malloc(sizeof(struct symbol));
+        this->type = SYMBOL_ARRAY;
+        this->val.array.symbol = symbol;
+        this->val.array.size = size;
+        return this;
+}
+
 struct symbol *create_symbol_struct
 (struct struct_type *struct_type)
 {
@@ -84,4 +94,106 @@ struct symbol *get_symbol
                 }
         }
         return NULL;
+}
+
+struct symbol *var_decl_to_symbol
+(struct symbol_table *global, struct var_decl *var_decl)
+{
+        struct symbol *this;
+        switch (var_decl->type)
+        {
+        case BASIC_VAR:
+                this = create_symbol_basic(var_decl->val.basic_var);
+                break;
+        case STRUCT_VAR:
+                this = create_symbol_struct(var_decl->val.struct_var);
+                parse_struct_type(global, this->scoped_table, var_decl->val.struct_var);
+                break;
+        case TYPEDEF_VAR:
+                this = get_symbol(global, var_decl->val.typedef_id);
+                break;
+        }
+        return this;
+}
+
+void parse_program
+(struct symbol_table *global, struct program *this)
+{
+        if (!this) return;
+        parse_type_decl_list(global, this->type_decl_list);
+        parse_var_decl_stmt_list(global, global, this->var_decl_stmt_list);
+        parse_function_def_list(global, this->function_def_list);
+}
+
+void parse_type_decl_list
+(struct symbol_table *global, struct type_decl_list *this)
+{
+        if (!this) return;
+        parse_type_decl(global, this->type_decl);
+        parse_type_decl_list(global, this->type_decl_list);
+}
+
+void parse_type_decl
+(struct symbol_table *global, struct type_decl *this)
+{
+        struct symbol *named_symbol;
+        if (!this) return;
+        named_symbol = create_symbol_named(var_decl_to_symbol(global, this->var_decl));
+        add_symbol(global, this->var_decl->id, named_symbol);
+}
+
+void parse_var_decl_stmt_list
+(struct symbol_table *global, struct symbol_table *local, struct var_decl_stmt_list *this)
+{
+        if (!this) return;
+        parse_var_decl(global, local, this->var_decl);
+        parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
+}
+
+void parse_var_decl
+(struct symbol_table *global, struct symbol_table *local, struct var_decl *this)
+{
+        if (!this) return;
+        add_symbol(local, this->id, var_decl_to_symbol(global, this));
+}
+
+void parse_struct_type
+(struct symbol_table *global, struct symbol_table *local, struct struct_type *this)
+{
+        if (!this) return;
+        parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
+}
+
+void parse_function_def_list
+(struct symbol_table *global, struct function_def_list *this)
+{
+        if (!this) return;
+        parse_function_def(global, this->function_def);
+        parse_function_def_list(global, this->function_def_list);
+}
+
+void parse_function_def
+(struct symbol_table *global, struct function_def *this)
+{
+        struct symbol *symbol;
+        if (!this) return;
+        symbol = create_symbol_function(this);
+        add_symbol(global, this->id, symbol);
+        parse_function_param_list(global, symbol->scoped_table, this->function_param_list);
+        parse_function_body(global, symbol->scoped_table, this->function_body);
+}
+
+void parse_function_param_list
+(struct symbol_table *global, struct symbol_table *local, struct function_param_list *this)
+{
+        if (!this) return;
+        parse_var_decl(global, local, this->var_decl);
+        parse_function_param_list(global, local, this->function_param_list);
+}
+
+void parse_function_body
+(struct symbol_table *global, struct symbol_table *local, struct function_body *this)
+{
+        if (!this) return;
+        parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
 }
