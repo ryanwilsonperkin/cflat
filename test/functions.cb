@@ -52,7 +52,7 @@ void f7(struct { struct { char c; } c; } s)
         return;
 }
 
-void f8(struct sname { char c; } s)
+void f8(struct { char c; } s)
 {
         return;
 }
