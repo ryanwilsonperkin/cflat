@@ -3,5 +3,6 @@
 
 void print_symbol_table(FILE *, struct symbol_table *, int);
 void print_symbol_table_item(FILE *, struct symbol_table_item *, int);
+void print_symbol(FILE *, char *, struct symbol *, int);
 
 #endif  /* CFLAT_SYMBOLPRINT_H */

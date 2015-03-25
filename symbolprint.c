@@ -13,26 +13,44 @@ void print_symbol_table
         }
 }
 
-void print_symbol_table_item(FILE *out, struct symbol_table_item *this, int depth)
+void print_symbol_table_item
+(FILE *out, struct symbol_table_item *this, int depth)
 {
-        if (!this) return;
-        switch (this->symbol->type) {
+        print_symbol(out, this->id, this->symbol, depth);
+}
+
+void print_symbol
+(FILE *out, char *id, struct symbol *symbol, int depth)
+{
+        switch (symbol->type) {
         case SYMBOL_BASIC:
-                print_at_depth(out, depth, "BASIC: '%s'", this->id);
+                switch (symbol->val.basic_type) {
+                case CHAR_TYPE:
+                        print_at_depth(out, depth, "CHAR: '%s'", id);
+                        break;
+                case INT_TYPE:
+                        print_at_depth(out, depth, "INT: '%s'", id);
+                        break;
+                case FLOAT_TYPE:
+                        print_at_depth(out, depth, "FLOAT: '%s'", id);
+                        break;
+                }
                 break;
         case SYMBOL_NAMED:
-                print_at_depth(out, depth, "NAMED: '%s'", this->id);
+                print_at_depth(out, depth, "NAMED: '%s'", id);
+                print_symbol(out, "", symbol->val.symbol, depth+1);
                 break;
         case SYMBOL_ARRAY:
-                print_at_depth(out, depth, "ARRAY: '%s'", this->id);
+                print_at_depth(out, depth, "ARRAY: %d", symbol->val.array.size);
+                print_symbol(out, id, symbol->val.array.symbol, depth+1);
                 break;
         case SYMBOL_STRUCT:
-                print_at_depth(out, depth, "STRUCT: '%s'", this->id);
-                print_symbol_table(out, this->symbol->scoped_table, depth+1);
+                print_at_depth(out, depth, "STRUCT: '%s'", id);
+                print_symbol_table(out, symbol->scoped_table, depth+1);
                 break;
         case SYMBOL_FUNCTION:
-                print_at_depth(out, depth, "FUNCTION: '%s'", this->id);
-                print_symbol_table(out, this->symbol->scoped_table, depth+1);
+                print_at_depth(out, depth, "FUNCTION: '%s'", id);
+                print_symbol_table(out, symbol->scoped_table, depth+1);
                 break;
         }
 }

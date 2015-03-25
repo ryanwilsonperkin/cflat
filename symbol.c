@@ -99,6 +99,7 @@ struct symbol *get_symbol
 struct symbol *var_decl_to_symbol
 (struct symbol_table *global, struct var_decl *var_decl)
 {
+        int size;
         struct symbol *this;
         switch (var_decl->type)
         {
@@ -112,6 +113,10 @@ struct symbol *var_decl_to_symbol
         case TYPEDEF_VAR:
                 this = get_symbol(global, var_decl->val.typedef_id);
                 break;
+        }
+        if (var_decl->array_specifier) {
+                size = var_decl->array_specifier->constant->val.ival;
+                this = create_symbol_array(this, size);
         }
         return this;
 }

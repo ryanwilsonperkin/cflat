@@ -3,8 +3,8 @@
  *      Arrays of basic types
  *      Struct containing basic types
  *      Struct containing arrays of basic types
- *      Named struct containing basic types
- *      Named struct containing arrays of basic types
+ *      Array of struct containing basic types
+ *      Array of struct containing arrays of basic types
  */
 
 char c[1];
@@ -23,13 +23,13 @@ struct {
         float f[100];
 } s2;
 
-struct sname1 {
+struct {
         char c;
         int i;
         float f;
 } s3;
 
-struct sname2 {
+struct {
         char c[1];
         int i[10];
         float f[100];
