@@ -6,6 +6,7 @@
 #include "astprint.h"
 #include "parser.h"
 #include "symbol.h"
+#include "symbolprint.h"
 
 extern struct program *program;
 extern FILE *yyin;
@@ -147,6 +148,17 @@ int main(int argc, char *argv[])
         if (arguments.symbol_flag) {
                 symbol_table = create_symbol_table();
                 parse_program(symbol_table, program);
+                if (strcmp(arguments.out_fname, "-") == 0) {
+                        out = stdout;
+                } else if (!(out = fopen(out_fnames.symbol, "w"))) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
+                print_symbol_table(out, symbol_table, 0);
+                if (out != stdout && fclose(out)) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
         }
 
         /* Output intermediate representation */
