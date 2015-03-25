@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
 
@@ -86,18 +85,11 @@ struct var_decl *create_var_decl_typedef
 }
 
 struct struct_type *create_struct_type
-(int line, int column, char *id, struct var_decl_stmt_list *var_decl_stmt_list)
+(int line, int column, struct var_decl_stmt_list *var_decl_stmt_list)
 { 
-        static unsigned char n_anonymous = 0;
         struct struct_type *this = malloc(sizeof(struct struct_type));
         this->pos.line = line;
         this->pos.column = column;
-        if (id) {
-                this->id = id;
-        } else {
-                this->id = malloc(21);
-                sprintf(this->id, "anonymous_struct_%u", ++n_anonymous);
-        }
         this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
 }

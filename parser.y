@@ -124,8 +124,7 @@ var_decl
     ;
 
 struct_type
-    : STRUCT ID LBRACE var_decl_stmt_list RBRACE { $$ = create_struct_type(line_num, col_num, $2, $4); }
-    | STRUCT LBRACE var_decl_stmt_list RBRACE { $$ = create_struct_type(line_num, col_num, NULL, $3); }
+    : STRUCT LBRACE var_decl_stmt_list RBRACE { $$ = create_struct_type(line_num, col_num, $3); }
     ;
 
 array_specifier

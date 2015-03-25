@@ -103,7 +103,7 @@ void print_struct_type
 (FILE *out, struct struct_type *this, int depth)
 {
         if (!this) return;
-        print_at_depth(out, depth, "struct_type: '%s'", this->id);
+        print_at_depth(out, depth, "struct_type");
         print_at_depth(out, depth+1, "var_decl_stmt_list");
         print_var_decl_stmt_list(out, this->var_decl_stmt_list, depth+1);
 }
