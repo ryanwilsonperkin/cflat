@@ -1,6 +1,8 @@
 #ifndef CFLAT_SYMBOL_H
 #define CFLAT_SYMBOL_H
 
+#include "ast.h"
+
 struct symbol {
         enum symbol_type {
                 SYMBOL_BASIC,
