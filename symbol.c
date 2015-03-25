@@ -23,13 +23,11 @@ struct symbol_table_item *create_symbol_table_item
 }
 
 struct symbol *create_symbol_basic
-(enum basic_type basic_type, int size, int array_size)
+(enum basic_type basic_type)
 {
         struct symbol *this = malloc(sizeof(struct symbol));
         this->type = SYMBOL_BASIC;
         this->val.basic_type = basic_type;
-        this->size = size;
-        this->array_size = array_size;
         return this;
 }
 
@@ -43,13 +41,11 @@ struct symbol *create_symbol_named
 }
 
 struct symbol *create_symbol_struct
-(struct struct_type *struct_type, int size, int array_size)
+(struct struct_type *struct_type)
 {
         struct symbol *this = malloc(sizeof(struct symbol));
         this->type = SYMBOL_STRUCT;
         this->val.struct_type = struct_type;
-        this->size = size;
-        this->array_size = array_size;
         this->scoped_table = create_symbol_table();
         return this;
 }
