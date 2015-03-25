@@ -129,8 +129,8 @@ void parse_type_decl_list
 (struct symbol_table *global, struct type_decl_list *this)
 {
         if (!this) return;
-        parse_type_decl(global, this->type_decl);
         parse_type_decl_list(global, this->type_decl_list);
+        parse_type_decl(global, this->type_decl);
 }
 
 void parse_type_decl
@@ -146,8 +146,8 @@ void parse_var_decl_stmt_list
 (struct symbol_table *global, struct symbol_table *local, struct var_decl_stmt_list *this)
 {
         if (!this) return;
-        parse_var_decl(global, local, this->var_decl);
         parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
+        parse_var_decl(global, local, this->var_decl);
 }
 
 void parse_var_decl
@@ -168,8 +168,8 @@ void parse_function_def_list
 (struct symbol_table *global, struct function_def_list *this)
 {
         if (!this) return;
-        parse_function_def(global, this->function_def);
         parse_function_def_list(global, this->function_def_list);
+        parse_function_def(global, this->function_def);
 }
 
 void parse_function_def
@@ -187,8 +187,8 @@ void parse_function_param_list
 (struct symbol_table *global, struct symbol_table *local, struct function_param_list *this)
 {
         if (!this) return;
-        parse_var_decl(global, local, this->var_decl);
         parse_function_param_list(global, local, this->function_param_list);
+        parse_var_decl(global, local, this->var_decl);
 }
 
 void parse_function_body
