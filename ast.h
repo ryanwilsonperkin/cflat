@@ -330,4 +330,28 @@ struct constant *create_constant_char(int, int, cflat_char);
 struct constant *create_constant_float(int, int, cflat_float);
 struct constant *create_constant_int(int, int, cflat_int);
 
+void free_program(struct program *);
+void free_type_decl_list(struct type_decl_list *);
+void free_type_decl(struct type_decl *);
+void free_var_decl_stmt_list(struct var_decl_stmt_list *);
+void free_var_decl(struct var_decl *);
+void free_struct_type(struct struct_type *);
+void free_array_specifier(struct array_specifier *);
+void free_function_def_list(struct function_def_list *);
+void free_function_def(struct function_def *);
+void free_function_param_list(struct function_param_list *);
+void free_function_body(struct function_body *);
+void free_function_call(struct function_call *);
+void free_function_arg_list(struct function_arg_list *);
+void free_stmt_list(struct stmt_list *);
+void free_stmt(struct stmt *);
+void free_expr_stmt(struct expr_stmt *);
+void free_compound_stmt(struct compound_stmt *);
+void free_select_stmt(struct select_stmt *);
+void free_iter_stmt(struct iter_stmt *);
+void free_return_stmt(struct return_stmt *);
+void free_expr(struct expr *);
+void free_var(struct var *);
+void free_constant(struct constant *);
+
 #endif  /* CFLAT_AST_H */

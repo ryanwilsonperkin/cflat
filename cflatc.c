@@ -159,5 +159,7 @@ int main
 
         /* Output intermediate representation */
         /* Output assembler */
+
+        free_program(program);
         return EXIT_SUCCESS;
 }

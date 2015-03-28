@@ -525,3 +525,292 @@ struct constant *create_constant_int
         this->val.ival = val;
         return this;
 }
+
+void free_program
+(struct program *this)
+{
+        if (!this) return;
+        free_type_decl_list(this->type_decl_list);
+        free_var_decl_stmt_list(this->var_decl_stmt_list);
+        free_function_def_list(this->function_def_list);
+        free(this);
+}
+
+void free_type_decl_list
+(struct type_decl_list *this)
+{
+        if (!this) return;
+        free_type_decl(this->type_decl);
+        free_type_decl_list(this->type_decl_list);
+        free(this);
+}
+
+void free_type_decl
+(struct type_decl *this)
+{
+        if (!this) return;
+        free_var_decl(this->var_decl);
+        free(this);
+}
+
+void free_var_decl_stmt_list
+(struct var_decl_stmt_list *this)
+{
+        if (!this) return;
+        free_var_decl(this->var_decl);
+        free_var_decl_stmt_list(this->var_decl_stmt_list);
+        free(this);
+}
+
+void free_var_decl
+(struct var_decl *this)
+{
+        if (!this) return;
+        switch (this->type) {
+        case BASIC_VAR:
+                break;
+        case STRUCT_VAR:
+                free_struct_type(this->val.struct_var);
+                break;
+        case TYPEDEF_VAR:
+                free(this->val.typedef_id);
+                break;
+        }
+        free_array_specifier(this->array_specifier);
+        free(this->id);
+        free(this);
+}
+
+void free_struct_type
+(struct struct_type *this)
+{
+        if (!this) return;
+        free_var_decl_stmt_list(this->var_decl_stmt_list);
+        free(this);
+}
+
+void free_array_specifier
+(struct array_specifier *this)
+{
+        if (!this) return;
+        free_constant(this->constant);
+        free(this);
+}
+
+void free_function_def_list
+(struct function_def_list *this)
+{
+        if (!this) return;
+        free_function_def(this->function_def);
+        free_function_def_list(this->function_def_list);
+        free(this);
+}
+
+void free_function_def
+(struct function_def *this)
+{
+        if (!this) return;
+        free_function_param_list(this->function_param_list);
+        free_function_body(this->function_body);
+        free(this->id);
+        free(this);
+}
+
+void free_function_param_list
+(struct function_param_list *this)
+{
+        if (!this) return;
+        free_var_decl(this->var_decl);
+        free_function_param_list(this->function_param_list);
+        free(this);
+}
+
+void free_function_body
+(struct function_body *this)
+{
+        if (!this) return;
+        free_var_decl_stmt_list(this->var_decl_stmt_list);
+        free_stmt_list(this->stmt_list);
+        free_return_stmt(this->return_stmt);
+        free(this);
+}
+
+void free_function_call
+(struct function_call *this)
+{
+        if (!this) return;
+        free_function_arg_list(this->function_arg_list);
+        free(this->id);
+        free(this);
+}
+
+void free_function_arg_list
+(struct function_arg_list *this)
+{
+        if (!this) return;
+        free_expr(this->expr);
+        free_function_arg_list(this->function_arg_list);
+        free(this);
+}
+
+void free_stmt_list
+(struct stmt_list *this)
+{
+        if (!this) return;
+        free_stmt(this->stmt);
+        free_stmt_list(this->stmt_list);
+        free(this);
+}
+
+void free_stmt
+(struct stmt *this)
+{
+        if (!this) return;
+        switch (this->type) {
+        case EXPR_STMT:
+                free_expr_stmt(this->val.expr_stmt);
+                break;
+        case COMPOUND_STMT:
+                free_compound_stmt(this->val.compound_stmt);
+                break;
+        case SELECT_STMT:
+                free_select_stmt(this->val.select_stmt);
+                break;
+        case ITER_STMT:
+                free_iter_stmt(this->val.iter_stmt);
+                break;
+        case RETURN_STMT:
+                free_return_stmt(this->val.return_stmt);
+                break;
+        }
+        free(this);
+}
+
+void free_expr_stmt
+(struct expr_stmt *this)
+{
+        if (!this) return;
+        free_expr(this->expr);
+        free(this);
+}
+
+void free_compound_stmt
+(struct compound_stmt *this)
+{
+        if (!this) return;
+        free_stmt_list(this->stmt_list);
+        free(this);
+}
+
+void free_select_stmt
+(struct select_stmt *this)
+{
+        if (!this) return;
+        free_expr(this->cond);
+        free_stmt(this->stmt_if_true);
+        free_stmt(this->stmt_if_false);
+        free(this);
+}
+
+void free_iter_stmt
+(struct iter_stmt *this)
+{
+        if (!this) return;
+        free_expr(this->init);
+        free_expr(this->cond);
+        free_expr(this->after);
+        free_stmt(this->body);
+        free(this);
+}
+
+void free_return_stmt
+(struct return_stmt *this)
+{
+        if (!this) return;
+        free_expr(this->expr);
+        free(this);
+}
+
+void free_expr
+(struct expr *this)
+{
+        if (!this) return;
+        switch (this->type) {
+        case ASSIGN_EXPR:
+                free_var(this->val.assign.assignee);
+                free_expr(this->val.assign.assignment);
+                break;
+        case LOGICAL_OR_EXPR:
+        case LOGICAL_AND_EXPR:
+        case EQUALITY_EXPR:
+        case RELATIONAL_EXPR:
+                free_expr(this->val.relation.primary);
+                free_expr(this->val.relation.secondary);
+                break;
+        case ADDITIVE_EXPR:
+        case MULTIPLICATIVE_EXPR:
+                free_expr(this->val.binary_op.primary);
+                free_expr(this->val.binary_op.secondary);
+                break;
+        case UNARY_EXPR:
+                switch (this->subtype.unary_expr_subtype) {
+                case UNARY_EXPR_SIZEOF_BASIC:
+                        break;
+                case UNARY_EXPR_SIZEOF_UNARY:
+                case UNARY_EXPR_NOT_UNARY:
+                case UNARY_EXPR_POSITIVE:
+                case UNARY_EXPR_NEGATIVE:
+                case UNARY_EXPR_PRE_INCREMENT:
+                case UNARY_EXPR_PRE_DECREMENT:
+                        free_expr(this->val.unary_op.expr);
+                        break;
+                }
+                break;
+        case POSTFIX_EXPR:
+                switch (this->subtype.postfix_expr_subtype) {
+                case POSTFIX_EXPR_VAR:
+                        free_var(this->val.postfix_op.var);
+                        break;
+                case POSTFIX_EXPR_CONSTANT:
+                        free_constant(this->val.postfix_op.constant);
+                        break;
+                case POSTFIX_EXPR_POST_INCREMENT:
+                case POSTFIX_EXPR_POST_DECREMENT:
+                case POSTFIX_EXPR_ENCLOSED:
+                        free_expr(this->val.postfix_op.expr);
+                        break;
+                case POSTFIX_EXPR_FUNCTION_CALL:
+                        free_function_call(this->val.postfix_op.function_call);
+                        break;
+                }
+                break;
+        }
+        free(this);
+}
+
+void free_var
+(struct var *this)
+{
+        if (!this) return;
+        switch (this->type) {
+        case IDENTIFIER:
+                free(this->val.id);
+                break;
+        case FIELD:
+                free_var(this->val.field.var);
+                free(this->val.field.id);
+                break;
+        case SUBSCRIPT:
+                free_var(this->val.subscript.var);
+                free_expr(this->val.subscript.expr);
+                break;
+        }
+        free(this);
+}
+
+void free_constant
+(struct constant *this)
+{
+        if (!this) return;
+        free(this);
+}
