@@ -1,19 +1,24 @@
 %{
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "ast.h"
 #include "astprint.h"
 
-extern int line_num;
 extern int col_num;
+extern int line_num;
 extern char *line_buf;
+extern FILE *yyin;
 extern char *yytext;
 extern void add_custom_type(char *);
 extern int yylex(void);
-void yyerror(const char *);
 
-struct program *program;
-int n_errors = 0;
+struct program *parse_file(FILE *in);
+
+static struct program *program;
+static int n_errors = 0;
+static void yyerror(const char *);
 %}
 
 %union {
@@ -293,8 +298,20 @@ basic_type
 
 %%
 
+struct program *parse_file
+(FILE *in)
+{
+        yyin = in;
+        yyparse();
+        if (n_errors) {
+                fprintf(stderr, "cflatc: %d syntax errors\n", n_errors);
+                exit(EXIT_FAILURE);
+        }
+        return program;
+}
 
-void yyerror(const char *s)
+static void yyerror
+(const char *s)
 {
         fprintf(stderr, "stdin:%d:%d: error: unexpected token '%s'\n", line_num, col_num, yytext);
         fprintf(stderr, "%s\n", line_buf);

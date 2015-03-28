@@ -1,4 +1,5 @@
 #include <argp.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,13 +9,7 @@
 #include "symbol.h"
 #include "symbolprint.h"
 
-extern struct program *program;
-extern FILE *yyin;
-extern int n_errors;
-extern int n_custom_types;
-extern char **custom_types;
-
-extern int yyparse();
+extern struct program *parse_file(FILE *in);
 
 const char *argp_program_version = "cflatc 0.2";
 const char *argp_program_bug_address= "rwilsonp@mail.uoguelph.ca";
@@ -41,7 +36,12 @@ struct arguments
         char *out_fname;
 };
 
-static error_t parse_opt (int key, char *arg, struct argp_state *state)
+struct out_fnames {
+        char *abstract, *symbol, *intermediate, *compile;
+};
+
+static error_t parse_opt
+(int key, char *arg, struct argp_state *state)
 {
         struct arguments *arguments = state->input;
         switch (key)
@@ -74,11 +74,8 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
         return 0;
 }
 
-static struct argp argp = { options, parse_opt, args_doc, doc };
-
-struct out_fnames { char *abstract, *symbol, *intermediate, *compile; };
-
-void set_out_fnames(char *prefix, struct out_fnames *fnames)
+static void set_out_fnames
+(char *prefix, struct out_fnames *fnames)
 {
         int prefix_len = strlen(prefix);
         fnames->abstract = malloc(prefix_len + 5);
@@ -95,9 +92,10 @@ void set_out_fnames(char *prefix, struct out_fnames *fnames)
         fnames->compile = strcat(fnames->compile, ".asm");
 }
 
-int main(int argc, char *argv[])
+int main
+(int argc, char *argv[])
 {
-        FILE *out;
+        FILE *in, *out;
         char *in_fname;
         struct out_fnames out_fnames;
         struct arguments arguments = {
@@ -107,6 +105,10 @@ int main(int argc, char *argv[])
                 .compile_flag = 0,
                 .out_fname = "-"
         };
+        static struct argp argp = {
+                options, parse_opt, args_doc, doc
+        };
+        struct program *program;
         struct symbol_table *symbol_table;
 
         /* Parse command line arguments */
@@ -115,19 +117,15 @@ int main(int argc, char *argv[])
 
         /* Get input file name from arguments */
         in_fname = arguments.args[0];
-        if (!(yyin = fopen(in_fname, "r"))) {
+        if (!(in = fopen(in_fname, "r"))) {
                 fprintf(stderr, "cflatc: '%s': %s\n", in_fname, strerror(errno));
                 exit(EXIT_FAILURE);
         }
 
         /* Invoke parser on input file */
-        yyparse();
-
-        /* Exit if parser encountered syntax errors */
-        if (n_errors) {
-                fprintf(stderr, "cflatc: %d syntax errorss\n", n_errors);
-                exit(EXIT_FAILURE);
-        }
+        program = parse_file(in);
+        symbol_table = create_symbol_table();
+        parse_program(symbol_table, program);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {
@@ -146,8 +144,6 @@ int main(int argc, char *argv[])
 
         /* Output symbol table */
         if (arguments.symbol_flag) {
-                symbol_table = create_symbol_table();
-                parse_program(symbol_table, program);
                 if (strcmp(arguments.out_fname, "-") == 0) {
                         out = stdout;
                 } else if (!(out = fopen(out_fnames.symbol, "w"))) {
