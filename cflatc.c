@@ -79,16 +79,16 @@ static void set_out_fnames
 {
         int prefix_len = strlen(prefix);
         fnames->abstract = malloc(prefix_len + 5);
-        fnames->abstract = strcat(fnames->abstract, prefix);
+        fnames->abstract = strcpy(fnames->abstract, prefix);
         fnames->abstract = strcat(fnames->abstract, ".abs");
         fnames->symbol = malloc(prefix_len + 5);
-        fnames->symbol = strcat(fnames->symbol, prefix);
+        fnames->symbol = strcpy(fnames->symbol, prefix);
         fnames->symbol = strcat(fnames->symbol, ".sym");
         fnames->intermediate = malloc(prefix_len + 5);
-        fnames->intermediate = strcat(fnames->intermediate, prefix);
+        fnames->intermediate = strcpy(fnames->intermediate, prefix);
         fnames->intermediate = strcat(fnames->intermediate, ".inr");
         fnames->compile = malloc(prefix_len + 5);
-        fnames->compile = strcat(fnames->compile, prefix);
+        fnames->compile = strcpy(fnames->compile, prefix);
         fnames->compile = strcat(fnames->compile, ".asm");
 }
 

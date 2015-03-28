@@ -138,10 +138,10 @@ static void append_line_buf
 {
         if (line_buf) {
                 line_buf = realloc(line_buf, strlen(line_buf) + yyleng + 1);
+                line_buf = strcat(line_buf, yytext);
         } else {
-                line_buf = malloc(yyleng + 1);
+                line_buf = strdup(yytext);
         }
-        line_buf = strcat(line_buf, yytext);
 }
 
 static void increment_col_num
