@@ -4,21 +4,23 @@
 #include "parser.h"
 
 int col_num = 1;
-int next_col_num = 1;
 int line_num = 1;
-int next_line_num = 1;
 char *line_buf = NULL;
-char **custom_types = NULL;
-int n_custom_types = 0;
 
-char get_c_val();
-int check_custom_type();
 void add_custom_type(char *);
-void reset_line_buf();
-void append_line_buf();
-void increment_col_num();
-void increment_line_num();
-void reset_col_num();
+
+static int next_col_num = 1;
+static int next_line_num = 1;
+static char **custom_types = NULL;
+static int n_custom_types = 0;
+
+static char get_c_val();
+static int check_custom_type();
+static void reset_line_buf();
+static void append_line_buf();
+static void increment_col_num();
+static void increment_line_num();
+static void reset_col_num();
 %}
 
 NATURAL [1-9]
@@ -88,7 +90,19 @@ INT     -?0|({NATURAL}{DIGIT}*)
 
 %%
 
-char get_c_val(char *s)
+void add_custom_type
+(char *type_name)
+{
+        if (custom_types) {
+            custom_types = realloc(custom_types, sizeof(char *) * (n_custom_types+1));
+        } else {
+            custom_types = malloc(sizeof(char *));
+        }
+        custom_types[n_custom_types++] = strdup(type_name);
+}
+
+static char get_c_val
+(char *s)
 {
         if (s[1] == '\\') {
                 switch (s[2]) {
@@ -99,17 +113,8 @@ char get_c_val(char *s)
         return s[1];
 }
 
-void add_custom_type(char *type_name)
-{
-        if (custom_types) {
-            custom_types = realloc(custom_types, sizeof(char *) * (n_custom_types+1));
-        } else {
-            custom_types = malloc(sizeof(char *));
-        }
-        custom_types[n_custom_types++] = strdup(type_name);
-}
-
-int check_custom_type()
+static int check_custom_type
+()
 {
         int i;
         for (i = 0; i < n_custom_types; i++) {
@@ -120,14 +125,16 @@ int check_custom_type()
         return ID;
 }
 
-void reset_line_buf()
+static void reset_line_buf
+()
 {
         free(line_buf);
         line_buf = malloc(1);
         line_buf[0] = 0;
 }
 
-void append_line_buf()
+static void append_line_buf
+()
 {
         if (line_buf) {
                 line_buf = realloc(line_buf, strlen(line_buf) + yyleng + 1);
@@ -137,19 +144,22 @@ void append_line_buf()
         line_buf = strcat(line_buf, yytext);
 }
 
-void increment_col_num()
+static void increment_col_num
+()
 {
         col_num = next_col_num;
         next_col_num += yyleng;
 }
 
-void increment_line_num()
+static void increment_line_num
+()
 {
         line_num = next_line_num;
         next_line_num++;
 }
 
-void reset_col_num()
+static void reset_col_num
+()
 {
         col_num = next_col_num;
         next_col_num = 1;
