@@ -101,6 +101,16 @@ void add_custom_type
         custom_types[n_custom_types++] = strdup(type_name);
 }
 
+void free_custom_types
+()
+{
+        int i;
+        for (i = 0; i < n_custom_types; i++) {
+                free(custom_types[i]);
+        }
+        free(custom_types);
+}
+
 static char get_c_val
 (char *s)
 {

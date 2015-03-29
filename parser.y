@@ -12,6 +12,7 @@ extern char *line_buf;
 extern FILE *yyin;
 extern char *yytext;
 extern void add_custom_type(char *);
+extern void free_custom_types();
 extern int yylex(void);
 
 struct program *parse_file(FILE *in);
@@ -303,6 +304,7 @@ struct program *parse_file
 {
         yyin = in;
         yyparse();
+        free_custom_types();
         if (n_errors) {
                 fprintf(stderr, "cflatc: %d syntax errors\n", n_errors);
                 exit(EXIT_FAILURE);
