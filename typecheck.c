@@ -1,7 +1,21 @@
-#include <stddef.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "ast.h"
 #include "symbol.h"
 #include "typecheck.h"
+
+void type_error
+(struct pos pos, const char *fmt, ...)
+{
+        va_list argptr;
+        fprintf(stderr, "%d:%d: type error: ", pos.line, pos.column);
+        va_start(argptr, fmt);
+        vfprintf(stderr, fmt, argptr);
+        va_end(argptr);
+        fprintf(stderr, "\n");
+        exit(EXIT_FAILURE);
+}
 
 void type_check_program
 (struct symbol_table *global, struct program *this)
@@ -193,4 +207,69 @@ struct symbol *translate_postfix_expr
 {
         if (!this) return NULL;
         return NULL;
+}
+
+struct symbol *translate_var
+(struct symbol_table *global, struct symbol_table *local, struct var *this)
+{
+        if (!this) return NULL;
+        switch (this->type) {
+        case IDENTIFIER:
+                return translate_identifier_var(global, local, this);
+                break;
+        case FIELD:
+                return translate_field_var(global, local, this);
+                break;
+        case SUBSCRIPT:
+                return translate_subscript_var(global, local, this);
+                break;
+        }
+}
+
+struct symbol *translate_identifier_var
+(struct symbol_table *global, struct symbol_table *local, struct var *this)
+{
+        struct symbol *symbol;
+        if (!this) return NULL;
+        if ((symbol = get_symbol(local, this->val.id))) {
+                return symbol;
+        } else {
+                symbol = get_symbol(global, this->val.id);
+        }
+        if (!symbol) {
+                type_error(this->pos, "use of undeclared identifier '%s'", this->val.id);
+        }
+        return symbol;
+}
+
+struct symbol *translate_field_var
+(struct symbol_table *global, struct symbol_table *local, struct var *this)
+{
+        struct symbol *symbol, *parent;
+        if (!this) return NULL;
+        parent = translate_var(global, local, this->val.field.var);
+        if (!parent || parent->type != SYMBOL_STRUCT) {
+                type_error(this->pos, "member reference is not a structure");
+        }
+        symbol = get_symbol(parent->scoped_table, this->val.field.id);
+        if (!symbol) {
+                type_error(this->pos, "no member '%s' in struct", this->val.field.id);
+        }
+        return symbol;
+}
+
+struct symbol *translate_subscript_var
+(struct symbol_table *global, struct symbol_table *local, struct var *this)
+{
+        struct symbol *subscript, *parent;
+        if (!this) return NULL;
+        subscript = translate_expr(global, local, this->val.subscript.expr);
+        parent = translate_var(global, local, this->val.field.var);
+        if (!parent || parent->type != SYMBOL_ARRAY) {
+                type_error(this->pos, "subscripted value is not an array");
+        }
+        if (!subscript || subscript->type != SYMBOL_BASIC || subscript->val.basic_type != INT_TYPE) {
+                type_error(this->pos, "array subscript is not an integer");
+        }
+        return parent->val.array.symbol;
 }

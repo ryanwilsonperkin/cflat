@@ -26,5 +26,9 @@ struct symbol *translate_additive_expr(struct symbol_table *, struct symbol_tabl
 struct symbol *translate_multiplicative_expr(struct symbol_table *, struct symbol_table *, struct expr *);
 struct symbol *translate_unary_expr(struct symbol_table *, struct symbol_table *, struct expr *);
 struct symbol *translate_postfix_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_identifier_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_field_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_subscript_var(struct symbol_table *, struct symbol_table *, struct var *);
 
 #endif  /* CFLAT_TYPECHECK_H */
