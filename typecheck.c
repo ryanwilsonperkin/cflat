@@ -273,3 +273,13 @@ struct symbol *translate_subscript_var
         }
         return parent->val.array.symbol;
 }
+
+struct symbol *translate_constant
+(struct symbol_table *local, struct constant *this)
+{
+        struct symbol *symbol;
+        if (!this) return NULL;
+        symbol = create_symbol_basic(this->type);
+        add_temp_symbol(local, symbol);
+        return symbol;
+}

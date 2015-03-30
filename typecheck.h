@@ -30,5 +30,6 @@ struct symbol *translate_var(struct symbol_table *, struct symbol_table *, struc
 struct symbol *translate_identifier_var(struct symbol_table *, struct symbol_table *, struct var *);
 struct symbol *translate_field_var(struct symbol_table *, struct symbol_table *, struct var *);
 struct symbol *translate_subscript_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_constant(struct symbol_table *, struct constant *);
 
 #endif  /* CFLAT_TYPECHECK_H */
