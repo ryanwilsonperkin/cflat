@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,6 +81,17 @@ void add_symbol
         symbol_table->n_items++;
         symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
         symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol);
+}
+
+void add_temp_symbol
+(struct symbol_table *symbol_table, struct symbol *symbol)
+{
+        static int counter = 0;
+        char *prefix = "temp";
+        int id_length = strlen(prefix) + 1 + floor(log10(counter) + 1) + 1;
+        char *id = malloc(id_length);
+        sprintf(id, "%s:%d", prefix, counter++);
+        add_symbol(symbol_table, id, symbol);
 }
 
 struct symbol *get_symbol

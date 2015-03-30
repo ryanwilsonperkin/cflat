@@ -42,6 +42,7 @@ struct symbol *create_symbol_array(struct symbol *, int);
 struct symbol *create_symbol_struct(struct struct_type *);
 struct symbol *create_symbol_function(struct function_def *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
+void add_temp_symbol(struct symbol_table *, struct symbol *);
 struct symbol *get_symbol(struct symbol_table *, char *);
 
 struct symbol *var_decl_to_symbol(struct symbol_table *, struct var_decl *);
