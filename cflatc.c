@@ -124,8 +124,7 @@ int main
 
         /* Invoke parser on input file */
         program = parse_file(in);
-        symbol_table = create_symbol_table();
-        parse_program(symbol_table, program);
+        symbol_table = parse_symbols(program);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {

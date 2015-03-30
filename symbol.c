@@ -121,6 +121,14 @@ struct symbol *var_decl_to_symbol
         return this;
 }
 
+struct symbol_table *parse_symbols
+(struct program *program)
+{
+        struct symbol_table *this = create_symbol_table();
+        parse_program(this, program);
+        return this;
+}
+
 void parse_program
 (struct symbol_table *global, struct program *this)
 {

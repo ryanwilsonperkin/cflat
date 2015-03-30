@@ -45,6 +45,7 @@ void add_symbol(struct symbol_table *, char *, struct symbol *);
 struct symbol *get_symbol(struct symbol_table *, char *);
 
 struct symbol *var_decl_to_symbol(struct symbol_table *, struct var_decl *);
+struct symbol_table *parse_symbols(struct program *);
 void parse_program(struct symbol_table *, struct program *);
 void parse_type_decl_list(struct symbol_table *, struct type_decl_list *);
 void parse_type_decl(struct symbol_table *, struct type_decl *);
