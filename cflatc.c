@@ -8,6 +8,7 @@
 #include "parser.h"
 #include "symbol.h"
 #include "symbolprint.h"
+#include "typecheck.h"
 
 extern struct program *parse_file(FILE *in);
 
@@ -125,6 +126,7 @@ int main
         /* Invoke parser on input file */
         program = parse_file(in);
         symbol_table = parse_symbols(program);
+        type_check_program(symbol_table, program);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {
