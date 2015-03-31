@@ -9,7 +9,6 @@ void type_check_function_def_list(struct symbol_table *, struct function_def_lis
 void type_check_function_def(struct symbol_table *, struct function_def *);
 void type_check_function_body(struct symbol_table *, struct symbol_table *, struct function_body *);
 void type_check_function_body(struct symbol_table *, struct symbol_table *, struct function_body *);
-void type_check_function_arg_list(struct symbol_table *, struct symbol_table *, struct symbol_table *, struct function_arg_list *, struct function_param_list *);
 void type_check_stmt_list(struct symbol_table *, struct symbol_table *, struct stmt_list *);
 void type_check_stmt(struct symbol_table *, struct symbol_table *, struct stmt *);
 void type_check_expr_stmt(struct symbol_table *, struct symbol_table *, struct expr_stmt *);
