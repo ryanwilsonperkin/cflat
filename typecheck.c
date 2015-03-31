@@ -149,64 +149,221 @@ struct symbol *translate_expr
 struct symbol *translate_assign_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *assignee, *assignment;
         if (!this) return NULL;
-        return NULL;
+        assignee = translate_var(global, local, this->val.assign.assignee);
+        assignment = translate_expr(global, local, this->val.assign.assignment);
+        if (assignee->type != assignment->type) {
+                type_error(this->pos, "assignment from incompatible type");
+        }
+        return assignee;
 }
 
 struct symbol *translate_logical_or_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.relation.primary);
+        secondary = translate_expr(global, local, this->val.relation.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC || secondary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.secondary->pos, "invalid operand to expression (requires int)");
+        }
+        symbol = create_symbol_basic(INT_TYPE);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_logical_and_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.relation.primary);
+        secondary = translate_expr(global, local, this->val.relation.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC || secondary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.secondary->pos, "invalid operand to expression (requires int)");
+        }
+        symbol = create_symbol_basic(INT_TYPE);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_equality_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.relation.primary);
+        secondary = translate_expr(global, local, this->val.relation.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.secondary->pos, "invalid operand to expression");
+        }
+        if (primary->val.basic_type != secondary->val.basic_type) {
+                type_error(this->val.relation.primary->pos, "comparison of incompatible types");
+        }
+        symbol = create_symbol_basic(INT_TYPE);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_relational_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.relation.primary);
+        secondary = translate_expr(global, local, this->val.relation.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.secondary->pos, "invalid operand to expression");
+        }
+        if (primary->val.basic_type != secondary->val.basic_type) {
+                type_error(this->val.relation.primary->pos, "comparison of incompatible types");
+        }
+        symbol = create_symbol_basic(INT_TYPE);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_additive_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.binary_op.primary);
+        secondary = translate_expr(global, local, this->val.binary_op.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.secondary->pos, "invalid operand to expression");
+        }
+        if (primary->val.basic_type != secondary->val.basic_type) {
+                type_error(this->val.binary_op.primary->pos, "comparison of incompatible types");
+        }
+        symbol = create_symbol_basic(primary->val.basic_type);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_multiplicative_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *primary, *secondary, *symbol;
         if (!this) return NULL;
-        return NULL;
+        primary = translate_expr(global, local, this->val.binary_op.primary);
+        secondary = translate_expr(global, local, this->val.binary_op.secondary);
+        if (!primary || primary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
+        }
+        if (!secondary || secondary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.secondary->pos, "invalid operand to expression");
+        }
+        if (primary->val.basic_type != secondary->val.basic_type) {
+                type_error(this->val.binary_op.primary->pos, "comparison of incompatible types");
+        }
+        symbol = create_symbol_basic(primary->val.basic_type);
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_unary_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *symbol;
         if (!this) return NULL;
-        return NULL;
+        switch (this->subtype.unary_expr_subtype) {
+        case UNARY_EXPR_SIZEOF_BASIC:
+                symbol = create_symbol_basic(INT_TYPE);
+                break;
+        case UNARY_EXPR_SIZEOF_UNARY:
+        case UNARY_EXPR_NOT_UNARY:
+        case UNARY_EXPR_POSITIVE:
+        case UNARY_EXPR_NEGATIVE:
+        case UNARY_EXPR_PRE_INCREMENT:
+        case UNARY_EXPR_PRE_DECREMENT:
+                symbol = translate_expr(global, local, this->val.unary_op.expr);
+                if (!symbol || symbol->type != SYMBOL_BASIC) {
+                        type_error(this->val.unary_op.expr->pos, "invalid operand to expression");
+                }
+                symbol = create_symbol_basic(symbol->val.basic_type);
+                break;
+        }
+        add_temp_symbol(local, symbol);
+        return symbol;
 }
 
 struct symbol *translate_postfix_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
+        struct symbol *symbol;
         if (!this) return NULL;
-        return NULL;
+        switch (this->subtype.postfix_expr_subtype) {
+        case POSTFIX_EXPR_VAR:
+                symbol = translate_var(global, local, this->val.postfix_op.var);
+                break;
+        case POSTFIX_EXPR_CONSTANT:
+                symbol = translate_constant(local, this->val.postfix_op.constant);
+                break;
+        case POSTFIX_EXPR_POST_INCREMENT:
+        case POSTFIX_EXPR_POST_DECREMENT:
+        case POSTFIX_EXPR_ENCLOSED:
+                symbol = translate_expr(global, local, this->val.postfix_op.expr);
+                break;
+        case POSTFIX_EXPR_FUNCTION_CALL:
+                symbol = translate_function_call(global, local, this->val.postfix_op.function_call);
+                break;
+        }
+        return symbol;
+}
+
+struct symbol *translate_function_call
+(struct symbol_table *global, struct symbol_table *local, struct function_call *this)
+{
+        struct symbol *symbol, *parent;
+        if (!this) return NULL;
+        parent = get_symbol(global, this->id);
+        if (!parent) {
+                type_error(this->pos, "use of undeclared function '%s'", this->id);
+        }
+        type_check_function_arg_list(global, local, parent->scoped_table, this->function_arg_list, parent->val.function_def->function_param_list);
+        if (parent->val.function_def->type == VOID_FUNCTION) {
+                return NULL;
+        }
+        symbol = create_symbol_basic(parent->val.function_def->type_specifier);
+        add_temp_symbol(global, symbol);
+        return symbol;
+}
+
+void type_check_function_arg_list
+(struct symbol_table *global, struct symbol_table *local, struct symbol_table *function, struct function_arg_list *function_arg_list, struct function_param_list *function_param_list)
+{
+        struct symbol *arg_symbol, *param_symbol;
+        if (function_arg_list == NULL && function_param_list == NULL) {
+                return;
+        } else if (function_arg_list == NULL) {
+                type_error(function_arg_list->pos, "too few arguments to function call");
+        } else if (function_param_list == NULL) {
+                type_error(function_arg_list->pos, "too many arguments to function call");
+        }
+        arg_symbol = translate_expr(global, local, function_arg_list->expr);
+        param_symbol = get_symbol(function, function_param_list->var_decl->id);
+        if (arg_symbol->type != param_symbol->type) {
+                type_error(function_arg_list->pos, "passing argument to incompatible type");
+        }
+        type_check_function_arg_list(global, local, function, function_arg_list->function_arg_list, function_param_list->function_param_list);
 }
 
 struct symbol *translate_var
