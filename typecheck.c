@@ -340,6 +340,8 @@ struct symbol *translate_function_call
         if (!parent) {
                 type_error(this->pos, "use of undeclared function '%s'", this->id);
         }
+        function_arg_list = this->function_arg_list;
+        function_param_list = parent->val.function_def->function_param_list;
         while (function_arg_list || function_param_list) {
                 if (!function_arg_list) {
                         type_error(this->pos, "too few arguments to function call");
