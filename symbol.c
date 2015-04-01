@@ -24,6 +24,43 @@ struct symbol_table_item *create_symbol_table_item
         return this;
 }
 
+struct symbol *get_symbol
+(struct symbol_table *symbol_table, char *id)
+{
+        int i;
+        struct symbol_table_item *item;
+        for (i = 0; i < symbol_table->n_items; i++) {
+                item = symbol_table->items[i];
+                if (strcmp(item->id, id) == 0) {
+                        return item->symbol;
+                }
+        }
+        return NULL;
+}
+
+void add_symbol
+(struct symbol_table *symbol_table, char *id, struct symbol *symbol)
+{
+        if (get_symbol(symbol_table, id)) {
+                fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
+                exit(EXIT_FAILURE);
+        }
+        symbol_table->n_items++;
+        symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
+        symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol);
+}
+
+void add_temp_symbol
+(struct symbol_table *symbol_table, struct symbol *symbol)
+{
+        static int counter = 1;
+        char *prefix = "temp";
+        int id_length = strlen(prefix) + 1 + floor(log10(counter) + 1) + 1;
+        char *id = malloc(id_length);
+        sprintf(id, "%s:%d", prefix, counter++);
+        add_symbol(symbol_table, id, symbol);
+}
+
 struct symbol *create_symbol_basic
 (enum basic_type basic_type)
 {
@@ -70,43 +107,6 @@ struct symbol *create_symbol_function
         this->val.function_def = function_def;
         this->scoped_table = create_symbol_table();
         return this;
-}
-
-void add_symbol
-(struct symbol_table *symbol_table, char *id, struct symbol *symbol)
-{
-        if (get_symbol(symbol_table, id)) {
-                fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
-                exit(EXIT_FAILURE);
-        }
-        symbol_table->n_items++;
-        symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
-        symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol);
-}
-
-void add_temp_symbol
-(struct symbol_table *symbol_table, struct symbol *symbol)
-{
-        static int counter = 1;
-        char *prefix = "temp";
-        int id_length = strlen(prefix) + 1 + floor(log10(counter) + 1) + 1;
-        char *id = malloc(id_length);
-        sprintf(id, "%s:%d", prefix, counter++);
-        add_symbol(symbol_table, id, symbol);
-}
-
-struct symbol *get_symbol
-(struct symbol_table *symbol_table, char *id)
-{
-        int i;
-        struct symbol_table_item *item;
-        for (i = 0; i < symbol_table->n_items; i++) {
-                item = symbol_table->items[i];
-                if (strcmp(item->id, id) == 0) {
-                        return item->symbol;
-                }
-        }
-        return NULL;
 }
 
 struct symbol_table *parse_symbols
