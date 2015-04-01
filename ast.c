@@ -1,4 +1,7 @@
+#include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "ast.h"
 
 struct program *create_program
@@ -85,11 +88,20 @@ struct var_decl *create_var_decl_typedef
 }
 
 struct struct_type *create_struct_type
-(int line, int column, struct var_decl_stmt_list *var_decl_stmt_list)
+(int line, int column, char *id, struct var_decl_stmt_list *var_decl_stmt_list)
 { 
+        static int counter = 1;
+        char *prefix = "anonymous_struct";
+        int id_length = strlen(prefix) + 1 + floor(log10(counter) + 1) + 1;
         struct struct_type *this = malloc(sizeof(struct struct_type));
         this->pos.line = line;
         this->pos.column = column;
+        if (id) {
+                this->id = id;
+        } else {
+                this->id = malloc(id_length);
+                sprintf(this->id, "%s:%d", prefix, counter++);
+        }
         this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
 }
@@ -586,6 +598,7 @@ void free_struct_type
 {
         if (!this) return;
         free_var_decl_stmt_list(this->var_decl_stmt_list);
+        free(this->id);
         free(this);
 }
 
