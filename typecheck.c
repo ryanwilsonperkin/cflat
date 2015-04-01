@@ -1,21 +1,8 @@
-#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
 #include "symbol.h"
 #include "typecheck.h"
-
-void type_error
-(struct pos pos, const char *fmt, ...)
-{
-        va_list argptr;
-        fprintf(stderr, "%d:%d: type error: ", pos.line, pos.column);
-        va_start(argptr, fmt);
-        vfprintf(stderr, fmt, argptr);
-        va_end(argptr);
-        fprintf(stderr, "\n");
-        exit(EXIT_FAILURE);
-}
 
 void type_check_program
 (struct symbol_table *global, struct program *this)

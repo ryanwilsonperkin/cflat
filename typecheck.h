@@ -4,8 +4,6 @@
 #include "ast.h"
 #include "symbol.h"
 
-void type_error(struct pos pos, const char *fmt, ...);
-
 void type_check_program(struct symbol_table *, struct program *);
 void type_check_function_def_list(struct symbol_table *, struct function_def_list *);
 void type_check_function_def(struct symbol_table *, struct function_def *);

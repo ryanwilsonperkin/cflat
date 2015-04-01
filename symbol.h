@@ -34,6 +34,8 @@ struct symbol_table {
         struct symbol_table_item **items;
 };
 
+void type_error(struct pos pos, const char *fmt, ...);
+
 struct symbol_table *create_symbol_table();
 struct symbol_table_item *create_symbol_table_item(char *, struct symbol *);
 struct symbol *get_symbol(struct symbol_table *, char *);
