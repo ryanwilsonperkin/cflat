@@ -59,5 +59,21 @@ void parse_function_param_list(struct symbol_table *, struct symbol_table *, str
 void parse_function_body(struct symbol_table *, struct symbol_table *, struct function_body *);
 
 struct symbol *translate_var_decl(struct symbol_table *, struct var_decl *);
+struct symbol *translate_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_assign_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_logical_or_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_logical_and_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_equality_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_relational_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_additive_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_multiplicative_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_unary_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_postfix_expr(struct symbol_table *, struct symbol_table *, struct expr *);
+struct symbol *translate_function_call(struct symbol_table *, struct symbol_table *, struct function_call *);
+struct symbol *translate_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_identifier_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_field_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_subscript_var(struct symbol_table *, struct symbol_table *, struct var *);
+struct symbol *translate_constant(struct symbol_table *, struct constant *);
 
 #endif  /* CFLAT_SYMBOL_H */
