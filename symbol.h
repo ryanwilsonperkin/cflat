@@ -58,6 +58,6 @@ void parse_function_def(struct symbol_table *, struct function_def *);
 void parse_function_param_list(struct symbol_table *, struct symbol_table *, struct function_param_list *);
 void parse_function_body(struct symbol_table *, struct symbol_table *, struct function_body *);
 
-struct symbol *var_decl_to_symbol(struct symbol_table *, struct var_decl *);
+struct symbol *translate_var_decl(struct symbol_table *, struct var_decl *);
 
 #endif  /* CFLAT_SYMBOL_H */

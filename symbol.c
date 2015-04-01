@@ -108,31 +108,6 @@ struct symbol *get_symbol
         return NULL;
 }
 
-struct symbol *var_decl_to_symbol
-(struct symbol_table *global, struct var_decl *var_decl)
-{
-        int size;
-        struct symbol *this;
-        switch (var_decl->type)
-        {
-        case BASIC_VAR:
-                this = create_symbol_basic(var_decl->val.basic_var);
-                break;
-        case STRUCT_VAR:
-                this = create_symbol_struct(var_decl->val.struct_var);
-                parse_struct_type(global, this->scoped_table, var_decl->val.struct_var);
-                break;
-        case TYPEDEF_VAR:
-                this = get_symbol(global, var_decl->val.typedef_id);
-                break;
-        }
-        if (var_decl->array_specifier) {
-                size = var_decl->array_specifier->constant->val.ival;
-                this = create_symbol_array(this, size);
-        }
-        return this;
-}
-
 struct symbol_table *parse_symbols
 (struct program *program)
 {
@@ -163,7 +138,7 @@ void parse_type_decl
 {
         struct symbol *named_symbol;
         if (!this) return;
-        named_symbol = create_symbol_named(var_decl_to_symbol(global, this->var_decl));
+        named_symbol = create_symbol_named(translate_var_decl(global, this->var_decl));
         add_symbol(global, this->var_decl->id, named_symbol);
 }
 
@@ -179,7 +154,7 @@ void parse_var_decl
 (struct symbol_table *global, struct symbol_table *local, struct var_decl *this)
 {
         if (!this) return;
-        add_symbol(local, this->id, var_decl_to_symbol(global, this));
+        add_symbol(local, this->id, translate_var_decl(global, this));
 }
 
 void parse_struct_type
@@ -221,4 +196,29 @@ void parse_function_body
 {
         if (!this) return;
         parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
+}
+
+struct symbol *translate_var_decl
+(struct symbol_table *global, struct var_decl *var_decl)
+{
+        int size;
+        struct symbol *this;
+        switch (var_decl->type)
+        {
+        case BASIC_VAR:
+                this = create_symbol_basic(var_decl->val.basic_var);
+                break;
+        case STRUCT_VAR:
+                this = create_symbol_struct(var_decl->val.struct_var);
+                parse_struct_type(global, this->scoped_table, var_decl->val.struct_var);
+                break;
+        case TYPEDEF_VAR:
+                this = get_symbol(global, var_decl->val.typedef_id);
+                break;
+        }
+        if (var_decl->array_specifier) {
+                size = var_decl->array_specifier->constant->val.ival;
+                this = create_symbol_array(this, size);
+        }
+        return this;
 }
