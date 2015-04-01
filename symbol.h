@@ -36,16 +36,16 @@ struct symbol_table {
 
 struct symbol_table *create_symbol_table();
 struct symbol_table_item *create_symbol_table_item(char *, struct symbol *);
+struct symbol *get_symbol(struct symbol_table *, char *);
+void add_symbol(struct symbol_table *, char *, struct symbol *);
+void add_temp_symbol(struct symbol_table *, struct symbol *);
+
 struct symbol *create_symbol_basic(enum basic_type);
 struct symbol *create_symbol_named(struct symbol *);
 struct symbol *create_symbol_array(struct symbol *, int);
 struct symbol *create_symbol_struct(struct struct_type *);
 struct symbol *create_symbol_function(struct function_def *);
-void add_symbol(struct symbol_table *, char *, struct symbol *);
-void add_temp_symbol(struct symbol_table *, struct symbol *);
-struct symbol *get_symbol(struct symbol_table *, char *);
 
-struct symbol *var_decl_to_symbol(struct symbol_table *, struct var_decl *);
 struct symbol_table *parse_symbols(struct program *);
 void parse_program(struct symbol_table *, struct program *);
 void parse_type_decl_list(struct symbol_table *, struct type_decl_list *);
@@ -57,5 +57,7 @@ void parse_function_def_list(struct symbol_table *, struct function_def_list *);
 void parse_function_def(struct symbol_table *, struct function_def *);
 void parse_function_param_list(struct symbol_table *, struct symbol_table *, struct function_param_list *);
 void parse_function_body(struct symbol_table *, struct symbol_table *, struct function_body *);
+
+struct symbol *var_decl_to_symbol(struct symbol_table *, struct var_decl *);
 
 #endif  /* CFLAT_SYMBOL_H */
