@@ -12,6 +12,8 @@ class SymbolTest : public ::testing::Test {
                 virtual void TearDown() {}
 };
 
+typedef SymbolTest SymbolDeathTest;
+
 TEST_F(SymbolTest, CreateSymbolTable)
 {
         struct symbol_table *st;
@@ -60,6 +62,19 @@ TEST_F(SymbolTest, AddSymbolMultiple)
         add_symbol(st, id1, &s1);
         add_symbol(st, id2, &s2);
         EXPECT_EQ(st->n_items, 2);
+}
+
+TEST_F(SymbolDeathTest, AddSymbolDuplicate)
+{
+        struct symbol_table *st;
+        char id[] = "test1";
+        struct symbol s;
+
+        st = create_symbol_table();
+        ASSERT_TRUE(st != NULL);
+
+        add_symbol(st, id, &s);
+        ASSERT_DEATH(add_symbol(st, id, &s), "redefinition of symbol");
 }
 
 TEST_F(SymbolTest, GetSymbolEmpty)
