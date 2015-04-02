@@ -180,3 +180,34 @@ TEST_F(SymbolTest, GetSymbolTempMultiple)
         EXPECT_EQ(&s1, get_symbol(st, (char *)"temp:1"));
         EXPECT_EQ(&s2, get_symbol(st, (char *)"temp:2"));
 }
+
+TEST_F(SymbolTest, CreateSymbolBasicCharType)
+{
+        struct symbol *s;
+
+        s = create_symbol_basic(CHAR_TYPE);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(CHAR_TYPE, s->val.basic_type);
+}
+
+TEST_F(SymbolTest, CreateSymbolBasicFloatType)
+{
+        struct symbol *s;
+
+        s = create_symbol_basic(FLOAT_TYPE);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(FLOAT_TYPE, s->val.basic_type);
+}
+
+TEST_F(SymbolTest, CreateSymbolBasicIntType)
+{
+        struct symbol *s;
+
+        s = create_symbol_basic(INT_TYPE);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(INT_TYPE, s->val.basic_type);
+}
+
