@@ -1,4 +1,4 @@
-BUILD_DIR = build
+BIN_DIR = bin
 INCLUDE_DIR = include
 SRC_DIR = src
 TEST_DIR=$(SRC_DIR)/test
@@ -24,12 +24,12 @@ ifeq ($(shell uname), Darwin)
 	LDFLAGS += -largp
 endif
 
-all: $(BUILD_DIR)/cflatc
+all: $(BIN_DIR)/cflatc
 
-test: $(BUILD_DIR)/test_cflatc
+test: $(BIN_DIR)/test_cflatc
 
-$(BUILD_DIR)/cflatc: $(OBJS)
-	mkdir -p $(BUILD_DIR)
+$(BIN_DIR)/cflatc: $(OBJS)
+	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: $(SRC_DIR)/%.c
@@ -41,8 +41,8 @@ scanner.c: $(SRC_DIR)/scanner.l
 parser.c: $(SRC_DIR)/parser.y
 	$(YACC) $(YFLAGS) -o $@ $^
 
-$(BUILD_DIR)/test_cflatc: $(TEST_OBJS) gtest_main.a
-	mkdir -p $(BUILD_DIR)
+$(BIN_DIR)/test_cflatc: $(TEST_OBJS) gtest_main.a
+	mkdir -p $(BIN_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 symbol_test.o: $(TEST_DIR)/symbol_test.cc $(GTEST_HEADERS)
@@ -64,4 +64,4 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
 clean:
-	$(RM) *.o *.a scanner.c parser.c parser.h build/*
+	$(RM) *.o *.a scanner.c parser.c parser.h BIN/*
