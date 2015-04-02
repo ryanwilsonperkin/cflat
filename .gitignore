@@ -1,5 +1,6 @@
 # Produced executables
 cflatc
+*.a
 
 # Intermediate files
 scanner.c
