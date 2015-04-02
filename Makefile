@@ -14,11 +14,15 @@ TEST_OBJS = symbol_test.o symbol.o
 CC = gcc
 LEX = flex
 YACC = bison
-LDFLAGS += -ll -largp -lm
+LDFLAGS += -ll -lm
 CFLAGS += -g -I$(INCLUDE_DIR) -I.
 CPPFLAGS += -isystem $(GTEST_DIR)/include -I$(INCLUDE_DIR) -I.
 CXXFLAGS += -g -Wall -Wextra -pthread
 YFLAGS += -d
+
+ifeq ($(shell uname), Darwin)
+	LDFLAGS += -largp
+endif
 
 all: $(BUILD_DIR)/cflatc
 
