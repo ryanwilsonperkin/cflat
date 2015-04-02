@@ -221,6 +221,18 @@ TEST_F(SymbolTest, CreateSymbolNamed)
         EXPECT_EQ(&s1, s2->val.symbol);
 }
 
+TEST_F(SymbolTest, CreateSymbolArray)
+{
+        int size = 10;
+        struct symbol s1, *s2;
+
+        s2 = create_symbol_array(&s1, size);
+        ASSERT_TRUE(s2 != NULL);
+        EXPECT_EQ(SYMBOL_ARRAY, s2->type);
+        EXPECT_EQ(size, s2->val.array.size);
+        EXPECT_EQ(&s1, s2->val.array.symbol);
+}
+
 TEST_F(SymbolTest, CreateSymbolStruct)
 {
         struct symbol_table *st;
