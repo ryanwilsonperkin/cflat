@@ -1,5 +1,6 @@
 # Produced executables
 cflatc
+cflatc_test
 *.a
 
 # Intermediate files
