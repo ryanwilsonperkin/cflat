@@ -1,20 +1,32 @@
 BUILD_DIR = build
 INCLUDE_DIR = include
 SRC_DIR = src
+TEST_DIR=$(SRC_DIR)/test
+
+GTEST_DIR=vendor/gtest-1.7.0
+GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
+		$(GTEST_DIR)/include/gtest/internal/*.h
+GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
+
 OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
+TEST_OBJS = symbol_test.o symbol.o
 
 CC = gcc
 LEX = flex
 YACC = bison
 LDFLAGS += -ll -largp
 CFLAGS += -g -I$(INCLUDE_DIR) -I.
+CPPFLAGS += -isystem $(GTEST_DIR)/include -I$(INCLUDE_DIR) -I.
+CXXFLAGS += -g -Wall -Wextra -pthread
 YFLAGS += -d
 
-all: cflatc
+all: $(BUILD_DIR)/cflatc
 
-cflatc: $(OBJS)
+test: $(BUILD_DIR)/test_cflatc
+
+$(BUILD_DIR)/cflatc: $(OBJS)
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $^
@@ -25,5 +37,27 @@ scanner.c: $(SRC_DIR)/scanner.l
 parser.c: $(SRC_DIR)/parser.y
 	$(YACC) $(YFLAGS) -o $@ $^
 
+$(BUILD_DIR)/test_cflatc: $(TEST_OBJS) gtest_main.a
+	mkdir -p $(BUILD_DIR)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+symbol_test.o: $(TEST_DIR)/symbol_test.cc $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TEST_DIR)/symbol_test.cc
+
+# Targets for building Google Test Framework
+gtest-all.o : $(GTEST_SRCS_)
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+            $(GTEST_DIR)/src/gtest-all.cc
+
+gtest_main.o : $(GTEST_SRCS_)
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+            $(GTEST_DIR)/src/gtest_main.cc
+
+gtest.a : gtest-all.o
+	$(AR) $(ARFLAGS) $@ $^
+
+gtest_main.a : gtest-all.o gtest_main.o
+	$(AR) $(ARFLAGS) $@ $^
+
 clean:
-	$(RM) *.o *.a scanner.c parser.c parser.h
+	$(RM) *.o *.a scanner.c parser.c parser.h build/*
