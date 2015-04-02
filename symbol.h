@@ -78,4 +78,6 @@ struct symbol *translate_field_var(struct symbol_table *, struct symbol_table *,
 struct symbol *translate_subscript_var(struct symbol_table *, struct symbol_table *, struct var *);
 struct symbol *translate_constant(struct symbol_table *, struct constant *);
 
+int symbol_equivalent(struct symbol *, struct symbol *);
+
 #endif  /* CFLAT_SYMBOL_H */

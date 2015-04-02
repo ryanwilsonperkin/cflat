@@ -266,11 +266,13 @@ struct symbol *translate_assign_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *assignee, *assignment;
-        if (!this) return NULL;
         assignee = translate_var(global, local, this->val.assign.assignee);
         assignment = translate_expr(global, local, this->val.assign.assignment);
-        if (assignee->type != assignment->type) {
+        if (!symbol_equivalent(assignee, assignment)) {
                 type_error(this->pos, "assignment from incompatible type");
+        }
+        if (assignee->type != SYMBOL_BASIC) {
+                type_error(this->val.assign.assignee->pos, "assignment not supported for type");
         }
         return assignee;
 }
@@ -279,14 +281,13 @@ struct symbol *translate_logical_or_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.relation.primary);
         secondary = translate_expr(global, local, this->val.relation.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
-                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
+        if (!symbol_equivalent(primary, secondary)) {
+                type_error(this->val.relation.primary->pos, "comparison of incompatible types");
         }
-        if (!secondary || secondary->type != SYMBOL_BASIC || secondary->val.basic_type != INT_TYPE) {
-                type_error(this->val.relation.secondary->pos, "invalid operand to expression (requires int)");
+        if (primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
         }
         symbol = create_symbol_basic(INT_TYPE);
         add_temp_symbol(local, symbol);
@@ -297,14 +298,13 @@ struct symbol *translate_logical_and_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.relation.primary);
         secondary = translate_expr(global, local, this->val.relation.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
-                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
+        if (!symbol_equivalent(primary, secondary)) {
+                type_error(this->val.relation.primary->pos, "comparison of incompatible types");
         }
-        if (!secondary || secondary->type != SYMBOL_BASIC || secondary->val.basic_type != INT_TYPE) {
-                type_error(this->val.relation.secondary->pos, "invalid operand to expression (requires int)");
+        if (primary->type != SYMBOL_BASIC || primary->val.basic_type != INT_TYPE) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
         }
         symbol = create_symbol_basic(INT_TYPE);
         add_temp_symbol(local, symbol);
@@ -315,17 +315,13 @@ struct symbol *translate_equality_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.relation.primary);
         secondary = translate_expr(global, local, this->val.relation.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC) {
-                type_error(this->val.relation.primary->pos, "invalid operand to expression");
-        }
-        if (!secondary || secondary->type != SYMBOL_BASIC) {
-                type_error(this->val.relation.secondary->pos, "invalid operand to expression");
-        }
-        if (primary->val.basic_type != secondary->val.basic_type) {
+        if (!symbol_equivalent(primary, secondary)) {
                 type_error(this->val.relation.primary->pos, "comparison of incompatible types");
+        }
+        if (primary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(INT_TYPE);
         add_temp_symbol(local, symbol);
@@ -336,17 +332,13 @@ struct symbol *translate_relational_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.relation.primary);
         secondary = translate_expr(global, local, this->val.relation.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC) {
-                type_error(this->val.relation.primary->pos, "invalid operand to expression");
-        }
-        if (!secondary || secondary->type != SYMBOL_BASIC) {
-                type_error(this->val.relation.secondary->pos, "invalid operand to expression");
-        }
-        if (primary->val.basic_type != secondary->val.basic_type) {
+        if (!symbol_equivalent(primary, secondary)) {
                 type_error(this->val.relation.primary->pos, "comparison of incompatible types");
+        }
+        if (primary->type != SYMBOL_BASIC) {
+                type_error(this->val.relation.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(INT_TYPE);
         add_temp_symbol(local, symbol);
@@ -357,17 +349,13 @@ struct symbol *translate_additive_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.binary_op.primary);
         secondary = translate_expr(global, local, this->val.binary_op.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC) {
-                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
-        }
-        if (!secondary || secondary->type != SYMBOL_BASIC) {
-                type_error(this->val.binary_op.secondary->pos, "invalid operand to expression");
-        }
-        if (primary->val.basic_type != secondary->val.basic_type) {
+        if (!symbol_equivalent(primary, secondary)) {
                 type_error(this->val.binary_op.primary->pos, "comparison of incompatible types");
+        }
+        if (primary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(primary->val.basic_type);
         add_temp_symbol(local, symbol);
@@ -378,17 +366,13 @@ struct symbol *translate_multiplicative_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *primary, *secondary, *symbol;
-        if (!this) return NULL;
         primary = translate_expr(global, local, this->val.binary_op.primary);
         secondary = translate_expr(global, local, this->val.binary_op.secondary);
-        if (!primary || primary->type != SYMBOL_BASIC) {
-                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
-        }
-        if (!secondary || secondary->type != SYMBOL_BASIC) {
-                type_error(this->val.binary_op.secondary->pos, "invalid operand to expression");
-        }
-        if (primary->val.basic_type != secondary->val.basic_type) {
+        if (!symbol_equivalent(primary, secondary)) {
                 type_error(this->val.binary_op.primary->pos, "comparison of incompatible types");
+        }
+        if (primary->type != SYMBOL_BASIC) {
+                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(primary->val.basic_type);
         add_temp_symbol(local, symbol);
@@ -554,4 +538,36 @@ struct symbol *translate_constant
         symbol = create_symbol_basic(this->type);
         add_temp_symbol(local, symbol);
         return symbol;
+}
+
+int symbol_equivalent
+(struct symbol *s1, struct symbol *s2)
+{
+        if (!s1 && !s2) {
+                return 1;
+        } else if (!s1 || !s2) {
+                return 0;
+        }
+
+        if (s2->type == SYMBOL_NAMED) {
+                return symbol_equivalent(s1, s2->val.symbol);
+        }
+
+        switch (s1->type) {
+        case SYMBOL_BASIC:
+                return (s1->type == s2->type && 
+                        s1->val.basic_type == s2->val.basic_type); 
+        case SYMBOL_NAMED:
+                return symbol_equivalent(s1->val.symbol, s2);
+        case SYMBOL_ARRAY:
+                return (s1->type == s2->type && 
+                        s1->val.array.size == s2->val.array.size && 
+                        symbol_equivalent(s1->val.array.symbol, s2->val.array.symbol));
+        case SYMBOL_STRUCT:
+                return (s1->type == s2->type &&
+                        strcmp(s1->val.struct_type->id, s2->val.struct_type->id) == 0);
+        case SYMBOL_FUNCTION:
+                return (s1->type == s2->type &&
+                        strcmp(s1->val.function_def->id, s2->val.function_def->id) == 0);
+        }
 }
