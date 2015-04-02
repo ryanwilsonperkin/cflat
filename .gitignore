@@ -1,3 +1,6 @@
+# Build directory
+build
+
 # Produced executables
 cflatc
 cflatc_test

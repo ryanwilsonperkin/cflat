@@ -1,47 +1,29 @@
-CC=gcc
-LEX=flex
-YACC=bison
-LDFLAGS=-ll -largp
-CFLAGS=-g
-YFLAGS+=-d -v
+BUILD_DIR = build
+INCLUDE_DIR = include
+SRC_DIR = src
+OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
+
+CC = gcc
+LEX = flex
+YACC = bison
+LDFLAGS += -ll -largp
+CFLAGS += -g -I$(INCLUDE_DIR) -I.
+YFLAGS += -d
 
 all: cflatc
 
-cflatc: parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+cflatc: $(OBJS)
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
 
-cflatc.o: cflatc.c
-	$(CC) $(CFLAGS) -o $@ -c $^
+%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $^
 
-scanner.o: scanner.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-scanner.c: scanner.l
+scanner.c: $(SRC_DIR)/scanner.l
 	$(LEX) $(LFLAGS) -o $@ $^ 
 
-parser.o: parser.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-parser.c: parser.y
+parser.c: $(SRC_DIR)/parser.y
 	$(YACC) $(YFLAGS) -o $@ $^
 
-ast.o: ast.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-astprint.o: astprint.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-symbol.o: symbol.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-symbolprint.o: symbolprint.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-typecheck.o: typecheck.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
-print.o: print.c
-	$(CC) $(CFLAGS) -o $@ -c $^
-
 clean:
-	$(RM) *.o scanner.c parser.c parser.h
+	$(RM) *.o *.a scanner.c parser.c parser.h
