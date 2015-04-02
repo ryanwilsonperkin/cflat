@@ -122,15 +122,17 @@ struct stmt_list {
         struct stmt_list *stmt_list;
 };
 
+enum stmt_type {
+        EXPR_STMT,
+        COMPOUND_STMT,
+        SELECT_STMT,
+        ITER_STMT,
+        RETURN_STMT
+};
+
 struct stmt {
         struct pos pos;
-        enum stmt_type {
-                EXPR_STMT,
-                COMPOUND_STMT,
-                SELECT_STMT,
-                ITER_STMT,
-                RETURN_STMT
-        } type;
+        enum stmt_type type;
         union {
                 struct expr_stmt *expr_stmt;
                 struct compound_stmt *compound_stmt;
@@ -185,6 +187,48 @@ struct return_stmt {
         struct expr *expr;
 };
 
+enum equality_expr_subtype {
+        EQUALITY_EXPR_EQUAL,
+        EQUALITY_EXPR_NOT_EQUAL
+};
+
+enum relational_expr_subtype {
+        RELATIONAL_EXPR_LESS_THAN,
+        RELATIONAL_EXPR_LESS_THAN_OR_EQUAL,
+        RELATIONAL_EXPR_GREATER_THAN,
+        RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL
+};
+
+enum additive_expr_subtype {
+        ADDITIVE_EXPR_ADD,
+        ADDITIVE_EXPR_SUBTRACT
+};
+
+enum multiplicative_expr_subtype {
+        MULTIPLICATIVE_EXPR_MULTIPLY,
+        MULTIPLICATIVE_EXPR_DIVIDE,
+        MULTIPLICATIVE_EXPR_MODULO
+};
+
+enum unary_expr_subtype {
+        UNARY_EXPR_SIZEOF_UNARY,
+        UNARY_EXPR_SIZEOF_BASIC,
+        UNARY_EXPR_NOT_UNARY,
+        UNARY_EXPR_POSITIVE,
+        UNARY_EXPR_NEGATIVE,
+        UNARY_EXPR_PRE_INCREMENT,
+        UNARY_EXPR_PRE_DECREMENT
+};
+
+enum postfix_expr_subtype {
+        POSTFIX_EXPR_VAR,
+        POSTFIX_EXPR_CONSTANT,
+        POSTFIX_EXPR_POST_INCREMENT,
+        POSTFIX_EXPR_POST_DECREMENT,
+        POSTFIX_EXPR_ENCLOSED,
+        POSTFIX_EXPR_FUNCTION_CALL
+};
+
 struct expr {
         struct pos pos;
         enum {
@@ -199,42 +243,12 @@ struct expr {
                 POSTFIX_EXPR
         } type;
         union {
-                enum equality_expr_subtype {
-                        EQUALITY_EXPR_EQUAL,
-                        EQUALITY_EXPR_NOT_EQUAL
-                } equality_expr_subtype;
-                enum relational_expr_subtype {
-                        RELATIONAL_EXPR_LESS_THAN,
-                        RELATIONAL_EXPR_LESS_THAN_OR_EQUAL,
-                        RELATIONAL_EXPR_GREATER_THAN,
-                        RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL
-                } relational_expr_subtype;
-                enum additive_expr_subtype {
-                        ADDITIVE_EXPR_ADD,
-                        ADDITIVE_EXPR_SUBTRACT
-                } additive_expr_subtype;
-                enum multiplicative_expr_subtype {
-                        MULTIPLICATIVE_EXPR_MULTIPLY,
-                        MULTIPLICATIVE_EXPR_DIVIDE,
-                        MULTIPLICATIVE_EXPR_MODULO
-                } multiplicative_expr_subtype;
-                enum unary_expr_subtype {
-                        UNARY_EXPR_SIZEOF_UNARY,
-                        UNARY_EXPR_SIZEOF_BASIC,
-                        UNARY_EXPR_NOT_UNARY,
-                        UNARY_EXPR_POSITIVE,
-                        UNARY_EXPR_NEGATIVE,
-                        UNARY_EXPR_PRE_INCREMENT,
-                        UNARY_EXPR_PRE_DECREMENT
-                } unary_expr_subtype;
-                enum postfix_expr_subtype {
-                        POSTFIX_EXPR_VAR,
-                        POSTFIX_EXPR_CONSTANT,
-                        POSTFIX_EXPR_POST_INCREMENT,
-                        POSTFIX_EXPR_POST_DECREMENT,
-                        POSTFIX_EXPR_ENCLOSED,
-                        POSTFIX_EXPR_FUNCTION_CALL
-                } postfix_expr_subtype;
+                enum equality_expr_subtype equality_expr_subtype;
+                enum relational_expr_subtype relational_expr_subtype;
+                enum additive_expr_subtype additive_expr_subtype;
+                enum multiplicative_expr_subtype multiplicative_expr_subtype;
+                enum unary_expr_subtype unary_expr_subtype;
+                enum postfix_expr_subtype postfix_expr_subtype;
         } subtype;
         union {
                 struct {

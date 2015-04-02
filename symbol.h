@@ -3,14 +3,16 @@
 
 #include "ast.h"
 
+enum symbol_type {
+        SYMBOL_BASIC,
+        SYMBOL_NAMED,
+        SYMBOL_ARRAY,
+        SYMBOL_STRUCT,
+        SYMBOL_FUNCTION
+};
+
 struct symbol {
-        enum symbol_type {
-                SYMBOL_BASIC,
-                SYMBOL_NAMED,
-                SYMBOL_ARRAY,
-                SYMBOL_STRUCT,
-                SYMBOL_FUNCTION
-        } type;
+        enum symbol_type type;
         union {
                 enum basic_type basic_type;
                 struct symbol *symbol;
