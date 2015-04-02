@@ -1,0 +1,66 @@
+/* Loops test suite
+ * Tests:
+ *      For loop with nothing
+ *      For loop with initialization
+ *      For loop with conditional
+ *      For loop with afterthought
+ *      For loop with initialization, conditional
+ *      For loop with initialization, afterthought
+ *      For loop with conditional, afterthought
+ *      For loop with initialization, conditional, afterthought
+ *      While loop
+ *      Nested for loop
+ *      Nested while loop
+ */
+
+int main()
+{
+        for ( ; ; ) {
+                1;
+        }
+
+        for (1; ; ) {
+                1;
+        }
+
+        for ( ; 1; ) {
+                1;
+        }
+
+        for ( ; ; 1) {
+                1;
+        }
+
+        for (1; 1; ) {
+                1;
+        }
+
+        for (1; ; 1) {
+                1;
+        }
+
+        for ( ; 1; 1) {
+                1;
+        }
+
+        for (1; 1; 1) {
+                1;
+        }
+
+        while (1) {
+                1;
+        }
+
+        for ( ; ; ) {
+                for ( ; ; ) {
+                        1;
+                }
+        }
+
+        while (1) {
+                while (1) {
+                }
+        }
+
+        return 1;
+}
