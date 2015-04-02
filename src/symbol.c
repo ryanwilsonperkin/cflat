@@ -23,6 +23,7 @@ struct symbol_table *create_symbol_table
 {
         struct symbol_table *this = malloc(sizeof(struct symbol_table));
         this->n_items = 0;
+        this->n_temps = 0;
         this->items = NULL;
         return this;
 }
@@ -65,11 +66,13 @@ void add_symbol
 void add_temp_symbol
 (struct symbol_table *symbol_table, struct symbol *symbol)
 {
-        static int counter = 1;
         char *prefix = "temp";
-        int id_length = strlen(prefix) + 1 + floor(log10(counter) + 1) + 1;
-        char *id = malloc(id_length);
-        sprintf(id, "%s:%d", prefix, counter++);
+        int id_length;
+        char *id;
+        symbol_table->n_temps += 1;
+        id_length = strlen(prefix) + 1 + floor(log10(symbol_table->n_temps) + 1) + 1;
+        id = malloc(id_length);
+        sprintf(id, "%s:%d", prefix, symbol_table->n_temps);
         add_symbol(symbol_table, id, symbol);
 }
 
