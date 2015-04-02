@@ -249,3 +249,20 @@ TEST_F(SymbolTest, CreateSymbolStruct)
         EXPECT_EQ(0, st->n_items);
         EXPECT_EQ(NULL, st->items);
 }
+
+TEST_F(SymbolTest, CreateSymbolFunction)
+{
+        struct symbol_table *st;
+        struct function_def function_def;
+        struct symbol *s;
+
+        s = create_symbol_function(&function_def);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_FUNCTION, s->type);
+        EXPECT_EQ(&function_def, s->val.function_def);
+
+        st = s->scoped_table;
+        ASSERT_TRUE(st != NULL);
+        EXPECT_EQ(0, st->n_items);
+        EXPECT_EQ(NULL, st->items);
+}
