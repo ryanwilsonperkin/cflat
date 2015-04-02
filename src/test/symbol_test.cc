@@ -211,3 +211,12 @@ TEST_F(SymbolTest, CreateSymbolBasicIntType)
         EXPECT_EQ(INT_TYPE, s->val.basic_type);
 }
 
+TEST_F(SymbolTest, CreateSymbolNamed)
+{
+        struct symbol s1, *s2;
+
+        s2 = create_symbol_named(&s1);
+        ASSERT_TRUE(s2 != NULL);
+        EXPECT_EQ(SYMBOL_NAMED, s2->type);
+        EXPECT_EQ(&s1, s2->val.symbol);
+}
