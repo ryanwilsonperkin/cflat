@@ -242,6 +242,7 @@ TEST_F(SymbolTest, CreateSymbolStruct)
         s = create_symbol_struct(&struct_type);
         ASSERT_TRUE(s != NULL);
         EXPECT_EQ(SYMBOL_STRUCT, s->type);
+        EXPECT_EQ(&struct_type, s->val.struct_type);
 
         st = s->scoped_table;
         ASSERT_TRUE(st != NULL);
