@@ -220,3 +220,19 @@ TEST_F(SymbolTest, CreateSymbolNamed)
         EXPECT_EQ(SYMBOL_NAMED, s2->type);
         EXPECT_EQ(&s1, s2->val.symbol);
 }
+
+TEST_F(SymbolTest, CreateSymbolStruct)
+{
+        struct symbol_table *st;
+        struct struct_type struct_type;
+        struct symbol *s;
+
+        s = create_symbol_struct(&struct_type);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_STRUCT, s->type);
+
+        st = s->scoped_table;
+        ASSERT_TRUE(st != NULL);
+        EXPECT_EQ(0, st->n_items);
+        EXPECT_EQ(NULL, st->items);
+}
