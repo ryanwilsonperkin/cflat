@@ -64,6 +64,31 @@ TEST_F(SymbolTest, AddSymbolMultiple)
         EXPECT_EQ(st->n_items, 2);
 }
 
+TEST_F(SymbolTest, AddTempSymbol)
+{
+        struct symbol_table *st;
+        struct symbol s;
+
+        st = create_symbol_table();
+        ASSERT_TRUE(st != NULL);
+
+        add_temp_symbol(st, &s);
+        EXPECT_EQ(st->n_items, 1);
+}
+
+TEST_F(SymbolTest, AddTempSymbolMultiple)
+{
+        struct symbol_table *st;
+        struct symbol s1, s2;
+
+        st = create_symbol_table();
+        ASSERT_TRUE(st != NULL);
+
+        add_temp_symbol(st, &s1);
+        add_temp_symbol(st, &s2);
+        EXPECT_EQ(st->n_items, 2);
+}
+
 TEST_F(SymbolDeathTest, AddSymbolDuplicate)
 {
         struct symbol_table *st;
