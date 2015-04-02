@@ -164,7 +164,7 @@ TEST_F(SymbolTest, GetSymbolTemp)
         ASSERT_TRUE(st != NULL);
 
         add_temp_symbol(st, &s);
-        EXPECT_EQ(&s, get_symbol(st, "temp:1"));
+        EXPECT_EQ(&s, get_symbol(st, (char *)"temp:1"));
 }
 
 TEST_F(SymbolTest, GetSymbolTempMultiple)
@@ -177,6 +177,6 @@ TEST_F(SymbolTest, GetSymbolTempMultiple)
 
         add_temp_symbol(st, &s1);
         add_temp_symbol(st, &s2);
-        EXPECT_EQ(&s1, get_symbol(st, "temp:1"));
-        EXPECT_EQ(&s2, get_symbol(st, "temp:2"));
+        EXPECT_EQ(&s1, get_symbol(st, (char *)"temp:1"));
+        EXPECT_EQ(&s2, get_symbol(st, (char *)"temp:2"));
 }

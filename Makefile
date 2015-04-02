@@ -17,7 +17,7 @@ YACC = bison
 LDFLAGS += -ll -lm
 CFLAGS += -g -I$(INCLUDE_DIR) -I.
 CPPFLAGS += -isystem $(GTEST_DIR)/include -I$(INCLUDE_DIR) -I.
-CXXFLAGS += -g -Wall -pthread -Wno-c++11-compat-deprecated-writable-strings 
+CXXFLAGS += -g -Wall -pthread
 YFLAGS += -d
 
 ifeq ($(shell uname), Darwin)
