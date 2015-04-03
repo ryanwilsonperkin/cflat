@@ -1,4 +1,5 @@
 extern "C" {
+#include "ast.h"
 #include "symbol.h"
 }
 
@@ -49,7 +50,7 @@ TEST_F(SymbolTest, AddSymbol)
         EXPECT_EQ(st->n_items, 1);
 }
 
-TEST_F(SymbolTest, AddSymbolMultiple)
+TEST_F(SymbolTest, AddSymbol_Multiple)
 {
         struct symbol_table *st;
         char id1[] = "test1";
@@ -76,7 +77,7 @@ TEST_F(SymbolTest, AddTempSymbol)
         EXPECT_EQ(st->n_items, 1);
 }
 
-TEST_F(SymbolTest, AddTempSymbolMultiple)
+TEST_F(SymbolTest, AddTempSymbol_Multiple)
 {
         struct symbol_table *st;
         struct symbol s1, s2;
@@ -89,7 +90,7 @@ TEST_F(SymbolTest, AddTempSymbolMultiple)
         EXPECT_EQ(st->n_items, 2);
 }
 
-TEST_F(SymbolDeathTest, AddSymbolDuplicate)
+TEST_F(SymbolDeathTest, AddSymbol_Duplicate)
 {
         struct symbol_table *st;
         char id[] = "test1";
@@ -102,7 +103,7 @@ TEST_F(SymbolDeathTest, AddSymbolDuplicate)
         ASSERT_DEATH(add_symbol(st, id, &s), "redefinition of symbol");
 }
 
-TEST_F(SymbolTest, GetSymbolEmpty)
+TEST_F(SymbolTest, GetSymbol_Empty)
 {
         struct symbol_table *st;
         char id[] = "test";
@@ -112,7 +113,7 @@ TEST_F(SymbolTest, GetSymbolEmpty)
         EXPECT_EQ(NULL, get_symbol(st, id));
 }
 
-TEST_F(SymbolTest, GetSymbolCorrectId)
+TEST_F(SymbolTest, GetSymbol_CorrectId)
 {
         struct symbol_table *st;
         char id[] = "test";
@@ -125,7 +126,7 @@ TEST_F(SymbolTest, GetSymbolCorrectId)
         EXPECT_EQ(&s, get_symbol(st, id));
 }
 
-TEST_F(SymbolTest, GetSymbolIncorrectId)
+TEST_F(SymbolTest, GetSymbol_IncorrectId)
 {
         struct symbol_table *st;
         char id1[] = "test";
@@ -139,7 +140,7 @@ TEST_F(SymbolTest, GetSymbolIncorrectId)
         EXPECT_EQ(NULL, get_symbol(st, id2));
 }
 
-TEST_F(SymbolTest, GetSymbolCorrectIdMultiple)
+TEST_F(SymbolTest, GetSymbol_CorrectIdMultiple)
 {
         struct symbol_table *st;
         char id1[] = "test";
@@ -155,7 +156,7 @@ TEST_F(SymbolTest, GetSymbolCorrectIdMultiple)
         EXPECT_EQ(&s2, get_symbol(st, id2));
 }
 
-TEST_F(SymbolTest, GetSymbolTemp)
+TEST_F(SymbolTest, GetSymbol_Temp)
 {
         struct symbol_table *st;
         struct symbol s;
@@ -167,7 +168,7 @@ TEST_F(SymbolTest, GetSymbolTemp)
         EXPECT_EQ(&s, get_symbol(st, (char *)"temp:1"));
 }
 
-TEST_F(SymbolTest, GetSymbolTempMultiple)
+TEST_F(SymbolTest, GetSymbol_TempMultiple)
 {
         struct symbol_table *st;
         struct symbol s1, s2;
@@ -181,7 +182,7 @@ TEST_F(SymbolTest, GetSymbolTempMultiple)
         EXPECT_EQ(&s2, get_symbol(st, (char *)"temp:2"));
 }
 
-TEST_F(SymbolTest, CreateSymbolBasicCharType)
+TEST_F(SymbolTest, CreateSymbolBasic_CharType)
 {
         struct symbol *s;
 
@@ -191,7 +192,7 @@ TEST_F(SymbolTest, CreateSymbolBasicCharType)
         EXPECT_EQ(CHAR_TYPE, s->val.basic_type);
 }
 
-TEST_F(SymbolTest, CreateSymbolBasicFloatType)
+TEST_F(SymbolTest, CreateSymbolBasic_FloatType)
 {
         struct symbol *s;
 
@@ -201,7 +202,7 @@ TEST_F(SymbolTest, CreateSymbolBasicFloatType)
         EXPECT_EQ(FLOAT_TYPE, s->val.basic_type);
 }
 
-TEST_F(SymbolTest, CreateSymbolBasicIntType)
+TEST_F(SymbolTest, CreateSymbolBasic_IntType)
 {
         struct symbol *s;
 
@@ -265,4 +266,30 @@ TEST_F(SymbolTest, CreateSymbolFunction)
         ASSERT_TRUE(st != NULL);
         EXPECT_EQ(0, st->n_items);
         EXPECT_EQ(NULL, st->items);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_call *function_call;
+        char id[] = "fn";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
+        ASSERT_TRUE(local != NULL);
+
+        function_def = create_basic_function_def(0, 0, INT_TYPE, id, NULL, NULL);
+        ASSERT_TRUE(function_def != NULL);
+
+        function_call = create_function_call(0, 0, id, NULL);
+        ASSERT_TRUE(function_call != NULL);
+
+        add_symbol(global, id, create_symbol_function(function_def));
+        s = translate_function_call(global, local, function_call);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(INT_TYPE, s->val.basic_type);
 }
