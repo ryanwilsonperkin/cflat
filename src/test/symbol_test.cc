@@ -434,6 +434,47 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
         ASSERT_EQ(NULL, s);
 }
 
+TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl1, *var_decl2;
+        struct struct_type *struct_type;
+        struct var_decl_stmt_list *var_decl_stmt_list;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct var *var;
+        char id1[] = "fn";
+        char id2[] = "inner";
+        char id3[] = "outer";
+        char id4[] = "other";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, id2, NULL);
+        var_decl_stmt_list = create_var_decl_stmt_list(0, 0, var_decl1, NULL);
+        struct_type = create_struct_type(0, 0, NULL, var_decl_stmt_list);
+        var_decl2 = create_var_decl_struct(0, 0, struct_type, id3, NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl2, NULL);
+        function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
+
+        var = create_var_identifier(0, 0, id4);
+        expr = create_postfix_expr_var(0, 0, var);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id1, function_arg_list);
+
+        add_symbol(global, id4, create_symbol_struct(struct_type));
+        parse_function_def(global, function_def);
+        EXPECT_EQ(2, global->n_items);
+
+        s = translate_function_call(global, local, function_call);
+        ASSERT_EQ(NULL, s);
+}
+
 TEST_F(SymbolDeathTest, TranslateFunctionCall_Undefined)
 {
         struct symbol_table *global;
