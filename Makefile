@@ -9,7 +9,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
-TEST_OBJS = symbol_test.o symbol.o ast.o
+TEST_OBJS = symbol_test.o symbol.o ast.o typecheck.o
 
 CC = gcc
 LEX = flex

@@ -360,8 +360,56 @@ TEST_F(SymbolTest, TranslateFunctionCall_VoidType)
         function_call = create_function_call(0, 0, id, NULL);
         ASSERT_TRUE(function_call != NULL);
 
-        add_symbol(global, id, create_symbol_function(function_def));
+        parse_function_def(global, function_def);
         s = translate_function_call(global, NULL, function_call);
+        ASSERT_EQ(NULL, s);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct constant *constant;
+        char id[] = "fn";
+        char arg_id[] = "arg";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
+
+        local = create_symbol_table();
+        ASSERT_TRUE(local != NULL);
+
+        var_decl = create_var_decl_basic(0, 0, CHAR_TYPE, arg_id, NULL);
+        ASSERT_TRUE(var_decl != NULL);
+
+        function_param_list = create_function_param_list(0, 0, var_decl, NULL);
+        ASSERT_TRUE(function_param_list != NULL);
+
+        function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
+        ASSERT_TRUE(function_def != NULL);
+
+        constant = create_constant_char(0, 0, '\0');
+        ASSERT_TRUE(constant != NULL);
+
+        expr = create_postfix_expr_constant(0, 0, constant);
+        ASSERT_TRUE(expr != NULL);
+
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        ASSERT_TRUE(function_arg_list != NULL);
+
+        function_call = create_function_call(0, 0, id, function_arg_list);
+        ASSERT_TRUE(function_call != NULL);
+
+        parse_function_def(global, function_def);
+        EXPECT_EQ(1, global->n_items);
+
+        s = translate_function_call(global, local, function_call);
         ASSERT_EQ(NULL, s);
 }
 
