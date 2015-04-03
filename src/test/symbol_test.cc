@@ -506,6 +506,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgArrayType)
 
         parse_var_decl(global, local, var_decl2);
         parse_function_def(global, function_def);
+        EXPECT_EQ(1, local->n_items);
         EXPECT_EQ(1, global->n_items);
 
         s = translate_function_call(global, local, function_call);
@@ -534,7 +535,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, (char *)"inner", NULL);
         var_decl_stmt_list = create_var_decl_stmt_list(0, 0, var_decl1, NULL);
         struct_type = create_struct_type(0, 0, NULL, var_decl_stmt_list);
-        var_decl2 = create_var_decl_struct(0, 0, struct_type, (char *)"outer", NULL);
+        var_decl2 = create_var_decl_struct(0, 0, struct_type, id2, NULL);
         function_param_list = create_function_param_list(0, 0, var_decl2, NULL);
         function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
 
@@ -543,9 +544,10 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         function_arg_list = create_function_arg_list(0, 0, expr, NULL);
         function_call = create_function_call(0, 0, id1, function_arg_list);
 
-        add_symbol(global, id2, create_symbol_struct(struct_type));
+        parse_var_decl(global, local, var_decl2);
         parse_function_def(global, function_def);
-        EXPECT_EQ(2, global->n_items);
+        EXPECT_EQ(1, local->n_items);
+        EXPECT_EQ(1, global->n_items);
 
         s = translate_function_call(global, local, function_call);
         ASSERT_EQ(NULL, s);
@@ -674,6 +676,144 @@ TEST_F(SymbolDeathTest, TranslateFunctionCall_IntFloatIncompatible)
         EXPECT_EQ(1, global->n_items);
 
         ASSERT_DEATH(translate_function_call(global, local, function_call), "passing argument to incompatible type");
+}
+
+TEST_F(SymbolDeathTest, TranslateFunctionCall_IntNamedIncompatible)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct type_decl *type_decl;
+        struct var_decl *var_decl1, *var_decl2;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct constant *constant;
+        char id1[] = "fn";
+        char id2[] = "named";
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl1 = create_var_decl_basic(0, 0, CHAR_TYPE, id2, NULL);
+        type_decl = create_type_decl(0, 0, var_decl1);
+
+        var_decl2 = create_var_decl_typedef(0, 0, id2, (char *)"arg", NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl2, NULL);
+        function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
+
+        constant = create_constant_int(0, 0, 0);
+        expr = create_postfix_expr_constant(0, 0, constant);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id1, function_arg_list);
+
+        parse_type_decl(global, type_decl);
+        parse_function_def(global, function_def);
+        EXPECT_EQ(2, global->n_items);
+
+        ASSERT_DEATH(translate_function_call(global, local, function_call), "passing argument to incompatible type");
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_IntArrayIncompatible)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl1;
+        struct array_specifier *array_specifier1;
+        struct constant *constant1, *constant2;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        char id1[] = "fn";
+        int size = 10;
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        constant1 = create_constant_int(0, 0, size);
+        array_specifier1 = create_array_specifier(0, 0, constant1);
+        var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, (char *)"arg", array_specifier1);
+        function_param_list = create_function_param_list(0, 0, var_decl1, NULL);
+        function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
+
+        constant2 = create_constant_int(0, 0, size);
+        expr = create_postfix_expr_constant(0, 0, constant2);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id1, function_arg_list);
+
+        parse_function_def(global, function_def);
+        EXPECT_EQ(1, global->n_items);
+
+        ASSERT_DEATH(translate_function_call(global, local, function_call), "passing argument to incompatible type");
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_IntStructIncompatible)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl1, *var_decl2;
+        struct struct_type *struct_type;
+        struct var_decl_stmt_list *var_decl_stmt_list;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct constant *constant;
+        char id1[] = "fn";
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, (char *)"inner", NULL);
+        var_decl_stmt_list = create_var_decl_stmt_list(0, 0, var_decl1, NULL);
+        struct_type = create_struct_type(0, 0, NULL, var_decl_stmt_list);
+        var_decl2 = create_var_decl_struct(0, 0, struct_type, (char *)"outer", NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl2, NULL);
+        function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
+
+        constant = create_constant_int(0, 0, 0);
+        expr = create_postfix_expr_constant(0, 0, constant);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id1, function_arg_list);
+
+        parse_function_def(global, function_def);
+        EXPECT_EQ(1, global->n_items);
+
+        ASSERT_DEATH(translate_function_call(global, local, function_call), "passing argument to incompatible type");
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_IntCharFunctionIncompatible)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def1, *function_def2;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl;
+        struct function_call *function_call1, *function_call2;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        char id1[] = "fn1";
+        char id2[] = "fn2";
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl = create_var_decl_basic(0, 0, INT_TYPE, (char *)"arg", NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl, NULL);
+        function_def1 = create_void_function_def(0, 0, id1, function_param_list, NULL);
+        
+        function_def2 = create_basic_function_def(0, 0, CHAR_TYPE, id2, NULL, NULL);
+
+        function_call1 = create_function_call(0, 0, id2, NULL);
+        expr = create_postfix_expr_function_call(0, 0, function_call1);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call2 = create_function_call(0, 0, id1, function_arg_list);
+
+        parse_function_def(global, function_def1);
+        parse_function_def(global, function_def2);
+        EXPECT_EQ(2, global->n_items);
+
+        ASSERT_DEATH(translate_function_call(global, local, function_call2), "passing argument to incompatible type");
 }
 
 TEST_F(SymbolDeathTest, TranslateFunctionCall_Undefined)
