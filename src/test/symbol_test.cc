@@ -268,18 +268,66 @@ TEST_F(SymbolTest, CreateSymbolFunction)
         EXPECT_EQ(NULL, st->items);
 }
 
-TEST_F(SymbolTest, TranslateFunctionCall)
+TEST_F(SymbolTest, TranslateFunctionCall_CharType)
 {
-        struct symbol_table *global, *local;
+        struct symbol_table *global;
         struct function_def *function_def;
         struct function_call *function_call;
         char id[] = "fn";
         struct symbol *s;
 
         global = create_symbol_table();
-        local = create_symbol_table();
         ASSERT_TRUE(global != NULL);
-        ASSERT_TRUE(local != NULL);
+
+        function_def = create_basic_function_def(0, 0, CHAR_TYPE, id, NULL, NULL);
+        ASSERT_TRUE(function_def != NULL);
+
+        function_call = create_function_call(0, 0, id, NULL);
+        ASSERT_TRUE(function_call != NULL);
+
+        add_symbol(global, id, create_symbol_function(function_def));
+        s = translate_function_call(global, NULL, function_call);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(CHAR_TYPE, s->val.basic_type);
+        EXPECT_EQ(1, global->n_temps);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_FloatType)
+{
+        struct symbol_table *global;
+        struct function_def *function_def;
+        struct function_call *function_call;
+        char id[] = "fn";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
+
+        function_def = create_basic_function_def(0, 0, FLOAT_TYPE, id, NULL, NULL);
+        ASSERT_TRUE(function_def != NULL);
+
+        function_call = create_function_call(0, 0, id, NULL);
+        ASSERT_TRUE(function_call != NULL);
+
+        add_symbol(global, id, create_symbol_function(function_def));
+        s = translate_function_call(global, NULL, function_call);
+        ASSERT_TRUE(s != NULL);
+        EXPECT_EQ(SYMBOL_BASIC, s->type);
+        EXPECT_EQ(FLOAT_TYPE, s->val.basic_type);
+        EXPECT_EQ(1, global->n_temps);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_IntType)
+{
+        struct symbol_table *global;
+        struct function_def *function_def;
+        struct function_call *function_call;
+        char id[] = "fn";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
 
         function_def = create_basic_function_def(0, 0, INT_TYPE, id, NULL, NULL);
         ASSERT_TRUE(function_def != NULL);
@@ -288,8 +336,45 @@ TEST_F(SymbolTest, TranslateFunctionCall)
         ASSERT_TRUE(function_call != NULL);
 
         add_symbol(global, id, create_symbol_function(function_def));
-        s = translate_function_call(global, local, function_call);
+        s = translate_function_call(global, NULL, function_call);
         ASSERT_TRUE(s != NULL);
         EXPECT_EQ(SYMBOL_BASIC, s->type);
         EXPECT_EQ(INT_TYPE, s->val.basic_type);
+        EXPECT_EQ(1, global->n_temps);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_VoidType)
+{
+        struct symbol_table *global; 
+        struct function_def *function_def;
+        struct function_call *function_call;
+        char id[] = "fn";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
+
+        function_def = create_void_function_def(0, 0, id, NULL, NULL);
+        ASSERT_TRUE(function_def != NULL);
+
+        function_call = create_function_call(0, 0, id, NULL);
+        ASSERT_TRUE(function_call != NULL);
+
+        add_symbol(global, id, create_symbol_function(function_def));
+        s = translate_function_call(global, NULL, function_call);
+        ASSERT_EQ(NULL, s);
+}
+
+TEST_F(SymbolDeathTest, TranslateFunctionCall_Undefined)
+{
+        struct symbol_table *global;
+        struct function_call *function_call;
+        char id[] = "fn";
+
+        global = create_symbol_table();
+        ASSERT_TRUE(global != NULL);
+
+        function_call = create_function_call(0, 0, id, NULL);
+        ASSERT_TRUE(function_call != NULL);
+        ASSERT_DEATH(translate_function_call(global, NULL, function_call), "use of undeclared function");
 }
