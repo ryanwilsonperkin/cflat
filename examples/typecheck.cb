@@ -1,0 +1,174 @@
+
+void expressions()
+{
+        char c;
+        float f;
+        int i;
+
+        /* Assignment expression */
+        c = c;
+        f = f;
+        i = i;
+
+        /* Logical expressions */
+        /* error: invalid operand to expression: c && c; */
+        /* error: invalid operand to expression: f && f; */
+        i && i;
+        /* error: invalid operand to expression: c || c; */
+        /* error: invalid operand to expression: f || f; */
+        i || i;
+
+        /* Equality expressions */
+        c == c;
+        f == f;
+        i == i;
+        c != c;
+        f != f;
+        i != i;
+
+        /* Relational expressions */
+        c <= c;
+        f <= f;
+        i <= i;
+        c < c;
+        f < f;
+        i < i;
+        c >= c;
+        f >= f;
+        i >= i;
+
+        /* Additive expressions */
+        c + c;
+        f + f;
+        i + i;
+        c - c;
+        f - f;
+        i - i;
+
+        /* Multiplicative expressions */
+        c * c;
+        f * f;
+        i * i;
+        c / c;
+        f / f;
+        i / i;
+        c % c;
+        /* error: invalid operand to expression: f % f; */
+        i % i;
+
+        /* Unary expressions */
+        sizeof(c);
+        sizeof(f);
+        sizeof(i);
+        sizeof(char);
+        sizeof(float);
+        sizeof(int);
+        !c;
+        !f;
+        !i;
+        +c;
+        +f;
+        +i;
+        -c;
+        -f;
+        -i;
+        ++c;
+        ++f;
+        ++i;
+        --c;
+        --f;
+        --i;
+
+        /* Postfix expressions */
+        c;
+        f;
+        i;
+        'c';
+        1.0;
+        0;
+        c++;
+        f++;
+        i++;
+        c--;
+        f--;
+        i--;
+        (c);
+        (f);
+        (i);
+        expressions();
+
+        return;
+}
+
+void variables()
+{
+        struct s1_name {
+                char c;
+                float f;
+                int i;
+                char a[10];
+                struct s2_name {
+                        char c;
+                        char a[10];
+                } s2;
+        } s1;
+        struct {
+                char c;
+        } s2[10];
+        char a[10];
+
+        s1;
+        s1.c;
+        s1.f;
+        s1.i;
+        s1.a;
+        s1.a[0];
+        s1.s2;
+        s1.s2.c;
+        s1.s2.a;
+        s1.s2.a[0];
+
+        a;
+        a[0];
+        a[-1];
+        a[10];
+
+        s2;
+        s2[0];
+        s2[0].c;
+        return;
+}
+
+char c_fn()
+{
+        return '\0';
+}
+
+float f_fn()
+{
+        return 0.0;
+}
+
+int i_fn()
+{
+        return 0;
+}
+
+void function_calls()
+{
+        char c;
+        float f;
+        int i;
+        c = c_fn();
+        f = f_fn();
+        i = i_fn();
+
+        c_fn() == c_fn();
+        f_fn() == f_fn();
+        i_fn() == i_fn();
+        c_fn() != c_fn();
+        f_fn() != f_fn();
+        i_fn() != i_fn();
+
+        return;
+}
