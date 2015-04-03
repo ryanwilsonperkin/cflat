@@ -5,6 +5,7 @@
 #include <string.h>
 #include "ast.h"
 #include "symbol.h"
+#include "typecheck.h"
 
 void type_error
 (struct pos pos, const char *fmt, ...)
@@ -436,29 +437,11 @@ struct symbol *translate_function_call
 (struct symbol_table *global, struct symbol_table *local, struct function_call *this)
 {
         struct symbol *symbol, *parent, *arg_symbol, *param_symbol;
-        struct function_arg_list *function_arg_list;
-        struct function_param_list *function_param_list;
         parent = get_symbol(global, this->id);
         if (!parent) {
                 type_error(this->pos, "use of undeclared function '%s'", this->id);
         }
-        function_arg_list = this->function_arg_list;
-        function_param_list = parent->val.function_def->function_param_list;
-        while (function_arg_list || function_param_list) {
-                if (!function_arg_list) {
-                        type_error(this->pos, "too few arguments to function call");
-                }
-                if (!function_param_list) {
-                        type_error(this->pos, "too many arguments to function call");
-                }
-                arg_symbol = translate_expr(global, local, function_arg_list->expr);
-                param_symbol = get_symbol(parent->scoped_table, function_param_list->var_decl->id);
-                if (arg_symbol->type != param_symbol->type) {
-                        type_error(function_arg_list->pos, "passing argument to incompatible type");
-                }
-                function_arg_list = function_arg_list->function_arg_list;
-                function_param_list = function_param_list->function_param_list;
-        }
+        type_check_function_arg_list(global, local, parent->scoped_table, this->function_arg_list, parent->val.function_def->function_param_list); 
         if (parent->val.function_def->type == VOID_FUNCTION) {
                 return NULL;
         }

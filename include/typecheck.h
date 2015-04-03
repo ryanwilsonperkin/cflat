@@ -16,5 +16,6 @@ void type_check_compound_stmt(struct symbol_table *, struct symbol_table *, stru
 void type_check_select_stmt(struct symbol_table *, struct symbol_table *, struct select_stmt *);
 void type_check_iter_stmt(struct symbol_table *, struct symbol_table *, struct iter_stmt *);
 void type_check_return_stmt(struct symbol_table *, struct symbol_table *, struct return_stmt *);
+void type_check_function_arg_list(struct symbol_table *, struct symbol_table *, struct symbol_table *, struct function_arg_list *, struct function_param_list *);
 
 #endif  /* CFLAT_TYPECHECK_H */

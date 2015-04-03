@@ -107,3 +107,22 @@ void type_check_return_stmt
         translate_expr(global, local, this->expr);
 }
 
+void type_check_function_arg_list
+(struct symbol_table *global, struct symbol_table *local, struct symbol_table *fn_scoped, struct function_arg_list *function_arg_list, struct function_param_list *function_param_list)
+{
+        struct symbol *arg_symbol, *param_symbol;
+        if (!function_arg_list && !function_param_list) return;
+        if (!function_arg_list) {
+                type_error(function_param_list->pos, "too few arguments to function call");
+        }
+        if (!function_param_list) {
+                type_error(function_arg_list->pos, "too many arguments to function call");
+        }
+
+        arg_symbol = translate_expr(global, local, function_arg_list->expr);
+        param_symbol = get_symbol(fn_scoped, function_param_list->var_decl->id);
+        if (!symbol_equivalent(arg_symbol, param_symbol)) {
+                type_error(function_arg_list->pos, "passing argument to incompatible type");
+        }
+        type_check_function_arg_list(global, local, fn_scoped, function_arg_list->function_arg_list, function_param_list->function_param_list);
+}
