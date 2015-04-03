@@ -43,8 +43,8 @@ INT     -?0|({NATURAL}{DIGIT}*)
 <COMMENT>\n      { reset_line_buf(); reset_col_num(); increment_line_num(); }
 
 {CHAR}     { append_line_buf(); increment_col_num(); yylval.cval = get_c_val(yytext); return CONST_CHAR; }
-{FLOAT}    { append_line_buf(); increment_col_num(); yylval.fval = atof(yytext); return CONST_FLOAT; }
 {INT}      { append_line_buf(); increment_col_num(); yylval.ival = atoi(yytext); return CONST_INT; }
+{FLOAT}    { append_line_buf(); increment_col_num(); yylval.fval = atof(yytext); return CONST_FLOAT; }
 "char"     { append_line_buf(); increment_col_num(); return CHAR; }
 "float"    { append_line_buf(); increment_col_num(); return FLOAT; }
 "int"      { append_line_buf(); increment_col_num(); return INT;}
