@@ -64,4 +64,4 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
 clean:
-	$(RM) *.o *.a scanner.c parser.c parser.h BIN/*
+	$(RM) *.o *.a scanner.c parser.c parser.h $(BIN_DIR)/*
