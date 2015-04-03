@@ -44,7 +44,6 @@ TEST_F(SymbolTest, AddSymbol)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id, &s);
         EXPECT_EQ(st->n_items, 1);
@@ -58,7 +57,6 @@ TEST_F(SymbolTest, AddSymbol_Multiple)
         struct symbol s1, s2;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id1, &s1);
         add_symbol(st, id2, &s2);
@@ -71,7 +69,6 @@ TEST_F(SymbolTest, AddTempSymbol)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_temp_symbol(st, &s);
         EXPECT_EQ(st->n_items, 1);
@@ -83,7 +80,6 @@ TEST_F(SymbolTest, AddTempSymbol_Multiple)
         struct symbol s1, s2;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_temp_symbol(st, &s1);
         add_temp_symbol(st, &s2);
@@ -97,7 +93,6 @@ TEST_F(SymbolDeathTest, AddSymbol_Duplicate)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id, &s);
         ASSERT_DEATH(add_symbol(st, id, &s), "redefinition of symbol");
@@ -109,7 +104,7 @@ TEST_F(SymbolTest, GetSymbol_Empty)
         char id[] = "test";
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
+
         EXPECT_EQ(NULL, get_symbol(st, id));
 }
 
@@ -120,7 +115,6 @@ TEST_F(SymbolTest, GetSymbol_CorrectId)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id, &s);
         EXPECT_EQ(&s, get_symbol(st, id));
@@ -134,7 +128,6 @@ TEST_F(SymbolTest, GetSymbol_IncorrectId)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id1, &s);
         EXPECT_EQ(NULL, get_symbol(st, id2));
@@ -148,7 +141,6 @@ TEST_F(SymbolTest, GetSymbol_CorrectIdMultiple)
         struct symbol s1, s2;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_symbol(st, id1, &s1);
         add_symbol(st, id2, &s2);
@@ -162,7 +154,6 @@ TEST_F(SymbolTest, GetSymbol_Temp)
         struct symbol s;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_temp_symbol(st, &s);
         EXPECT_EQ(&s, get_symbol(st, (char *)"temp:1"));
@@ -174,7 +165,6 @@ TEST_F(SymbolTest, GetSymbol_TempMultiple)
         struct symbol s1, s2;
 
         st = create_symbol_table();
-        ASSERT_TRUE(st != NULL);
 
         add_temp_symbol(st, &s1);
         add_temp_symbol(st, &s2);
@@ -277,13 +267,8 @@ TEST_F(SymbolTest, TranslateFunctionCall_CharType)
         struct symbol *s;
 
         global = create_symbol_table();
-        ASSERT_TRUE(global != NULL);
-
         function_def = create_basic_function_def(0, 0, CHAR_TYPE, id, NULL, NULL);
-        ASSERT_TRUE(function_def != NULL);
-
         function_call = create_function_call(0, 0, id, NULL);
-        ASSERT_TRUE(function_call != NULL);
 
         add_symbol(global, id, create_symbol_function(function_def));
         s = translate_function_call(global, NULL, function_call);
@@ -302,13 +287,8 @@ TEST_F(SymbolTest, TranslateFunctionCall_FloatType)
         struct symbol *s;
 
         global = create_symbol_table();
-        ASSERT_TRUE(global != NULL);
-
         function_def = create_basic_function_def(0, 0, FLOAT_TYPE, id, NULL, NULL);
-        ASSERT_TRUE(function_def != NULL);
-
         function_call = create_function_call(0, 0, id, NULL);
-        ASSERT_TRUE(function_call != NULL);
 
         add_symbol(global, id, create_symbol_function(function_def));
         s = translate_function_call(global, NULL, function_call);
@@ -327,13 +307,8 @@ TEST_F(SymbolTest, TranslateFunctionCall_IntType)
         struct symbol *s;
 
         global = create_symbol_table();
-        ASSERT_TRUE(global != NULL);
-
         function_def = create_basic_function_def(0, 0, INT_TYPE, id, NULL, NULL);
-        ASSERT_TRUE(function_def != NULL);
-
         function_call = create_function_call(0, 0, id, NULL);
-        ASSERT_TRUE(function_call != NULL);
 
         add_symbol(global, id, create_symbol_function(function_def));
         s = translate_function_call(global, NULL, function_call);
@@ -352,13 +327,8 @@ TEST_F(SymbolTest, TranslateFunctionCall_VoidType)
         struct symbol *s;
 
         global = create_symbol_table();
-        ASSERT_TRUE(global != NULL);
-
         function_def = create_void_function_def(0, 0, id, NULL, NULL);
-        ASSERT_TRUE(function_def != NULL);
-
         function_call = create_function_call(0, 0, id, NULL);
-        ASSERT_TRUE(function_call != NULL);
 
         parse_function_def(global, function_def);
         s = translate_function_call(global, NULL, function_call);
@@ -380,31 +350,82 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
         struct symbol *s;
 
         global = create_symbol_table();
-        ASSERT_TRUE(global != NULL);
-
         local = create_symbol_table();
-        ASSERT_TRUE(local != NULL);
 
         var_decl = create_var_decl_basic(0, 0, CHAR_TYPE, arg_id, NULL);
-        ASSERT_TRUE(var_decl != NULL);
-
         function_param_list = create_function_param_list(0, 0, var_decl, NULL);
-        ASSERT_TRUE(function_param_list != NULL);
-
         function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
-        ASSERT_TRUE(function_def != NULL);
 
         constant = create_constant_char(0, 0, '\0');
-        ASSERT_TRUE(constant != NULL);
-
         expr = create_postfix_expr_constant(0, 0, constant);
-        ASSERT_TRUE(expr != NULL);
-
         function_arg_list = create_function_arg_list(0, 0, expr, NULL);
-        ASSERT_TRUE(function_arg_list != NULL);
-
         function_call = create_function_call(0, 0, id, function_arg_list);
-        ASSERT_TRUE(function_call != NULL);
+
+        parse_function_def(global, function_def);
+        EXPECT_EQ(1, global->n_items);
+
+        s = translate_function_call(global, local, function_call);
+        ASSERT_EQ(NULL, s);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_OneArgFloatType)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct constant *constant;
+        char id[] = "fn";
+        char arg_id[] = "arg";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl = create_var_decl_basic(0, 0, FLOAT_TYPE, arg_id, NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl, NULL);
+        function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
+
+        constant = create_constant_float(0, 0, 0.0f);
+        expr = create_postfix_expr_constant(0, 0, constant);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id, function_arg_list);
+
+        parse_function_def(global, function_def);
+        EXPECT_EQ(1, global->n_items);
+
+        s = translate_function_call(global, local, function_call);
+        ASSERT_EQ(NULL, s);
+}
+
+TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
+{
+        struct symbol_table *global, *local;
+        struct function_def *function_def;
+        struct function_param_list *function_param_list;
+        struct var_decl *var_decl;
+        struct function_call *function_call;
+        struct function_arg_list *function_arg_list;
+        struct expr *expr;
+        struct constant *constant;
+        char id[] = "fn";
+        char arg_id[] = "arg";
+        struct symbol *s;
+
+        global = create_symbol_table();
+        local = create_symbol_table();
+
+        var_decl = create_var_decl_basic(0, 0, INT_TYPE, arg_id, NULL);
+        function_param_list = create_function_param_list(0, 0, var_decl, NULL);
+        function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
+
+        constant = create_constant_int(0, 0, 0);
+        expr = create_postfix_expr_constant(0, 0, constant);
+        function_arg_list = create_function_arg_list(0, 0, expr, NULL);
+        function_call = create_function_call(0, 0, id, function_arg_list);
 
         parse_function_def(global, function_def);
         EXPECT_EQ(1, global->n_items);
