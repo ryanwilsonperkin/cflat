@@ -324,15 +324,13 @@ TEST_F(SymbolTest, TranslateFunctionCall_VoidType)
         struct function_def *function_def;
         struct function_call *function_call;
         char id[] = "fn";
-        struct symbol *s;
 
         global = create_symbol_table();
         function_def = create_void_function_def(0, 0, id, NULL, NULL);
         function_call = create_function_call(0, 0, id, NULL);
 
         parse_function_def(global, function_def);
-        s = translate_function_call(global, NULL, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, NULL, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
@@ -346,7 +344,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -363,8 +360,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
         parse_function_def(global, function_def);
         EXPECT_EQ(1, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgFloatType)
@@ -378,7 +374,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgFloatType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -395,8 +390,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgFloatType)
         parse_function_def(global, function_def);
         EXPECT_EQ(1, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
@@ -410,7 +404,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -427,8 +420,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
         parse_function_def(global, function_def);
         EXPECT_EQ(1, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgNamedType)
@@ -444,7 +436,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgNamedType)
         struct constant *constant;
         char id1[] = "fn";
         char id2[] = "named";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -465,8 +456,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgNamedType)
         parse_function_def(global, function_def);
         EXPECT_EQ(2, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgArrayType)
@@ -484,7 +474,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgArrayType)
         char id1[] = "fn";
         char id2[] = "array";
         int size = 10;
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -509,8 +498,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgArrayType)
         EXPECT_EQ(1, local->n_items);
         EXPECT_EQ(1, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
@@ -527,7 +515,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         struct var *var;
         char id1[] = "fn";
         char id2[] = "var";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -549,8 +536,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         EXPECT_EQ(1, local->n_items);
         EXPECT_EQ(1, global->n_items);
 
-        s = translate_function_call(global, local, function_call);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
 
 TEST_F(SymbolTest, TranslateFunctionCall_OneArgFunctionType)
@@ -564,7 +550,6 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgFunctionType)
         struct expr *expr;
         char id1[] = "fn1";
         char id2[] = "fn2";
-        struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
@@ -584,8 +569,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgFunctionType)
         parse_function_def(global, function_def2);
         EXPECT_EQ(2, global->n_items);
 
-        s = translate_function_call(global, local, function_call2);
-        ASSERT_EQ(NULL, s);
+        ASSERT_EQ(NULL, translate_function_call(global, local, function_call2));
 }
 
 TEST_F(SymbolDeathTest, TranslateFunctionCall_CharFloatIncompatible)
