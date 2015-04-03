@@ -346,13 +346,12 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgCharType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        char arg_id[] = "arg";
         struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
 
-        var_decl = create_var_decl_basic(0, 0, CHAR_TYPE, arg_id, NULL);
+        var_decl = create_var_decl_basic(0, 0, CHAR_TYPE, (char *)"arg", NULL);
         function_param_list = create_function_param_list(0, 0, var_decl, NULL);
         function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
 
@@ -379,13 +378,12 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgFloatType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        char arg_id[] = "arg";
         struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
 
-        var_decl = create_var_decl_basic(0, 0, FLOAT_TYPE, arg_id, NULL);
+        var_decl = create_var_decl_basic(0, 0, FLOAT_TYPE, (char *)"arg", NULL);
         function_param_list = create_function_param_list(0, 0, var_decl, NULL);
         function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
 
@@ -412,13 +410,12 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgIntType)
         struct expr *expr;
         struct constant *constant;
         char id[] = "fn";
-        char arg_id[] = "arg";
         struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
 
-        var_decl = create_var_decl_basic(0, 0, INT_TYPE, arg_id, NULL);
+        var_decl = create_var_decl_basic(0, 0, INT_TYPE, (char *)"arg", NULL);
         function_param_list = create_function_param_list(0, 0, var_decl, NULL);
         function_def = create_void_function_def(0, 0, id, function_param_list, NULL);
 
@@ -447,27 +444,25 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         struct expr *expr;
         struct var *var;
         char id1[] = "fn";
-        char id2[] = "inner";
-        char id3[] = "outer";
-        char id4[] = "other";
+        char id2[] = "var";
         struct symbol *s;
 
         global = create_symbol_table();
         local = create_symbol_table();
 
-        var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, id2, NULL);
+        var_decl1 = create_var_decl_basic(0, 0, INT_TYPE, (char *)"inner", NULL);
         var_decl_stmt_list = create_var_decl_stmt_list(0, 0, var_decl1, NULL);
         struct_type = create_struct_type(0, 0, NULL, var_decl_stmt_list);
-        var_decl2 = create_var_decl_struct(0, 0, struct_type, id3, NULL);
+        var_decl2 = create_var_decl_struct(0, 0, struct_type, (char *)"outer", NULL);
         function_param_list = create_function_param_list(0, 0, var_decl2, NULL);
         function_def = create_void_function_def(0, 0, id1, function_param_list, NULL);
 
-        var = create_var_identifier(0, 0, id4);
+        var = create_var_identifier(0, 0, id2);
         expr = create_postfix_expr_var(0, 0, var);
         function_arg_list = create_function_arg_list(0, 0, expr, NULL);
         function_call = create_function_call(0, 0, id1, function_arg_list);
 
-        add_symbol(global, id4, create_symbol_struct(struct_type));
+        add_symbol(global, id2, create_symbol_struct(struct_type));
         parse_function_def(global, function_def);
         EXPECT_EQ(2, global->n_items);
 
