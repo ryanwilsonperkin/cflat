@@ -29,7 +29,7 @@ LETTER  [a-zA-Z_]
 
 ID      {LETTER}({LETTER}|{DIGIT})*
 CHAR    '(\\n|\\0|.)'
-FLOAT   -?0|({NATURAL}{DIGIT}*)\.{DIGIT}+([eE][-+]?{NATURAL}{DIGIT}+)?
+FLOAT   -?(0|({NATURAL}{DIGIT}*))\.{DIGIT}+([eE][-+]?{NATURAL}{DIGIT}+)?
 INT     -?0|({NATURAL}{DIGIT}*)
 
 %x COMMENT
