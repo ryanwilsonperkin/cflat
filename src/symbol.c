@@ -438,7 +438,6 @@ struct symbol *translate_function_call
         struct symbol *symbol, *parent, *arg_symbol, *param_symbol;
         struct function_arg_list *function_arg_list;
         struct function_param_list *function_param_list;
-        if (!this) return NULL;
         parent = get_symbol(global, this->id);
         if (!parent) {
                 type_error(this->pos, "use of undeclared function '%s'", this->id);
