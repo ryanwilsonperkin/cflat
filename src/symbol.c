@@ -178,6 +178,7 @@ void parse_struct_type
 (struct symbol_table *global, struct symbol_table *local, struct struct_type *this)
 {
         if (!this) return;
+        add_symbol(global, this->id, create_symbol_struct(this));
         parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
 }
 

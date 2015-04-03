@@ -531,10 +531,10 @@ TEST_F(SymbolTest, TranslateFunctionCall_OneArgStructType)
         function_arg_list = create_function_arg_list(0, 0, expr, NULL);
         function_call = create_function_call(0, 0, id1, function_arg_list);
 
-        parse_var_decl(global, local, var_decl2);
+        add_symbol(local, id2, create_symbol_struct(struct_type));
         parse_function_def(global, function_def);
         EXPECT_EQ(1, local->n_items);
-        EXPECT_EQ(1, global->n_items);
+        EXPECT_EQ(2, global->n_items);
 
         ASSERT_EQ(NULL, translate_function_call(global, local, function_call));
 }
@@ -762,7 +762,7 @@ TEST_F(SymbolTest, TranslateFunctionCall_IntStructIncompatible)
         function_call = create_function_call(0, 0, id1, function_arg_list);
 
         parse_function_def(global, function_def);
-        EXPECT_EQ(1, global->n_items);
+        EXPECT_EQ(2, global->n_items);
 
         ASSERT_DEATH(translate_function_call(global, local, function_call), "passing argument to incompatible type");
 }
