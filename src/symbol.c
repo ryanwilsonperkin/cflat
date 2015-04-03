@@ -378,6 +378,9 @@ struct symbol *translate_multiplicative_expr
         if (primary->type != SYMBOL_BASIC) {
                 type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
         }
+        if (primary->val.basic_type == FLOAT_TYPE && this->subtype.multiplicative_expr_subtype == MULTIPLICATIVE_EXPR_MODULO) {
+                type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
+        }
         symbol = create_symbol_basic(primary->val.basic_type);
         add_temp_symbol(local, symbol);
         return symbol;
