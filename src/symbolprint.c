@@ -27,32 +27,32 @@ void print_symbol
         case SYMBOL_BASIC:
                 switch (symbol->val.basic_type) {
                 case CHAR_TYPE:
-                        print_at_depth(out, depth, "CHAR: '%s'", id);
+                        print_at_depth(out, depth, "CHAR: '%s' (%u)", id, symbol->size);
                         break;
                 case INT_TYPE:
-                        print_at_depth(out, depth, "INT: '%s'", id);
+                        print_at_depth(out, depth, "INT: '%s' (%u)", id, symbol->size);
                         break;
                 case FLOAT_TYPE:
-                        print_at_depth(out, depth, "FLOAT: '%s'", id);
+                        print_at_depth(out, depth, "FLOAT: '%s' (%u)", id, symbol->size);
                         break;
                 default:
                         assert(0);  /* Invalid enum value. */
                 }
                 break;
         case SYMBOL_NAMED:
-                print_at_depth(out, depth, "NAMED: '%s'", id);
+                print_at_depth(out, depth, "NAMED: '%s' (%u)", id, symbol->size);
                 print_symbol(out, "", symbol->val.symbol, depth+1);
                 break;
         case SYMBOL_ARRAY:
-                print_at_depth(out, depth, "ARRAY: %d", symbol->val.array.size);
+                print_at_depth(out, depth, "ARRAY: %d (%u)", symbol->val.array.size, symbol->size);
                 print_symbol(out, id, symbol->val.array.symbol, depth+1);
                 break;
         case SYMBOL_STRUCT:
-                print_at_depth(out, depth, "STRUCT: '%s'", id);
+                print_at_depth(out, depth, "STRUCT: '%s' (%u)", id, symbol->size);
                 print_symbol_table(out, symbol->scoped_table, depth+1);
                 break;
         case SYMBOL_FUNCTION:
-                print_at_depth(out, depth, "FUNCTION: '%s'", id);
+                print_at_depth(out, depth, "FUNCTION: '%s' (%u)", id, symbol->size);
                 print_symbol_table(out, symbol->scoped_table, depth+1);
                 break;
         default:
