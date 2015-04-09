@@ -24,7 +24,7 @@ struct symbol {
                 struct function_def *function_def;
         } val;
         struct symbol_table *scoped_table;
-        int size, offset;
+        unsigned int size, offset;
 };
 
 struct symbol_table_item {
@@ -33,7 +33,7 @@ struct symbol_table_item {
 };
 
 struct symbol_table {
-        int size, n_items, n_temps;
+        unsigned int size, n_items, n_temps;
         struct symbol_table_item **items, **temps;
 };
 
