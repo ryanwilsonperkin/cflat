@@ -41,15 +41,15 @@ void type_error(struct pos pos, const char *fmt, ...);
 
 struct symbol_table *create_symbol_table();
 struct symbol_table_item *create_symbol_table_item(char *, struct symbol *);
-struct symbol *get_symbol(struct symbol_table *, char *);
-void add_symbol(struct symbol_table *, char *, struct symbol *);
-void add_temp_symbol(struct symbol_table *, struct symbol *);
-
 struct symbol *create_symbol_basic(enum basic_type);
 struct symbol *create_symbol_named(struct symbol *);
 struct symbol *create_symbol_array(struct symbol *, int);
 struct symbol *create_symbol_struct(struct struct_type *);
 struct symbol *create_symbol_function(struct function_def *);
+
+struct symbol *get_symbol(struct symbol_table *, char *);
+void add_symbol(struct symbol_table *, char *, struct symbol *);
+void add_temp_symbol(struct symbol_table *, struct symbol *);
 
 struct symbol_table *parse_symbols(struct program *);
 void parse_program(struct symbol_table *, struct program *);
