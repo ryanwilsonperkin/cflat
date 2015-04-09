@@ -49,7 +49,7 @@ struct symbol *create_symbol_function(struct function_def *);
 
 struct symbol *get_symbol(struct symbol_table *, char *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
-void add_temp_symbol(struct symbol_table *, struct symbol *);
+void add_symbol_temp(struct symbol_table *, struct symbol *);
 
 struct symbol_table *parse_symbols(struct program *);
 void parse_program(struct symbol_table *, struct program *);
