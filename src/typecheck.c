@@ -15,9 +15,14 @@ void type_check_program
 void type_check_function_def_list
 (struct symbol_table *global, struct function_def_list *this)
 {
+        struct symbol *main_function;
         if (!this) return;
         type_check_function_def(global, this->function_def);
         type_check_function_def_list(global, this->function_def_list);
+        main_function = get_symbol(global, "main");
+        if (!main_function || main_function->type != SYMBOL_FUNCTION) {
+                type_error(this->pos, "missing 'main' function");
+        }
 }
 
 void type_check_function_def

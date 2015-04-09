@@ -35,4 +35,7 @@ struct {
         float f[100];
 } s4;
 
-void placeholder() { return; }
+int main()
+{
+        return 0;
+}

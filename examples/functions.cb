@@ -85,3 +85,8 @@ void f13()
         f5('c', 123, 12.3);
         return;
 }
+
+int main()
+{
+        return 0;
+}

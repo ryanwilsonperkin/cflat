@@ -43,4 +43,7 @@ type1 t1;
 type2 t2;
 type3 t3;
 
-void placeholder() { return; }
+int main()
+{
+        return 0;
+}

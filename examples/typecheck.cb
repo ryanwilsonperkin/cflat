@@ -172,3 +172,8 @@ void function_calls()
 
         return;
 }
+
+int main()
+{
+        return 0;
+}
