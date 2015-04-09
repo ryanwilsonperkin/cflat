@@ -229,6 +229,7 @@ void parse_function_def
         add_symbol(global, this->id, symbol);
         parse_function_param_list(global, symbol->scoped_table, this->function_param_list);
         parse_function_body(global, symbol->scoped_table, this->function_body);
+        symbol->size = symbol->scoped_table->size;
 }
 
 void parse_function_param_list
