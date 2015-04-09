@@ -1,4 +1,5 @@
 %{
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
@@ -118,6 +119,7 @@ static char get_c_val
                 switch (s[2]) {
                 case 'n': return '\n';
                 case '0': return '\0';
+                default: assert(0);  /* Invalid enum value. */
                 }
         }
         return s[1];

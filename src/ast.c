@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -233,6 +234,8 @@ struct stmt *create_stmt
         case RETURN_STMT:
                 this->val.return_stmt = stmt;
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         return this;
 }
@@ -587,6 +590,8 @@ void free_var_decl
         case TYPEDEF_VAR:
                 free(this->val.typedef_id);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         free_array_specifier(this->array_specifier);
         free(this->id);
@@ -695,6 +700,8 @@ void free_stmt
         case RETURN_STMT:
                 free_return_stmt(this->val.return_stmt);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         free(this);
 }
@@ -777,6 +784,8 @@ void free_expr
                 case UNARY_EXPR_PRE_DECREMENT:
                         free_expr(this->val.unary_op.expr);
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 break;
         case POSTFIX_EXPR:
@@ -795,8 +804,12 @@ void free_expr
                 case POSTFIX_EXPR_FUNCTION_CALL:
                         free_function_call(this->val.postfix_op.function_call);
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         free(this);
 }
@@ -817,6 +830,8 @@ void free_var
                 free_var(this->val.subscript.var);
                 free_expr(this->val.subscript.expr);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         free(this);
 }

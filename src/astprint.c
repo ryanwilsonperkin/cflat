@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include "astprint.h"
 #include "print.h"
@@ -21,6 +22,8 @@ void print_basic_type
         case INT_TYPE:
                 print_at_depth(out, depth, "type: INT");
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -76,6 +79,8 @@ void print_var_decl
         case TYPEDEF_VAR:
                 print_at_depth(out, depth+1, "type_name: '%s'", this->val.typedef_id);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         print_array_specifier(out, this->array_specifier, depth+1);
 }
@@ -117,6 +122,8 @@ void print_function_def
         case VOID_FUNCTION:
                 print_at_depth(out, depth+1, "type: VOID");
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         print_at_depth(out, depth+1, "function_param_list");
         print_function_param_list(out, this->function_param_list, depth+1);
@@ -189,6 +196,8 @@ void print_stmt
         case RETURN_STMT:
                 print_return_stmt(out, this->val.return_stmt, depth+1);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -225,6 +234,8 @@ void print_select_stmt
                 print_stmt(out, this->stmt_if_true, depth+1);
                 print_stmt(out, this->stmt_if_false, depth+1);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -271,6 +282,8 @@ void print_iter_stmt
         case FOR_EMPTY:
                 print_at_depth(out, depth+1, "type: FOR_EMPTY");
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         print_stmt(out, this->body, depth+1);
 }
@@ -313,6 +326,8 @@ void print_expr
                 case EQUALITY_EXPR_NOT_EQUAL:
                         print_at_depth(out, depth+1, "subtype: EQUALITY_EXPR_NOT_EQUAL");
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 print_expr(out, this->val.relation.primary, depth+1);
                 print_expr(out, this->val.relation.secondary, depth+1);
@@ -332,6 +347,8 @@ void print_expr
                 case RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL:
                         print_at_depth(out, depth+1, "subtype: RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL");
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 print_expr(out, this->val.relation.primary, depth+1);
                 print_expr(out, this->val.relation.secondary, depth+1);
@@ -345,6 +362,8 @@ void print_expr
                 case ADDITIVE_EXPR_SUBTRACT:
                       print_at_depth(out, depth+1, "subtype: ADDITIVE_EXPR_SUBTRACT");
                       break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 print_expr(out, this->val.binary_op.primary, depth+1);
                 print_expr(out, this->val.binary_op.secondary, depth+1);
@@ -361,6 +380,8 @@ void print_expr
                 case MULTIPLICATIVE_EXPR_MODULO:
                         print_at_depth(out, depth+1, "subtype: MULTIPLICATIVE_EXPR_MODULO");
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 print_expr(out, this->val.binary_op.primary, depth+1);
                 print_expr(out, this->val.binary_op.secondary, depth+1);
@@ -396,6 +417,8 @@ void print_expr
                         print_at_depth(out, depth+1, "subtype: UNARY_EXPR_PRE_DECREMENT");
                         print_expr(out, this->val.unary_op.expr, depth+1);
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 break;
         case POSTFIX_EXPR:
@@ -425,8 +448,12 @@ void print_expr
                         print_at_depth(out, depth+1, "subtype: POSTFIX_EXPR_FUNCTION_CALL");
                         print_function_call(out, this->val.postfix_op.function_call, depth+1);
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -448,6 +475,8 @@ void print_var
                 print_var(out, this->val.subscript.var, depth+1);
                 print_expr(out, this->val.subscript.expr, depth+1);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -465,6 +494,8 @@ void print_constant
         case INT_TYPE:
                 print_at_depth(out, depth, "constant: %d", this->val.ival);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 

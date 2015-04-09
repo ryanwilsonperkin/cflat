@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include "print.h"
 #include "symbol.h"
@@ -34,6 +35,8 @@ void print_symbol
                 case FLOAT_TYPE:
                         print_at_depth(out, depth, "FLOAT: '%s'", id);
                         break;
+                default:
+                        assert(0);  /* Invalid enum value. */
                 }
                 break;
         case SYMBOL_NAMED:
@@ -52,5 +55,7 @@ void print_symbol
                 print_at_depth(out, depth, "FUNCTION: '%s'", id);
                 print_symbol_table(out, symbol->scoped_table, depth+1);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }

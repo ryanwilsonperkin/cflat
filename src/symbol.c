@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -233,6 +234,8 @@ struct symbol *translate_var_decl
         case TYPEDEF_VAR:
                 this = get_symbol(global, var_decl->val.typedef_id);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         if (var_decl->array_specifier) {
                 size = var_decl->array_specifier->constant->val.ival;
@@ -264,6 +267,8 @@ struct symbol *translate_expr
                 return translate_unary_expr(global, local, this);
         case POSTFIX_EXPR:
                 return translate_postfix_expr(global, local, this);
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -408,6 +413,8 @@ struct symbol *translate_unary_expr
                 }
                 symbol = create_symbol_basic(symbol->val.basic_type);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         add_temp_symbol(local, symbol);
         return symbol;
@@ -433,6 +440,8 @@ struct symbol *translate_postfix_expr
         case POSTFIX_EXPR_FUNCTION_CALL:
                 symbol = translate_function_call(global, local, this->val.postfix_op.function_call);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
         return symbol;
 }
@@ -468,6 +477,8 @@ struct symbol *translate_var
         case SUBSCRIPT:
                 return translate_subscript_var(global, local, this);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -556,5 +567,7 @@ int symbol_equivalent
         case SYMBOL_FUNCTION:
                 return (s1->type == s2->type &&
                         strcmp(s1->val.function_def->id, s2->val.function_def->id) == 0);
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }

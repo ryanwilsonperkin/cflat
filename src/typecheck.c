@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
@@ -64,6 +65,8 @@ void type_check_stmt
         case RETURN_STMT:
                 type_check_return_stmt(global, local, this->val.return_stmt);
                 break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
