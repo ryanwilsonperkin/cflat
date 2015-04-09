@@ -190,7 +190,7 @@ void parse_type_decl
         struct symbol *named_symbol;
         if (!this) return;
         named_symbol = create_symbol_named(translate_var_decl(global, this->var_decl));
-        add_symbol(global, this->var_decl->id, named_symbol);
+        add_symbol_type(global, this->var_decl->id, named_symbol);
 }
 
 void parse_var_decl_stmt_list
@@ -216,7 +216,7 @@ void parse_struct_type
         symbol = create_symbol_struct(this);
         parse_var_decl_stmt_list(global, symbol->scoped_table, this->var_decl_stmt_list);
         symbol->size = symbol->scoped_table->size;
-        add_symbol(global, this->id, symbol);
+        add_symbol_type(global, this->id, symbol);
 }
 
 void parse_function_def_list
@@ -233,7 +233,7 @@ void parse_function_def
         struct symbol *symbol;
         if (!this) return;
         symbol = create_symbol_function(this);
-        add_symbol(global, this->id, symbol);
+        add_symbol_type(global, this->id, symbol);
         parse_function_param_list(global, symbol->scoped_table, this->function_param_list);
         parse_function_body(global, symbol->scoped_table, this->function_body);
         symbol->size = symbol->scoped_table->size;
