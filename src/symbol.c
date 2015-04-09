@@ -34,6 +34,7 @@ struct symbol_table *create_symbol_table
         this->n_items = 0;
         this->n_temps = 0;
         this->items = NULL;
+        this->temps = NULL;
         return this;
 }
 
@@ -127,7 +128,12 @@ void add_temp_symbol
         symbol_table->n_temps++;
         id = malloc(strlen(prefix) + num_digits(symbol_table->n_temps) + 1);
         sprintf(id, "%s%d", prefix, symbol_table->n_temps);
-        add_symbol(symbol_table, id, symbol);
+        if (get_symbol(symbol_table, id)) {
+                fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
+                exit(EXIT_FAILURE);
+        }
+        symbol_table->temps = realloc(symbol_table->temps, sizeof(struct symbol_table_item *) * symbol_table->n_temps);
+        symbol_table->temps[symbol_table->n_temps - 1] = create_symbol_table_item(id, symbol);
 }
 
 struct symbol_table *parse_symbols

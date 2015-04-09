@@ -35,6 +35,7 @@ struct symbol_table {
         int n_items;
         int n_temps;
         struct symbol_table_item **items;
+        struct symbol_table_item **temps;
 };
 
 void type_error(struct pos pos, const char *fmt, ...);

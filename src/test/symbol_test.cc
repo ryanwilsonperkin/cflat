@@ -71,7 +71,8 @@ TEST_F(SymbolTest, AddTempSymbol)
         st = create_symbol_table();
 
         add_temp_symbol(st, &s);
-        EXPECT_EQ(st->n_items, 1);
+        EXPECT_EQ(st->n_items, 0);
+        EXPECT_EQ(st->n_temps, 1);
 }
 
 TEST_F(SymbolTest, AddTempSymbol_Multiple)
@@ -83,7 +84,8 @@ TEST_F(SymbolTest, AddTempSymbol_Multiple)
 
         add_temp_symbol(st, &s1);
         add_temp_symbol(st, &s2);
-        EXPECT_EQ(st->n_items, 2);
+        EXPECT_EQ(st->n_items, 0);
+        EXPECT_EQ(st->n_temps, 2);
 }
 
 TEST_F(SymbolDeathTest, AddSymbol_Duplicate)
@@ -156,7 +158,7 @@ TEST_F(SymbolTest, GetSymbol_Temp)
         st = create_symbol_table();
 
         add_temp_symbol(st, &s);
-        EXPECT_EQ(&s, get_symbol(st, (char *)"temp:1"));
+        EXPECT_EQ(NULL, get_symbol(st, (char *)"temp:1"));
 }
 
 TEST_F(SymbolTest, GetSymbol_TempMultiple)
@@ -168,8 +170,8 @@ TEST_F(SymbolTest, GetSymbol_TempMultiple)
 
         add_temp_symbol(st, &s1);
         add_temp_symbol(st, &s2);
-        EXPECT_EQ(&s1, get_symbol(st, (char *)"temp:1"));
-        EXPECT_EQ(&s2, get_symbol(st, (char *)"temp:2"));
+        EXPECT_EQ(NULL, get_symbol(st, (char *)"temp:1"));
+        EXPECT_EQ(NULL, get_symbol(st, (char *)"temp:2"));
 }
 
 TEST_F(SymbolTest, CreateSymbolBasic_CharType)
