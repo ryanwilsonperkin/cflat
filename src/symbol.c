@@ -400,7 +400,6 @@ struct symbol *translate_unary_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *symbol;
-        if (!this) return NULL;
         switch (this->subtype.unary_expr_subtype) {
         case UNARY_EXPR_SIZEOF_BASIC:
                 symbol = create_symbol_basic(INT_TYPE);
@@ -428,7 +427,6 @@ struct symbol *translate_postfix_expr
 (struct symbol_table *global, struct symbol_table *local, struct expr *this)
 {
         struct symbol *symbol;
-        if (!this) return NULL;
         switch (this->subtype.postfix_expr_subtype) {
         case POSTFIX_EXPR_VAR:
                 symbol = translate_var(global, local, this->val.postfix_op.var);
@@ -470,7 +468,6 @@ struct symbol *translate_function_call
 struct symbol *translate_var
 (struct symbol_table *global, struct symbol_table *local, struct var *this)
 {
-        if (!this) return NULL;
         switch (this->type) {
         case IDENTIFIER:
                 return translate_identifier_var(global, local, this);
@@ -490,7 +487,6 @@ struct symbol *translate_identifier_var
 (struct symbol_table *global, struct symbol_table *local, struct var *this)
 {
         struct symbol *symbol;
-        if (!this) return NULL;
         if ((symbol = get_symbol(local, this->val.id))) {
                 return symbol;
         } else {
@@ -506,7 +502,6 @@ struct symbol *translate_field_var
 (struct symbol_table *global, struct symbol_table *local, struct var *this)
 {
         struct symbol *symbol, *parent;
-        if (!this) return NULL;
         parent = translate_var(global, local, this->val.field.var);
         if (!parent || parent->type != SYMBOL_STRUCT) {
                 type_error(this->pos, "member reference is not a structure");
@@ -522,7 +517,6 @@ struct symbol *translate_subscript_var
 (struct symbol_table *global, struct symbol_table *local, struct var *this)
 {
         struct symbol *subscript, *parent;
-        if (!this) return NULL;
         subscript = translate_expr(global, local, this->val.subscript.expr);
         parent = translate_var(global, local, this->val.field.var);
         if (!parent || parent->type != SYMBOL_ARRAY) {
@@ -538,7 +532,6 @@ struct symbol *translate_constant
 (struct symbol_table *local, struct constant *this)
 {
         struct symbol *symbol;
-        if (!this) return NULL;
         symbol = create_symbol_basic(this->type);
         add_temp_symbol(local, symbol);
         return symbol;
