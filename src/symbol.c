@@ -459,10 +459,11 @@ struct symbol *translate_function_call
         type_check_function_arg_list(global, local, parent->scoped_table, this->function_arg_list, parent->val.function_def->function_param_list); 
         if (parent->val.function_def->type == VOID_FUNCTION) {
                 return NULL;
+        } else {
+                symbol = create_symbol_basic(parent->val.function_def->type_specifier);
+                add_temp_symbol(global, symbol);
+                return symbol;
         }
-        symbol = create_symbol_basic(parent->val.function_def->type_specifier);
-        add_temp_symbol(global, symbol);
-        return symbol;
 }
 
 struct symbol *translate_var
