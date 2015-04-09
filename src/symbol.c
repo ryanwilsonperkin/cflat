@@ -518,7 +518,7 @@ struct symbol *translate_subscript_var
 {
         struct symbol *subscript, *parent;
         subscript = translate_expr(global, local, this->val.subscript.expr);
-        parent = translate_var(global, local, this->val.field.var);
+        parent = translate_var(global, local, this->val.subscript.var);
         if (!parent || parent->type != SYMBOL_ARRAY) {
                 type_error(this->pos, "subscripted value is not an array");
         }
