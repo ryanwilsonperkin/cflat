@@ -8,6 +8,13 @@
 #include "symbol.h"
 #include "typecheck.h"
 
+static inline int num_digits
+(unsigned int n)
+{
+        /* http://stackoverflow.com/a/1489928/3676516 */
+        return n > 0 ? (int) log10(n) + 1 : 1;
+}
+
 void type_error
 (struct pos pos, const char *fmt, ...)
 {
@@ -68,13 +75,10 @@ void add_symbol
 void add_temp_symbol
 (struct symbol_table *symbol_table, struct symbol *symbol)
 {
-        char *prefix = "temp";
-        int id_length;
-        char *id;
-        symbol_table->n_temps += 1;
-        id_length = strlen(prefix) + 1 + floor(log10(symbol_table->n_temps) + 1) + 1;
-        id = malloc(id_length);
-        sprintf(id, "%s:%d", prefix, symbol_table->n_temps);
+        char *id, *prefix = "temp:";
+        symbol_table->n_temps++;
+        id = malloc(strlen(prefix) + num_digits(symbol_table->n_temps) + 1);
+        sprintf(id, "%s%d", prefix, symbol_table->n_temps);
         add_symbol(symbol_table, id, symbol);
 }
 
