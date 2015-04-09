@@ -24,6 +24,7 @@ struct symbol {
                 struct function_def *function_def;
         } val;
         struct symbol_table *scoped_table;
+        int size, offset;
 };
 
 struct symbol_table_item {
@@ -32,10 +33,8 @@ struct symbol_table_item {
 };
 
 struct symbol_table {
-        int n_items;
-        int n_temps;
-        struct symbol_table_item **items;
-        struct symbol_table_item **temps;
+        int size, n_items, n_temps;
+        struct symbol_table_item **items, **temps;
 };
 
 void type_error(struct pos pos, const char *fmt, ...);
@@ -58,7 +57,7 @@ void parse_type_decl_list(struct symbol_table *, struct type_decl_list *);
 void parse_type_decl(struct symbol_table *, struct type_decl *);
 void parse_var_decl_stmt_list(struct symbol_table *, struct symbol_table *, struct var_decl_stmt_list *);
 void parse_var_decl(struct symbol_table *, struct symbol_table *, struct var_decl *);
-void parse_struct_type(struct symbol_table *, struct symbol_table *, struct struct_type *);
+void parse_struct_type(struct symbol_table *, struct struct_type *);
 void parse_function_def_list(struct symbol_table *, struct function_def_list *);
 void parse_function_def(struct symbol_table *, struct function_def *);
 void parse_function_param_list(struct symbol_table *, struct symbol_table *, struct function_param_list *);

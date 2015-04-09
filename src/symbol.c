@@ -31,6 +31,7 @@ struct symbol_table *create_symbol_table
 ()
 {
         struct symbol_table *this = malloc(sizeof(struct symbol_table));
+        this->size = 0;
         this->n_items = 0;
         this->n_temps = 0;
         this->items = NULL;
@@ -53,6 +54,9 @@ struct symbol *create_symbol_basic
         struct symbol *this = malloc(sizeof(struct symbol));
         this->type = SYMBOL_BASIC;
         this->val.basic_type = basic_type;
+        this->scoped_table = NULL;
+        this->size = 4;
+        this->offset = 0;
         return this;
 }
 
@@ -62,6 +66,9 @@ struct symbol *create_symbol_named
         struct symbol *this = malloc(sizeof(struct symbol));
         this->type = SYMBOL_NAMED;
         this->val.symbol = symbol;
+        this->scoped_table = NULL;
+        this->size = symbol->size;
+        this->offset = 0;
         return this;
 }
 
@@ -72,6 +79,9 @@ struct symbol *create_symbol_array
         this->type = SYMBOL_ARRAY;
         this->val.array.symbol = symbol;
         this->val.array.size = size;
+        this->scoped_table = NULL;
+        this->size = symbol->size * size;
+        this->offset = 0;
         return this;
 }
 
@@ -82,6 +92,8 @@ struct symbol *create_symbol_struct
         this->type = SYMBOL_STRUCT;
         this->val.struct_type = struct_type;
         this->scoped_table = create_symbol_table();
+        this->size = 0;
+        this->offset = 0;
         return this;
 }
 
@@ -92,6 +104,8 @@ struct symbol *create_symbol_function
         this->type = SYMBOL_FUNCTION;
         this->val.function_def = function_def;
         this->scoped_table = create_symbol_table();
+        this->size = 4;
+        this->offset = 0;
         return this;
 }
 
@@ -116,7 +130,9 @@ void add_symbol
                 fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
                 exit(EXIT_FAILURE);
         }
+        symbol->offset = symbol_table->size;
         symbol_table->n_items++;
+        symbol_table->size += symbol->size;
         symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
         symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol);
 }
@@ -186,11 +202,14 @@ void parse_var_decl
 }
 
 void parse_struct_type
-(struct symbol_table *global, struct symbol_table *local, struct struct_type *this)
+(struct symbol_table *global, struct struct_type *this)
 {
+        struct symbol *symbol;
         if (!this) return;
-        add_symbol(global, this->id, create_symbol_struct(this));
-        parse_var_decl_stmt_list(global, local, this->var_decl_stmt_list);
+        symbol = create_symbol_struct(this);
+        parse_var_decl_stmt_list(global, symbol->scoped_table, this->var_decl_stmt_list);
+        symbol->size = symbol->scoped_table->size;
+        add_symbol(global, this->id, symbol);
 }
 
 void parse_function_def_list
@@ -238,8 +257,8 @@ struct symbol *translate_var_decl
                 this = create_symbol_basic(var_decl->val.basic_var);
                 break;
         case STRUCT_VAR:
-                this = create_symbol_struct(var_decl->val.struct_var);
-                parse_struct_type(global, this->scoped_table, var_decl->val.struct_var);
+                parse_struct_type(global, var_decl->val.struct_var);
+                this = get_symbol(global, var_decl->val.struct_var->id);
                 break;
         case TYPEDEF_VAR:
                 this = get_symbol(global, var_decl->val.typedef_id);
