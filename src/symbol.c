@@ -532,9 +532,7 @@ struct symbol *translate_constant
 int symbol_equivalent
 (struct symbol *s1, struct symbol *s2)
 {
-        if (!s1 && !s2) {
-                return 1;
-        } else if (!s1 || !s2) {
+        if (!s1 || !s2) {
                 return 0;
         }
 
