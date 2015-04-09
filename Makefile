@@ -4,8 +4,7 @@ SRC_DIR = src
 TEST_DIR=$(SRC_DIR)/test
 
 GTEST_DIR=vendor/gtest-1.7.0
-GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
-		$(GTEST_DIR)/include/gtest/internal/*.h
+GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h $(GTEST_DIR)/include/gtest/internal/*.h
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
@@ -50,12 +49,10 @@ symbol_test.o: $(TEST_DIR)/symbol_test.cc $(GTEST_HEADERS)
 
 # Targets for building Google Test Framework
 gtest-all.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest-all.cc
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest-all.cc
 
 gtest_main.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
-            $(GTEST_DIR)/src/gtest_main.cc
+	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest_main.cc
 
 gtest.a : gtest-all.o
 	$(AR) $(ARFLAGS) $@ $^
