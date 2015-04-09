@@ -813,3 +813,9 @@ TEST_F(SymbolDeathTest, TranslateFunctionCall_Undefined)
         ASSERT_TRUE(function_call != NULL);
         ASSERT_DEATH(translate_function_call(global, NULL, function_call), "use of undeclared function");
 }
+
+int main(int argc, char** argv) {
+        ::testing::InitGoogleTest(&argc, argv);
+        ::testing::FLAGS_gtest_death_test_style = "threadsafe";
+        return RUN_ALL_TESTS();
+}
