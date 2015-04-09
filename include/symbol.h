@@ -24,11 +24,12 @@ struct symbol {
                 struct function_def *function_def;
         } val;
         struct symbol_table *scoped_table;
-        unsigned int size, offset;
+        unsigned int size;
 };
 
 struct symbol_table_item {
         char *id;
+        unsigned int offset;
         struct symbol *symbol;
 };
 
@@ -40,7 +41,7 @@ struct symbol_table {
 void type_error(struct pos pos, const char *fmt, ...);
 
 struct symbol_table *create_symbol_table();
-struct symbol_table_item *create_symbol_table_item(char *, struct symbol *);
+struct symbol_table_item *create_symbol_table_item(char *, unsigned int, struct symbol *);
 struct symbol *create_symbol_basic(enum basic_type);
 struct symbol *create_symbol_named(struct symbol *);
 struct symbol *create_symbol_array(struct symbol *, int);
@@ -49,6 +50,7 @@ struct symbol *create_symbol_function(struct function_def *);
 
 struct symbol *get_symbol(struct symbol_table *, char *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
+void add_symbol_type(struct symbol_table *, char *, struct symbol *);
 void add_symbol_temp(struct symbol_table *, struct symbol *);
 
 struct symbol_table *parse_symbols(struct program *);

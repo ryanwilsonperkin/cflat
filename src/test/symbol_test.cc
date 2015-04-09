@@ -32,10 +32,11 @@ TEST_F(SymbolTest, CreateSymbolTableItem)
         char id[] = "test";
         struct symbol s;
 
-        st_item = create_symbol_table_item(id, &s);
+        st_item = create_symbol_table_item(id, 0, &s);
         ASSERT_TRUE(st_item != NULL);
         EXPECT_EQ(id, st_item->id);
         EXPECT_EQ(&s, st_item->symbol);
+        EXPECT_EQ(0, st_item->offset);
 }
 
 TEST_F(SymbolTest, AddSymbol)
@@ -182,7 +183,6 @@ TEST_F(SymbolTest, CreateSymbolBasic_CharType)
         s = create_symbol_basic(CHAR_TYPE);
         ASSERT_TRUE(s != NULL);
         EXPECT_EQ(4, s->size);
-        EXPECT_EQ(0, s->offset);
         EXPECT_EQ(SYMBOL_BASIC, s->type);
         EXPECT_EQ(CHAR_TYPE, s->val.basic_type);
 }
@@ -194,7 +194,6 @@ TEST_F(SymbolTest, CreateSymbolBasic_FloatType)
         s = create_symbol_basic(FLOAT_TYPE);
         ASSERT_TRUE(s != NULL);
         EXPECT_EQ(4, s->size);
-        EXPECT_EQ(0, s->offset);
         EXPECT_EQ(SYMBOL_BASIC, s->type);
         EXPECT_EQ(FLOAT_TYPE, s->val.basic_type);
 }
@@ -206,7 +205,6 @@ TEST_F(SymbolTest, CreateSymbolBasic_IntType)
         s = create_symbol_basic(INT_TYPE);
         ASSERT_TRUE(s != NULL);
         EXPECT_EQ(4, s->size);
-        EXPECT_EQ(0, s->offset);
         EXPECT_EQ(SYMBOL_BASIC, s->type);
         EXPECT_EQ(INT_TYPE, s->val.basic_type);
 }
@@ -218,7 +216,6 @@ TEST_F(SymbolTest, CreateSymbolNamed)
         s2 = create_symbol_named(&s1);
         ASSERT_TRUE(s2 != NULL);
         EXPECT_EQ(s1.size, s2->size);
-        EXPECT_EQ(0, s2->offset);
         EXPECT_EQ(SYMBOL_NAMED, s2->type);
         EXPECT_EQ(&s1, s2->val.symbol);
 }
@@ -231,7 +228,6 @@ TEST_F(SymbolTest, CreateSymbolArray)
         s2 = create_symbol_array(&s1, size);
         ASSERT_TRUE(s2 != NULL);
         EXPECT_EQ(10 * s1.size, s2->size);
-        EXPECT_EQ(0, s2->offset);
         EXPECT_EQ(SYMBOL_ARRAY, s2->type);
         EXPECT_EQ(size, s2->val.array.size);
         EXPECT_EQ(&s1, s2->val.array.symbol);
@@ -245,7 +241,6 @@ TEST_F(SymbolTest, CreateSymbolStruct)
 
         s = create_symbol_struct(&struct_type);
         ASSERT_TRUE(s != NULL);
-        EXPECT_EQ(0, s->offset);
         EXPECT_EQ(SYMBOL_STRUCT, s->type);
         EXPECT_EQ(&struct_type, s->val.struct_type);
 
@@ -264,7 +259,6 @@ TEST_F(SymbolTest, CreateSymbolFunction)
 
         s = create_symbol_function(&function_def);
         ASSERT_TRUE(s != NULL);
-        EXPECT_EQ(0, s->offset);
         EXPECT_EQ(SYMBOL_FUNCTION, s->type);
         EXPECT_EQ(&function_def, s->val.function_def);
 

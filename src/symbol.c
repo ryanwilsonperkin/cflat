@@ -40,11 +40,12 @@ struct symbol_table *create_symbol_table
 }
 
 struct symbol_table_item *create_symbol_table_item
-(char *id, struct symbol *symbol)
+(char *id, unsigned int offset, struct symbol *symbol)
 {
         struct symbol_table_item *this = malloc(sizeof(struct symbol_table_item));
         this->id = id;
         this->symbol = symbol;
+        this->offset = offset;
         return this;
 }
 
@@ -56,7 +57,6 @@ struct symbol *create_symbol_basic
         this->val.basic_type = basic_type;
         this->scoped_table = NULL;
         this->size = 4;
-        this->offset = 0;
         return this;
 }
 
@@ -68,7 +68,6 @@ struct symbol *create_symbol_named
         this->val.symbol = symbol;
         this->scoped_table = NULL;
         this->size = symbol->size;
-        this->offset = 0;
         return this;
 }
 
@@ -81,7 +80,6 @@ struct symbol *create_symbol_array
         this->val.array.size = size;
         this->scoped_table = NULL;
         this->size = symbol->size * size;
-        this->offset = 0;
         return this;
 }
 
@@ -93,7 +91,6 @@ struct symbol *create_symbol_struct
         this->val.struct_type = struct_type;
         this->scoped_table = create_symbol_table();
         this->size = 0;
-        this->offset = 0;
         return this;
 }
 
@@ -105,7 +102,6 @@ struct symbol *create_symbol_function
         this->val.function_def = function_def;
         this->scoped_table = create_symbol_table();
         this->size = 4;
-        this->offset = 0;
         return this;
 }
 
@@ -130,11 +126,10 @@ void add_symbol
                 fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
                 exit(EXIT_FAILURE);
         }
-        symbol->offset = symbol_table->size;
         symbol_table->n_items++;
-        symbol_table->size += symbol->size;
         symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
-        symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol);
+        symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol_table->size, symbol);
+        symbol_table->size += symbol->size;
 }
 
 void add_symbol_temp
@@ -149,7 +144,19 @@ void add_symbol_temp
                 exit(EXIT_FAILURE);
         }
         symbol_table->temps = realloc(symbol_table->temps, sizeof(struct symbol_table_item *) * symbol_table->n_temps);
-        symbol_table->temps[symbol_table->n_temps - 1] = create_symbol_table_item(id, symbol);
+        symbol_table->temps[symbol_table->n_temps - 1] = create_symbol_table_item(id, 0, symbol);
+}
+
+void add_symbol_type
+(struct symbol_table *symbol_table, char *id, struct symbol *symbol)
+{
+        if (get_symbol(symbol_table, id)) {
+                fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
+                exit(EXIT_FAILURE);
+        }
+        symbol_table->n_items++;
+        symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
+        symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, 0, symbol);
 }
 
 struct symbol_table *parse_symbols
