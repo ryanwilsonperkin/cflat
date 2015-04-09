@@ -487,11 +487,8 @@ struct symbol *translate_identifier_var
 (struct symbol_table *global, struct symbol_table *local, struct var *this)
 {
         struct symbol *symbol;
-        if ((symbol = get_symbol(local, this->val.id))) {
-                return symbol;
-        } else {
-                symbol = get_symbol(global, this->val.id);
-        }
+        symbol = get_symbol(local, this->val.id);
+        symbol = symbol ? symbol : get_symbol(global, this->val.id);
         if (!symbol) {
                 type_error(this->pos, "use of undeclared identifier '%s'", this->val.id);
         }
