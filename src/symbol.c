@@ -249,6 +249,9 @@ struct symbol *translate_var_decl
         }
         if (var_decl->array_specifier) {
                 size = var_decl->array_specifier->constant->val.ival;
+                if (size < 0) {
+                        type_error(var_decl->pos, "'%s' declared as an array with negative size");
+                }
                 return create_symbol_array(this, size);
         } else {
                 return this;
