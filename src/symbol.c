@@ -508,7 +508,7 @@ struct symbol *translate_field_var
         }
         symbol = get_symbol(parent->scoped_table, this->val.field.id);
         if (!symbol) {
-                type_error(this->pos, "no member '%s' in struct", this->val.field.id);
+                type_error(this->pos, "no member '%s' in struct '%s'", this->val.field.id, parent->val.struct_type->id);
         }
         return symbol;
 }
