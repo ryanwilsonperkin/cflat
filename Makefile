@@ -2,13 +2,9 @@ BIN_DIR = bin
 INCLUDE_DIR = include
 SRC_DIR = src
 TEST_DIR=$(SRC_DIR)/test
-
 GTEST_DIR=vendor/gtest-1.7.0
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h $(GTEST_DIR)/include/gtest/internal/*.h
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
-
-OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
-TEST_OBJS = symbol_test.o symbol.o ast.o typecheck.o
 
 CC = gcc
 LEX = flex
@@ -22,6 +18,9 @@ YFLAGS += -d
 ifeq ($(shell uname), Darwin)
 	LDFLAGS += -largp
 endif
+
+OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o print.o cflatc.o
+TEST_OBJS = symbol_test.o symbol.o ast.o typecheck.o
 
 all: $(BIN_DIR)/cflatc
 
