@@ -1,6 +1,8 @@
 #ifndef CFLAT_INTERMEDIATE_H
 #define CFLAT_INTERMEDIATE_H
 
+#include "ast.h"
+
 enum address_type {
         ADDRESS_NAME,
         ADDRESS_CONSTANT,
@@ -118,5 +120,17 @@ struct quad_address *create_quad_address_temp();
 
 void add_instruction(struct instruction_list *, struct quad *);
 void add_labeled_instruction(struct instruction_list *, char *, struct quad *);
+
+struct instruction_list *parse_instructions(struct program *);
+void parse_instructions_program(struct instruction_list *, struct program *);
+void parse_instructions_type_decl_list(struct instruction_list *, struct type_decl_list *);
+void parse_instructions_type_decl(struct instruction_list *, struct type_decl *);
+void parse_instructions_var_decl_stmt_list(struct instruction_list *, struct var_decl_stmt_list *);
+void parse_instructions_var_decl(struct instruction_list *, struct var_decl *);
+void parse_instructions_struct_type(struct instruction_list *, struct struct_type *);
+void parse_instructions_function_def_list(struct instruction_list *, struct function_def_list *);
+void parse_instructions_function_def(struct instruction_list *, struct function_def *);
+void parse_instructions_function_param_list(struct instruction_list *, struct function_param_list *);
+void parse_instructions_function_body(struct instruction_list *, struct function_body *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */
