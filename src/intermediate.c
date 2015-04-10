@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 
 #include "intermediate.h"
@@ -148,3 +149,106 @@ void add_instruction
         instructions->quads = realloc(instructions->quads, sizeof(struct quad *) * instructions->n_quads);
         instructions->quads[instructions->n_quads - 1] = quad;
 }
+
+struct instructions *parse_instructions
+(struct program *program)
+{
+        struct instructions *this = create_instructions();
+        parse_instructions_program(this, program);
+        return this;
+}
+
+void parse_instructions_program
+(struct instructions *instructions, struct program *this)
+{
+        if (!this) return;
+        parse_instructions_function_def_list(instructions, this->function_def_list);
+}
+
+void parse_instructions_function_def_list
+(struct instructions *instructions, struct function_def_list *this)
+{
+        if (!this) return;
+        parse_instructions_function_def_list(instructions, this->function_def_list);
+        parse_instructions_function_def(instructions, this->function_def);
+}
+
+void parse_instructions_function_def
+(struct instructions *instructions, struct function_def *this)
+{
+        if (!this) return;
+        add_instruction(instructions, create_quad_label(this->id));
+        parse_instructions_function_body(instructions, this->function_body);
+}
+
+void parse_instructions_function_body
+(struct instructions *instructions, struct function_body *this)
+{
+        if (!this) return;
+        parse_instructions_stmt_list(instructions, this->stmt_list);
+        parse_instructions_return_stmt(instructions, this->return_stmt);
+}
+
+void parse_instructions_stmt_list
+(struct instructions *instructions, struct stmt_list *this)
+{
+        if (!this) return;
+        parse_instructions_stmt_list(instructions, this->stmt_list);
+        parse_instructions_stmt(instructions, this->stmt);
+}
+
+void parse_instructions_stmt
+(struct instructions *instructions, struct stmt *this)
+{
+        if (!this) return;
+        switch (this->type) {
+        case EXPR_STMT:
+                parse_instructions_expr_stmt(instructions, this->val.expr_stmt);
+                break;
+        case COMPOUND_STMT:
+                parse_instructions_compound_stmt(instructions, this->val.compound_stmt);
+                break;
+        case SELECT_STMT:
+                parse_instructions_select_stmt(instructions, this->val.select_stmt);
+                break;
+        case ITER_STMT:
+                parse_instructions_iter_stmt(instructions, this->val.iter_stmt);
+                break;
+        case RETURN_STMT:
+                parse_instructions_return_stmt(instructions, this->val.return_stmt);
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+}
+
+void parse_instructions_expr_stmt
+(struct instructions *instructions, struct expr_stmt *this)
+{
+        if (!this) return;
+}
+
+void parse_instructions_compound_stmt
+(struct instructions *instructions, struct compound_stmt *this)
+{
+        if (!this) return;
+}
+
+void parse_instructions_select_stmt
+(struct instructions *instructions, struct select_stmt *this)
+{
+        if (!this) return;
+}
+
+void parse_instructions_iter_stmt
+(struct instructions *instructions, struct iter_stmt *this)
+{
+        if (!this) return;
+}
+
+void parse_instructions_return_stmt
+(struct instructions *instructions, struct return_stmt *this)
+{
+        if (!this) return;
+}
+

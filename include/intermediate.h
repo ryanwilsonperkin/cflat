@@ -122,14 +122,15 @@ void add_instruction(struct instructions *, struct quad *);
 
 struct instructions *parse_instructions(struct program *);
 void parse_instructions_program(struct instructions *, struct program *);
-void parse_instructions_type_decl_list(struct instructions *, struct type_decl_list *);
-void parse_instructions_type_decl(struct instructions *, struct type_decl *);
-void parse_instructions_var_decl_stmt_list(struct instructions *, struct var_decl_stmt_list *);
-void parse_instructions_var_decl(struct instructions *, struct var_decl *);
-void parse_instructions_struct_type(struct instructions *, struct struct_type *);
 void parse_instructions_function_def_list(struct instructions *, struct function_def_list *);
 void parse_instructions_function_def(struct instructions *, struct function_def *);
-void parse_instructions_function_param_list(struct instructions *, struct function_param_list *);
 void parse_instructions_function_body(struct instructions *, struct function_body *);
+void parse_instructions_stmt_list(struct instructions *, struct stmt_list *);
+void parse_instructions_stmt(struct instructions *, struct stmt *);
+void parse_instructions_expr_stmt(struct instructions *, struct expr_stmt *);
+void parse_instructions_compound_stmt(struct instructions *, struct compound_stmt *);
+void parse_instructions_select_stmt(struct instructions *, struct select_stmt *);
+void parse_instructions_iter_stmt(struct instructions *, struct iter_stmt *);
+void parse_instructions_return_stmt(struct instructions *, struct return_stmt *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */
