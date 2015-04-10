@@ -131,5 +131,15 @@ void parse_instructions_compound_stmt(struct instructions *, struct compound_stm
 void parse_instructions_select_stmt(struct instructions *, struct select_stmt *);
 void parse_instructions_iter_stmt(struct instructions *, struct iter_stmt *);
 void parse_instructions_return_stmt(struct instructions *, struct return_stmt *);
+struct quad_address *parse_instructions_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_assign_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_logical_or_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_logical_and_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_equality_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_relational_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_additive_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_multiplicative_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_unary_expr(struct instructions *, struct expr *);
+struct quad_address *parse_instructions_postfix_expr(struct instructions *, struct expr *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */

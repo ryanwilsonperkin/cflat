@@ -278,3 +278,53 @@ void parse_instructions_return_stmt
         if (!this) return;
 }
 
+struct quad_address *parse_instructions_expr
+(struct instructions *instructions, struct expr *this)
+{
+        if (!this) return NULL;
+}
+
+struct quad_address *parse_instructions_assign_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_logical_or_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_logical_and_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_equality_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_relational_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_additive_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_multiplicative_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_unary_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
+
+struct quad_address *parse_instructions_postfix_expr
+(struct instructions *instructions, struct expr *this)
+{
+}
