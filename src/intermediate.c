@@ -8,6 +8,7 @@ struct instruction_list *create_instruction_list
         struct instruction_list *this = malloc(sizeof(struct instruction_list));
         this->instructions = NULL;
         this->n_instructions = 0;
+        this->n_labels = 0;
         return this;
 }
 
@@ -143,6 +144,9 @@ struct quad_address *create_quad_address_temp
 void add_instruction
 (struct instruction_list *instruction_list, char *label, struct quad *quad)
 {
+        if (label) {
+                instruction_list->n_labels++;
+        }
         instruction_list->n_instructions++;
         instruction_list->instructions = realloc(instruction_list->instructions, sizeof(struct instruction *) * instruction_list->n_instructions);
         instruction_list->instructions[instruction_list->n_instructions - 1] = create_instruction(label, quad);

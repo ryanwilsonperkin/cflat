@@ -98,6 +98,7 @@ struct instruction {
 struct instruction_list {
         struct instruction **instructions;
         unsigned int n_instructions;
+        unsigned int n_labels;
 };
 
 struct instruction_list *create_instruction_list();
