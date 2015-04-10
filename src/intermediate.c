@@ -286,7 +286,27 @@ void parse_instructions_select_stmt
 void parse_instructions_iter_stmt
 (struct instructions *instructions, struct iter_stmt *this)
 {
-        if (!this) return;
+        struct quad_address *result;
+        struct quad *label_loop, *label_end;
+        struct quad *jump_to_loop, *jump_to_end;
+        label_loop = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        if (this->init) {
+                parse_instructions_expr(instructions, this->init);
+        }
+        add_instruction(instructions, label_loop);
+        if (this->cond) {
+                result = parse_instructions_expr(instructions, this->cond);
+                jump_to_end = create_quad_conditional_jump(result, label_end->val.label.label);
+                add_instruction(instructions, jump_to_end);
+        }
+        parse_instructions_stmt(instructions, this->body);
+        if (this->after) {
+                parse_instructions_expr(instructions, this->after);
+        }
+        jump_to_loop = create_quad_unconditional_jump(label_loop->val.label.label);
+        add_instruction(instructions, jump_to_loop);
+        add_instruction(instructions, label_end);
 }
 
 void parse_instructions_return_stmt
