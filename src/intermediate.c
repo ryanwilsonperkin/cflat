@@ -2,8 +2,6 @@
 
 #include "intermediate.h"
 
-#define MAX_FLOAT_LENGTH 1000
-
 struct instruction_list *create_instruction_list
 ()
 {
