@@ -98,8 +98,7 @@ struct quad {
 
 struct instructions {
         struct quad **quads;
-        unsigned int n_quads;
-        unsigned int n_labels;
+        unsigned int n_quads, n_labels, n_temps;
 };
 
 struct instructions *create_instructions();
@@ -116,7 +115,7 @@ struct quad *create_quad_procedure_call(char *, unsigned int);
 struct quad *create_quad_procedure_return(struct quad_address *);
 struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
-struct quad_address *create_quad_address_temp();
+struct quad_address *create_quad_address_temp(unsigned int);
 
 void add_instruction(struct instructions *, struct quad *);
 

@@ -1,7 +1,17 @@
 #include <assert.h>
+#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "intermediate.h"
+
+static inline int num_digits
+(unsigned int n)
+{
+        /* http://stackoverflow.com/a/1489928/3676516 */
+        return n > 0 ? (int) log10(n) + 1 : 1;
+}
 
 struct instructions *create_instructions
 ()
@@ -10,6 +20,7 @@ struct instructions *create_instructions
         this->quads = NULL;
         this->n_quads = 0;
         this->n_labels = 0;
+        this->n_temps = 0;
         return this;
 }
 
@@ -133,12 +144,11 @@ struct quad_address *create_quad_address_constant
 }
 
 struct quad_address *create_quad_address_temp
-()
+(unsigned int temp)
 {
-        static unsigned int n_temps = 0;
         struct quad_address *this = malloc(sizeof(struct quad_address));
         this->type = ADDRESS_TEMP;
-        this->val.temp = ++n_temps;
+        this->val.temp = temp;
         return this;
 }
 
@@ -148,6 +158,22 @@ void add_instruction
         instructions->n_quads++;
         instructions->quads = realloc(instructions->quads, sizeof(struct quad *) * instructions->n_quads);
         instructions->quads[instructions->n_quads - 1] = quad;
+}
+
+struct quad *get_next_label
+(struct instructions *instructions)
+{
+        char *label, *prefix = "L~";
+        instructions->n_labels++;
+        label = malloc(strlen(prefix) + num_digits(instructions->n_labels) + 1);
+        sprintf(label, "%s%u", prefix, instructions->n_labels);
+        return create_quad_label(label);
+}
+
+struct quad_address *get_next_temp
+(struct instructions *instructions)
+{
+        return create_quad_address_temp(++instructions->n_temps);
 }
 
 struct instructions *parse_instructions
