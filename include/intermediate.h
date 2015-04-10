@@ -22,6 +22,7 @@ enum quad_type {
         QUAD_BINARY_ASSIGN,
         QUAD_UNARY_ASSIGN,
         QUAD_COPY,
+        QUAD_LABEL,
         QUAD_UNCONDITIONAL_JUMP,
         QUAD_CONDITIONAL_JUMP,
         QUAD_RELATIONAL_JUMP,
@@ -69,6 +70,9 @@ struct quad {
                 } copy;
                 struct {
                         char *label;
+                } label; 
+                struct {
+                        char *label;
                 } unconditional_jump;
                 struct {
                         struct quad_address *arg;
@@ -92,22 +96,18 @@ struct quad {
         } val;
 };
 
-struct instruction {
-        char *label;
-        struct quad *quad;
-};
-
-struct instruction_list {
-        struct instruction **instructions;
-        unsigned int n_instructions;
+struct instructions {
+        struct quad **quads;
+        unsigned int n_quads;
         unsigned int n_labels;
 };
 
-struct instruction_list *create_instruction_list();
+struct instructions *create_instructions();
 struct instruction *create_instruction(char *, struct quad *);
 struct quad *create_quad_binary_assign(struct quad_address *, struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_unary_assign(struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_copy(struct quad_address *, struct quad_address *);
+struct quad *create_quad_label(char *);
 struct quad *create_quad_unconditional_jump(char *);
 struct quad *create_quad_conditional_jump(struct quad_address *, char *);
 struct quad *create_quad_relational_jump(struct quad_address *, struct quad_address *, enum quad_op, char *);
@@ -118,19 +118,18 @@ struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
 struct quad_address *create_quad_address_temp();
 
-void add_instruction(struct instruction_list *, struct quad *);
-void add_labeled_instruction(struct instruction_list *, char *, struct quad *);
+void add_instruction(struct instructions *, struct quad *);
 
-struct instruction_list *parse_instructions(struct program *);
-void parse_instructions_program(struct instruction_list *, struct program *);
-void parse_instructions_type_decl_list(struct instruction_list *, struct type_decl_list *);
-void parse_instructions_type_decl(struct instruction_list *, struct type_decl *);
-void parse_instructions_var_decl_stmt_list(struct instruction_list *, struct var_decl_stmt_list *);
-void parse_instructions_var_decl(struct instruction_list *, struct var_decl *);
-void parse_instructions_struct_type(struct instruction_list *, struct struct_type *);
-void parse_instructions_function_def_list(struct instruction_list *, struct function_def_list *);
-void parse_instructions_function_def(struct instruction_list *, struct function_def *);
-void parse_instructions_function_param_list(struct instruction_list *, struct function_param_list *);
-void parse_instructions_function_body(struct instruction_list *, struct function_body *);
+struct instructions *parse_instructions(struct program *);
+void parse_instructions_program(struct instructions *, struct program *);
+void parse_instructions_type_decl_list(struct instructions *, struct type_decl_list *);
+void parse_instructions_type_decl(struct instructions *, struct type_decl *);
+void parse_instructions_var_decl_stmt_list(struct instructions *, struct var_decl_stmt_list *);
+void parse_instructions_var_decl(struct instructions *, struct var_decl *);
+void parse_instructions_struct_type(struct instructions *, struct struct_type *);
+void parse_instructions_function_def_list(struct instructions *, struct function_def_list *);
+void parse_instructions_function_def(struct instructions *, struct function_def *);
+void parse_instructions_function_param_list(struct instructions *, struct function_param_list *);
+void parse_instructions_function_body(struct instructions *, struct function_body *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */

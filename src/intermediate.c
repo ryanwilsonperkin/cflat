@@ -2,22 +2,13 @@
 
 #include "intermediate.h"
 
-struct instruction_list *create_instruction_list
+struct instructions *create_instructions
 ()
 {
-        struct instruction_list *this = malloc(sizeof(struct instruction_list));
-        this->instructions = NULL;
-        this->n_instructions = 0;
+        struct instructions *this = malloc(sizeof(struct instructions));
+        this->quads = NULL;
+        this->n_quads = 0;
         this->n_labels = 0;
-        return this;
-}
-
-struct instruction *create_instruction
-(char *label, struct quad *quad)
-{
-        struct instruction *this = malloc(sizeof(struct instruction));
-        this->label = label;
-        this->quad = quad;
         return this;
 }
 
@@ -51,6 +42,15 @@ struct quad *create_quad_copy
         this->type = QUAD_COPY;
         this->val.copy.arg = arg;
         this->val.copy.result = result;
+        return this;
+}
+
+struct quad *create_quad_label
+(char *label)
+{
+        struct quad *this = malloc(sizeof(struct quad));
+        this->type = QUAD_LABEL;
+        this->val.label.label = label;
         return this;
 }
 
@@ -142,18 +142,9 @@ struct quad_address *create_quad_address_temp
 }
 
 void add_instruction
-(struct instruction_list *instruction_list, struct quad *quad)
+(struct instructions *instructions, struct quad *quad)
 {
-        add_labeled_instruction(instruction_list, NULL, quad);
-}
-
-void add_labeled_instruction
-(struct instruction_list *instruction_list, char *label, struct quad *quad)
-{
-        if (label) {
-                instruction_list->n_labels++;
-        }
-        instruction_list->n_instructions++;
-        instruction_list->instructions = realloc(instruction_list->instructions, sizeof(struct instruction *) * instruction_list->n_instructions);
-        instruction_list->instructions[instruction_list->n_instructions - 1] = create_instruction(label, quad);
+        instructions->n_quads++;
+        instructions->quads = realloc(instructions->quads, sizeof(struct quad *) * instructions->n_quads);
+        instructions->quads[instructions->n_quads - 1] = quad;
 }
