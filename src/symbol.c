@@ -135,7 +135,7 @@ void add_symbol
 void add_symbol_temp
 (struct symbol_table *symbol_table, struct symbol *symbol)
 {
-        char *id, *prefix = "temp:";
+        char *id, *prefix = "temp~";
         symbol_table->n_temps++;
         id = malloc(strlen(prefix) + num_digits(symbol_table->n_temps) + 1);
         sprintf(id, "%s%d", prefix, symbol_table->n_temps);
