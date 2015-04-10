@@ -5,6 +5,8 @@
 #include <string.h>
 #include "ast.h"
 #include "astprint.h"
+#include "intermediate.h"
+#include "intermediateprint.h"
 #include "parser.h"
 #include "symbol.h"
 #include "symbolprint.h"
@@ -111,6 +113,7 @@ int main
         };
         struct program *program;
         struct symbol_table *symbol_table;
+        struct instructions *instructions;
 
         /* Parse command line arguments */
         argp_parse (&argp, argc, argv, 0, 0, &arguments);
@@ -127,6 +130,7 @@ int main
         program = parse_file(in);
         symbol_table = parse_symbols(program);
         type_check_program(symbol_table, program);
+        instructions = parse_instructions(program);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {
@@ -159,6 +163,20 @@ int main
         }
 
         /* Output intermediate representation */
+        if (arguments.intermediate_flag) {
+                if (strcmp(arguments.out_fname, "-") == 0) {
+                        out = stdout;
+                } else if (!(out = fopen(out_fnames.symbol, "w"))) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
+                print_intermediate(out, instructions);
+                if (out != stdout && fclose(out)) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
+        }
+
         /* Output assembler */
 
         free_program(program);
