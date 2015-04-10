@@ -102,7 +102,6 @@ struct instruction_list {
 
 struct instruction_list *create_instruction_list();
 struct instruction *create_instruction(char *, struct quad *);
-
 struct quad *create_quad_binary_assign(struct quad_address *, struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_unary_assign(struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_copy(struct quad_address *, struct quad_address *);
@@ -112,7 +111,6 @@ struct quad *create_quad_relational_jump(struct quad_address *, struct quad_addr
 struct quad *create_quad_procedure_param(struct quad_address *);
 struct quad *create_quad_procedure_call(char *, unsigned int);
 struct quad *create_quad_procedure_return(struct quad_address *);
-
 struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
 struct quad_address *create_quad_address_temp();
