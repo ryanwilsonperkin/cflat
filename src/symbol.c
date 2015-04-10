@@ -488,7 +488,7 @@ struct symbol *translate_postfix_expr
 struct symbol *translate_function_call
 (struct symbol_table *global, struct symbol_table *local, struct function_call *this)
 {
-        struct symbol *symbol, *parent, *arg_symbol, *param_symbol;
+        struct symbol *symbol, *parent;
         parent = get_symbol(global, this->id);
         if (!parent) {
                 type_error(this->pos, "use of undeclared function '%s'", this->id);
