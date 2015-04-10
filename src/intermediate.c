@@ -251,19 +251,36 @@ void parse_instructions_stmt
 void parse_instructions_expr_stmt
 (struct instructions *instructions, struct expr_stmt *this)
 {
-        if (!this) return;
+        parse_instructions_expr(instructions, this->expr);
 }
 
 void parse_instructions_compound_stmt
 (struct instructions *instructions, struct compound_stmt *this)
 {
-        if (!this) return;
+        parse_instructions_stmt_list(instructions, this->stmt_list);
 }
 
 void parse_instructions_select_stmt
 (struct instructions *instructions, struct select_stmt *this)
 {
-        if (!this) return;
+        struct quad_address *result;
+        struct quad *jump_to_if, *jump_to_else, *jump_to_end;
+        struct quad *label_if, *label_else, *label_end;
+        label_if = get_next_label(instructions);
+        label_else = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        result = parse_instructions_expr(instructions, this->cond);
+        jump_to_if = create_quad_conditional_jump(result, label_if->val.label.label);
+        jump_to_else = create_quad_unconditional_jump(label_else->val.label.label);
+        jump_to_end = create_quad_unconditional_jump(label_end->val.label.label);
+        add_instruction(instructions, jump_to_if);
+        add_instruction(instructions, jump_to_else);
+        add_instruction(instructions, label_if);
+        parse_instructions_stmt(instructions, this->stmt_if_true);
+        add_instruction(instructions, jump_to_end);
+        add_instruction(instructions, label_else);
+        parse_instructions_stmt(instructions, this->stmt_if_false);
+        add_instruction(instructions, label_end);
 }
 
 void parse_instructions_iter_stmt
