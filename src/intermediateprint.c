@@ -18,6 +18,9 @@ void print_intermediate
 void print_quad
 (FILE *out, struct quad *quad)
 {
+        if (quad->type != QUAD_LABEL) {
+                fprintf(out, "\t");
+        }
         switch (quad->type) {
         case QUAD_BINARY_ASSIGN:
                 print_quad_binary_assign(out, quad);
