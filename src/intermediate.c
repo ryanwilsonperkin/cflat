@@ -142,6 +142,12 @@ struct quad_address *create_quad_address_temp
 }
 
 void add_instruction
+(struct instruction_list *instruction_list, struct quad *quad)
+{
+        add_labeled_instruction(instruction_list, NULL, quad);
+}
+
+void add_labeled_instruction
 (struct instruction_list *instruction_list, char *label, struct quad *quad)
 {
         if (label) {

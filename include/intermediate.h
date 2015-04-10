@@ -116,6 +116,7 @@ struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
 struct quad_address *create_quad_address_temp();
 
-void add_instruction(struct instruction_list *, char *, struct quad *);
+void add_instruction(struct instruction_list *, struct quad *);
+void add_labeled_instruction(struct instruction_list *, char *, struct quad *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */
