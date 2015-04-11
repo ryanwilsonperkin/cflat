@@ -312,7 +312,11 @@ void parse_instructions_iter_stmt
 void parse_instructions_return_stmt
 (struct instructions *instructions, struct return_stmt *this)
 {
-        if (!this) return;
+        struct quad_address *result;
+        struct quad *procedure_return;
+        result = parse_instructions_expr(instructions, this->expr);
+        procedure_return = create_quad_procedure_return(result);
+        add_instruction(instructions, procedure_return);
 }
 
 struct quad_address *parse_instructions_expr
