@@ -8,6 +8,8 @@ void print_quad(FILE *, struct quad *);
 void print_quad_binary_assign(FILE *, struct quad *);
 void print_quad_unary_assign(FILE *, struct quad *);
 void print_quad_copy(FILE *, struct quad *);
+void print_quad_copy_from_addr(FILE *, struct quad *);
+void print_quad_copy_to_addr(FILE *, struct quad *);
 void print_quad_label(FILE *, struct quad *);
 void print_quad_unconditional_jump(FILE *, struct quad *);
 void print_quad_conditional_jump(FILE *, struct quad *);
