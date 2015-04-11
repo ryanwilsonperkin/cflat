@@ -126,7 +126,9 @@ void print_quad_procedure_return
 (FILE *out, struct quad *quad)
 {
         fprintf(out, "return ");
-        print_quad_address(out, quad->val.procedure_return.result);
+        if (quad->val.procedure_return.result) {
+                print_quad_address(out, quad->val.procedure_return.result);
+        }
 }
 
 
