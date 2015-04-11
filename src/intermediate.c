@@ -531,13 +531,48 @@ struct quad_address *parse_instructions_relational_expr
 struct quad_address *parse_instructions_additive_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        enum quad_op op;
+        struct quad_address *primary, *secondary, *result;
+        switch (this->subtype.additive_expr_subtype) {
+        case ADDITIVE_EXPR_ADD:
+                op = QUAD_OP_ADD;
+                break;
+        case ADDITIVE_EXPR_SUBTRACT:
+                op = QUAD_OP_SUBTRACT;
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+        primary = parse_instructions_expr(global, local, instructions, this->val.binary_op.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.binary_op.secondary);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
+        return result;
 }
 
 struct quad_address *parse_instructions_multiplicative_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        enum quad_op op;
+        struct quad_address *primary, *secondary, *result;
+        switch (this->subtype.multiplicative_expr_subtype) {
+        case MULTIPLICATIVE_EXPR_MULTIPLY:
+                op = QUAD_OP_MULTIPLY;
+                break;
+        case MULTIPLICATIVE_EXPR_DIVIDE:
+                op = QUAD_OP_DIVIDE;
+                break;
+        case MULTIPLICATIVE_EXPR_MODULO:
+                op = QUAD_OP_MODULO;
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+        primary = parse_instructions_expr(global, local, instructions, this->val.binary_op.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.binary_op.secondary);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
+        return result;
 }
 
 struct quad_address *parse_instructions_unary_expr
