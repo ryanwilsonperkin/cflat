@@ -130,7 +130,7 @@ int main
         program = parse_file(in);
         symbol_table = parse_symbols(program);
         type_check_program(symbol_table, program);
-        instructions = parse_instructions(program);
+        instructions = parse_instructions(symbol_table, program);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {
