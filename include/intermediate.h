@@ -14,7 +14,10 @@ struct quad_address {
         enum address_type type;
         union {
                 char *id;
-                struct constant *constant;
+                struct {
+                        enum basic_type type;
+                        union value val;
+                } constant;
                 unsigned int temp;
         } val;
 };

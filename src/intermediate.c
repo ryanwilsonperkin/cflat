@@ -134,12 +134,33 @@ struct quad_address *create_quad_address_name
         return this;
 }
 
-struct quad_address *create_quad_address_constant
-(struct constant *constant)
+struct quad_address *create_quad_address_const_char
+(cflat_char c)
 {
         struct quad_address *this = malloc(sizeof(struct quad_address));
         this->type = ADDRESS_CONSTANT;
-        this->val.constant = constant;
+        this->val.constant.type = CHAR_TYPE;
+        this->val.constant.val.cval = c;
+        return this;
+}
+
+struct quad_address *create_quad_address_const_float
+(cflat_float f)
+{
+        struct quad_address *this = malloc(sizeof(struct quad_address));
+        this->type = ADDRESS_CONSTANT;
+        this->val.constant.type = FLOAT_TYPE;
+        this->val.constant.val.fval = f;
+        return this;
+}
+
+struct quad_address *create_quad_address_const_int
+(cflat_int i)
+{
+        struct quad_address *this = malloc(sizeof(struct quad_address));
+        this->type = ADDRESS_CONSTANT;
+        this->val.constant.type = INT_TYPE;
+        this->val.constant.val.ival = i;
         return this;
 }
 
@@ -412,11 +433,22 @@ struct quad_address *parse_instructions_var
 struct quad_address *parse_instructions_identifier_var
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
 {
+        return create_quad_address_name(this->val.id);
 }
 
 struct quad_address *parse_instructions_field_var
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
 {
+        struct quad_address *parent, *offset, *result;
+        struct symbol *parent_symbol;
+        unsigned int offset_size;
+        parent_symbol = translate_var(global, local, this->val.field.var);
+        offset_size = get_offset(parent_symbol->scoped_table, this->val.field.id);
+        parent = parse_instructions_var(global, local, instructions, this->val.field.var);
+        offset = create_quad_address_const_int(offset_size);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_binary_assign(parent, offset, result, QUAD_OP_ADD));
+        return result;
 }
 
 struct quad_address *parse_instructions_subscript_var
