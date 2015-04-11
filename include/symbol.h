@@ -49,6 +49,7 @@ struct symbol *create_symbol_struct(struct struct_type *);
 struct symbol *create_symbol_function(struct function_def *);
 
 struct symbol *get_symbol(struct symbol_table *, char *);
+unsigned int get_offset(struct symbol_table *, char *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
 void add_symbol_type(struct symbol_table *, char *, struct symbol *);
 void add_symbol_temp(struct symbol_table *, struct symbol *);

@@ -119,6 +119,20 @@ struct symbol *get_symbol
         return NULL;
 }
 
+unsigned int get_offset
+(struct symbol_table *symbol_table, char *id)
+{
+        int i;
+        struct symbol_table_item *item;
+        for (i = 0; i < symbol_table->n_items; i++) {
+                item = symbol_table->items[i];
+                if (strcmp(item->id, id) == 0) {
+                        return item->offset;
+                }
+        }
+        return 0;
+}
+
 void add_symbol
 (struct symbol_table *symbol_table, char *id, struct symbol *symbol)
 {
