@@ -459,13 +459,73 @@ struct quad_address *parse_instructions_logical_and_expr
 struct quad_address *parse_instructions_equality_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        enum quad_op op;
+        struct quad_address *primary, *secondary, *result;
+        struct quad *label_if_true, *label_if_false, *label_end;
+        switch (this->subtype.equality_expr_subtype) {
+        case EQUALITY_EXPR_EQUAL:
+                op = QUAD_OP_EQUAL;
+                break;
+        case EQUALITY_EXPR_NOT_EQUAL:
+                op = QUAD_OP_NOT_EQUAL;
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+        primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
+        label_if_true = get_next_label(instructions);
+        label_if_false = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_relational_jump(primary, secondary, op, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_unconditional_jump(label_if_false->val.label.label));
+        add_instruction(instructions, label_if_true);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(1), result));
+        add_instruction(instructions, create_quad_unconditional_jump(label_end->val.label.label));
+        add_instruction(instructions, label_if_false);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), result));
+        add_instruction(instructions, label_end);
+        return result;
 }
 
 struct quad_address *parse_instructions_relational_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        enum quad_op op;
+        struct quad_address *primary, *secondary, *result;
+        struct quad *label_if_true, *label_if_false, *label_end;
+        switch (this->subtype.relational_expr_subtype) {
+        case RELATIONAL_EXPR_LESS_THAN:
+                op = QUAD_OP_LESS_THAN;
+                break;
+        case RELATIONAL_EXPR_LESS_THAN_OR_EQUAL:
+                op = QUAD_OP_LESS_THAN_OR_EQUAL;
+                break;
+        case RELATIONAL_EXPR_GREATER_THAN:
+                op = QUAD_OP_GREATER_THAN;
+                break;
+        case RELATIONAL_EXPR_GREATER_THAN_OR_EQUAL:
+                op = QUAD_OP_GREATER_THAN_OR_EQUAL;
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+        primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
+        label_if_true = get_next_label(instructions);
+        label_if_false = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_relational_jump(primary, secondary, op, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_unconditional_jump(label_if_false->val.label.label));
+        add_instruction(instructions, label_if_true);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(1), result));
+        add_instruction(instructions, create_quad_unconditional_jump(label_end->val.label.label));
+        add_instruction(instructions, label_if_false);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), result));
+        add_instruction(instructions, label_end);
+        return result;
 }
 
 struct quad_address *parse_instructions_additive_expr
