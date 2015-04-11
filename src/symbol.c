@@ -456,6 +456,9 @@ struct symbol *translate_unary_expr
                 symbol = create_symbol_basic(INT_TYPE);
                 break;
         case UNARY_EXPR_SIZEOF_UNARY:
+                translate_expr(global, local, this->val.unary_op.expr);
+                symbol = create_symbol_basic(INT_TYPE);
+                break;
         case UNARY_EXPR_NOT_UNARY:
         case UNARY_EXPR_POSITIVE:
         case UNARY_EXPR_NEGATIVE:

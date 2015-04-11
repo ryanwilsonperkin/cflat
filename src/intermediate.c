@@ -578,7 +578,43 @@ struct quad_address *parse_instructions_multiplicative_expr
 struct quad_address *parse_instructions_unary_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        enum quad_op op;
+        struct quad_address *expr, *result;
+        struct symbol *symbol;
+        struct expr *sub_expr;
+        switch (this->subtype.unary_expr_subtype) {
+        case UNARY_EXPR_SIZEOF_UNARY:
+                sub_expr = this->val.unary_op.expr;
+                if (sub_expr->type == POSTFIX_EXPR && sub_expr->subtype.postfix_expr_subtype == POSTFIX_EXPR_VAR) {
+                        symbol = translate_var(global, local, sub_expr->val.postfix_op.var);
+                        return create_quad_address_const_int(symbol->size);
+                } else {
+                        return create_quad_address_const_int(4);
+                }
+        case UNARY_EXPR_SIZEOF_BASIC:
+                return create_quad_address_const_int(4);
+        case UNARY_EXPR_NOT_UNARY:
+                op = QUAD_OP_NOT_UNARY;
+                break;
+        case UNARY_EXPR_POSITIVE:
+                op = QUAD_OP_POSITIVE;
+                break;
+        case UNARY_EXPR_NEGATIVE:
+                op = QUAD_OP_NEGATIVE;
+                break;
+        case UNARY_EXPR_PRE_INCREMENT:
+                op = QUAD_OP_PRE_INCREMENT;
+                break;
+        case UNARY_EXPR_PRE_DECREMENT:
+                op = QUAD_OP_PRE_DECREMENT;
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+        expr = parse_instructions_expr(global, local, instructions, this->val.unary_op.expr);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_unary_assign(expr, result, op));
+        return result;
 }
 
 struct quad_address *parse_instructions_postfix_expr
