@@ -415,7 +415,24 @@ struct quad_address *parse_instructions_assign_expr
 struct quad_address *parse_instructions_logical_or_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        struct quad_address *primary, *secondary, *result;
+        struct quad *label_if_true, *label_if_false, *label_end;
+        primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
+        label_if_true = get_next_label(instructions);
+        label_if_false = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_conditional_jump(primary, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_conditional_jump(secondary, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_unconditional_jump(label_if_false->val.label.label));
+        add_instruction(instructions, label_if_true);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(1), result));
+        add_instruction(instructions, create_quad_unconditional_jump(label_end->val.label.label));
+        add_instruction(instructions, label_if_false);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), result));
+        add_instruction(instructions, label_end);
+        return result;
 }
 
 struct quad_address *parse_instructions_logical_and_expr
