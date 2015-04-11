@@ -177,71 +177,73 @@ struct quad_address *get_next_temp
 }
 
 struct instructions *parse_instructions
-(struct program *program)
+(struct symbol_table *global, struct program *program)
 {
         struct instructions *this = create_instructions();
-        parse_instructions_program(this, program);
+        parse_instructions_program(global, this, program);
         return this;
 }
 
 void parse_instructions_program
-(struct instructions *instructions, struct program *this)
+(struct symbol_table *global, struct instructions *instructions, struct program *this)
 {
         if (!this) return;
-        parse_instructions_function_def_list(instructions, this->function_def_list);
+        parse_instructions_function_def_list(global, instructions, this->function_def_list);
 }
 
 void parse_instructions_function_def_list
-(struct instructions *instructions, struct function_def_list *this)
+(struct symbol_table *global, struct instructions *instructions, struct function_def_list *this)
 {
         if (!this) return;
-        parse_instructions_function_def_list(instructions, this->function_def_list);
-        parse_instructions_function_def(instructions, this->function_def);
+        parse_instructions_function_def_list(global, instructions, this->function_def_list);
+        parse_instructions_function_def(global, instructions, this->function_def);
 }
 
 void parse_instructions_function_def
-(struct instructions *instructions, struct function_def *this)
+(struct symbol_table *global, struct instructions *instructions, struct function_def *this)
 {
+        struct symbol_table *local;
         if (!this) return;
+        local = get_symbol(global, this->id)->scoped_table;
         add_instruction(instructions, create_quad_label(this->id));
-        parse_instructions_function_body(instructions, this->function_body);
+        parse_instructions_function_body(global, local, instructions, this->function_body);
 }
 
 void parse_instructions_function_body
-(struct instructions *instructions, struct function_body *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct function_body *this)
 {
         if (!this) return;
-        parse_instructions_stmt_list(instructions, this->stmt_list);
-        parse_instructions_return_stmt(instructions, this->return_stmt);
+        parse_instructions_stmt_list(global, local, instructions, this->stmt_list);
+        parse_instructions_return_stmt(global, local, instructions, this->return_stmt);
 }
 
 void parse_instructions_stmt_list
-(struct instructions *instructions, struct stmt_list *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct stmt_list *this)
 {
         if (!this) return;
-        parse_instructions_stmt_list(instructions, this->stmt_list);
-        parse_instructions_stmt(instructions, this->stmt);
+        parse_instructions_stmt_list(global, local, instructions, this->stmt_list);
+        parse_instructions_stmt(global, local, instructions, this->stmt);
 }
 
 void parse_instructions_stmt
-(struct instructions *instructions, struct stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct stmt *this)
 {
         if (!this) return;
         switch (this->type) {
         case EXPR_STMT:
-                parse_instructions_expr_stmt(instructions, this->val.expr_stmt);
+                parse_instructions_expr_stmt(global, local, instructions, this->val.expr_stmt);
                 break;
         case COMPOUND_STMT:
-                parse_instructions_compound_stmt(instructions, this->val.compound_stmt);
+                parse_instructions_compound_stmt(global, local, instructions, this->val.compound_stmt);
                 break;
         case SELECT_STMT:
-                parse_instructions_select_stmt(instructions, this->val.select_stmt);
+                parse_instructions_select_stmt(global, local, instructions, this->val.select_stmt);
                 break;
         case ITER_STMT:
-                parse_instructions_iter_stmt(instructions, this->val.iter_stmt);
+                parse_instructions_iter_stmt(global, local, instructions, this->val.iter_stmt);
                 break;
         case RETURN_STMT:
-                parse_instructions_return_stmt(instructions, this->val.return_stmt);
+                parse_instructions_return_stmt(global, local, instructions, this->val.return_stmt);
                 break;
         default:
                 assert(0);  /* Invalid enum value. */
@@ -249,19 +251,19 @@ void parse_instructions_stmt
 }
 
 void parse_instructions_expr_stmt
-(struct instructions *instructions, struct expr_stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr_stmt *this)
 {
-        parse_instructions_expr(instructions, this->expr);
+        parse_instructions_expr(global, local, instructions, this->expr);
 }
 
 void parse_instructions_compound_stmt
-(struct instructions *instructions, struct compound_stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct compound_stmt *this)
 {
-        parse_instructions_stmt_list(instructions, this->stmt_list);
+        parse_instructions_stmt_list(global, local, instructions, this->stmt_list);
 }
 
 void parse_instructions_select_stmt
-(struct instructions *instructions, struct select_stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct select_stmt *this)
 {
         struct quad_address *result;
         struct quad *jump_to_if, *jump_to_else, *jump_to_end;
@@ -269,22 +271,22 @@ void parse_instructions_select_stmt
         label_if = get_next_label(instructions);
         label_else = get_next_label(instructions);
         label_end = get_next_label(instructions);
-        result = parse_instructions_expr(instructions, this->cond);
+        result = parse_instructions_expr(global, local, instructions, this->cond);
         jump_to_if = create_quad_conditional_jump(result, label_if->val.label.label);
         jump_to_else = create_quad_unconditional_jump(label_else->val.label.label);
         jump_to_end = create_quad_unconditional_jump(label_end->val.label.label);
         add_instruction(instructions, jump_to_if);
         add_instruction(instructions, jump_to_else);
         add_instruction(instructions, label_if);
-        parse_instructions_stmt(instructions, this->stmt_if_true);
+        parse_instructions_stmt(global, local, instructions, this->stmt_if_true);
         add_instruction(instructions, jump_to_end);
         add_instruction(instructions, label_else);
-        parse_instructions_stmt(instructions, this->stmt_if_false);
+        parse_instructions_stmt(global, local, instructions, this->stmt_if_false);
         add_instruction(instructions, label_end);
 }
 
 void parse_instructions_iter_stmt
-(struct instructions *instructions, struct iter_stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct iter_stmt *this)
 {
         struct quad_address *result;
         struct quad *label_loop, *label_end;
@@ -292,17 +294,17 @@ void parse_instructions_iter_stmt
         label_loop = get_next_label(instructions);
         label_end = get_next_label(instructions);
         if (this->init) {
-                parse_instructions_expr(instructions, this->init);
+                parse_instructions_expr(global, local, instructions, this->init);
         }
         add_instruction(instructions, label_loop);
         if (this->cond) {
-                result = parse_instructions_expr(instructions, this->cond);
+                result = parse_instructions_expr(global, local, instructions, this->cond);
                 jump_to_end = create_quad_conditional_jump(result, label_end->val.label.label);
                 add_instruction(instructions, jump_to_end);
         }
-        parse_instructions_stmt(instructions, this->body);
+        parse_instructions_stmt(global, local, instructions, this->body);
         if (this->after) {
-                parse_instructions_expr(instructions, this->after);
+                parse_instructions_expr(global, local, instructions, this->after);
         }
         jump_to_loop = create_quad_unconditional_jump(label_loop->val.label.label);
         add_instruction(instructions, jump_to_loop);
@@ -310,84 +312,84 @@ void parse_instructions_iter_stmt
 }
 
 void parse_instructions_return_stmt
-(struct instructions *instructions, struct return_stmt *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct return_stmt *this)
 {
         struct quad_address *result;
         struct quad *procedure_return;
-        result = parse_instructions_expr(instructions, this->expr);
+        result = parse_instructions_expr(global, local, instructions, this->expr);
         procedure_return = create_quad_procedure_return(result);
         add_instruction(instructions, procedure_return);
 }
 
 struct quad_address *parse_instructions_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
         if (!this) return NULL;
         switch (this->type) {
         case ASSIGN_EXPR:
-                return parse_instructions_assign_expr(instructions, this);
+                return parse_instructions_assign_expr(global, local, instructions, this);
         case LOGICAL_OR_EXPR:
-                return parse_instructions_logical_or_expr(instructions, this);
+                return parse_instructions_logical_or_expr(global, local, instructions, this);
         case LOGICAL_AND_EXPR:
-                return parse_instructions_logical_and_expr(instructions, this);
+                return parse_instructions_logical_and_expr(global, local, instructions, this);
         case EQUALITY_EXPR:
-                return parse_instructions_equality_expr(instructions, this);
+                return parse_instructions_equality_expr(global, local, instructions, this);
         case RELATIONAL_EXPR:
-                return parse_instructions_relational_expr(instructions, this);
+                return parse_instructions_relational_expr(global, local, instructions, this);
         case ADDITIVE_EXPR:
-                return parse_instructions_additive_expr(instructions, this);
+                return parse_instructions_additive_expr(global, local, instructions, this);
         case MULTIPLICATIVE_EXPR:
-                return parse_instructions_multiplicative_expr(instructions, this);
+                return parse_instructions_multiplicative_expr(global, local, instructions, this);
         case UNARY_EXPR:
-                return parse_instructions_unary_expr(instructions, this);
+                return parse_instructions_unary_expr(global, local, instructions, this);
         case POSTFIX_EXPR:
-                return parse_instructions_postfix_expr(instructions, this);
+                return parse_instructions_postfix_expr(global, local, instructions, this);
         default:
                 assert(0);  /* Invalid enum value. */
         }
 }
 
 struct quad_address *parse_instructions_assign_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_logical_or_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_logical_and_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_equality_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_relational_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_additive_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_multiplicative_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_unary_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
 
 struct quad_address *parse_instructions_postfix_expr
-(struct instructions *instructions, struct expr *this)
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }

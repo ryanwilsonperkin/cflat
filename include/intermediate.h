@@ -2,6 +2,7 @@
 #define CFLAT_INTERMEDIATE_H
 
 #include "ast.h"
+#include "symbol.h"
 
 enum address_type {
         ADDRESS_NAME,
@@ -119,27 +120,27 @@ struct quad_address *create_quad_address_temp(unsigned int);
 
 void add_instruction(struct instructions *, struct quad *);
 
-struct instructions *parse_instructions(struct program *);
-void parse_instructions_program(struct instructions *, struct program *);
-void parse_instructions_function_def_list(struct instructions *, struct function_def_list *);
-void parse_instructions_function_def(struct instructions *, struct function_def *);
-void parse_instructions_function_body(struct instructions *, struct function_body *);
-void parse_instructions_stmt_list(struct instructions *, struct stmt_list *);
-void parse_instructions_stmt(struct instructions *, struct stmt *);
-void parse_instructions_expr_stmt(struct instructions *, struct expr_stmt *);
-void parse_instructions_compound_stmt(struct instructions *, struct compound_stmt *);
-void parse_instructions_select_stmt(struct instructions *, struct select_stmt *);
-void parse_instructions_iter_stmt(struct instructions *, struct iter_stmt *);
-void parse_instructions_return_stmt(struct instructions *, struct return_stmt *);
-struct quad_address *parse_instructions_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_assign_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_logical_or_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_logical_and_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_equality_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_relational_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_additive_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_multiplicative_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_unary_expr(struct instructions *, struct expr *);
-struct quad_address *parse_instructions_postfix_expr(struct instructions *, struct expr *);
+struct instructions *parse_instructions(struct symbol_table *, struct program *);
+void parse_instructions_program(struct symbol_table *, struct instructions *, struct program *);
+void parse_instructions_function_def_list(struct symbol_table *, struct instructions *, struct function_def_list *);
+void parse_instructions_function_def(struct symbol_table *, struct instructions *, struct function_def *);
+void parse_instructions_function_body(struct symbol_table *, struct symbol_table *, struct instructions *, struct function_body *);
+void parse_instructions_stmt_list(struct symbol_table *, struct symbol_table *, struct instructions *, struct stmt_list *);
+void parse_instructions_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct stmt *);
+void parse_instructions_expr_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr_stmt *);
+void parse_instructions_compound_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct compound_stmt *);
+void parse_instructions_select_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct select_stmt *);
+void parse_instructions_iter_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct iter_stmt *);
+void parse_instructions_return_stmt(struct symbol_table *, struct symbol_table *, struct instructions *, struct return_stmt *);
+struct quad_address *parse_instructions_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_assign_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_logical_or_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_logical_and_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_equality_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_relational_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_additive_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_multiplicative_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_unary_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
+struct quad_address *parse_instructions_postfix_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */
