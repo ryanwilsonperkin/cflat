@@ -106,6 +106,7 @@ struct quad {
                         struct quad_address *arg;
                 } procedure_param;
                 struct {
+                        struct quad_address *result;
                         char *label;
                         unsigned int n_params;
                 } procedure_call;
@@ -133,7 +134,7 @@ struct quad *create_quad_unconditional_jump(char *);
 struct quad *create_quad_conditional_jump(struct quad_address *, enum quad_op, char *);
 struct quad *create_quad_relational_jump(struct quad_address *, struct quad_address *, enum quad_op, char *);
 struct quad *create_quad_procedure_param(struct quad_address *);
-struct quad *create_quad_procedure_call(char *, unsigned int);
+struct quad *create_quad_procedure_call(struct quad_address *, char *, unsigned int);
 struct quad *create_quad_procedure_return(struct quad_address *);
 struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
@@ -168,5 +169,6 @@ struct quad_address *parse_instructions_identifier_var(struct symbol_table *, st
 struct quad_address *parse_instructions_field_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
 struct quad_address *parse_instructions_subscript_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
 struct quad_address *parse_instructions_constant(struct symbol_table *, struct symbol_table *, struct instructions *, struct constant *);
+struct quad_address *parse_instructions_function_call(struct symbol_table *, struct symbol_table *, struct instructions *, struct function_call *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */

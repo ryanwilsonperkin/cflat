@@ -162,7 +162,8 @@ void print_quad_procedure_param
 void print_quad_procedure_call
 (FILE *out, struct quad *quad)
 {
-        fprintf(out, "call %s,%u", quad->val.procedure_call.label, quad->val.procedure_call.n_params);
+        print_quad_address(out, quad->val.procedure_call.result);
+        fprintf(out, " = call %s,%u", quad->val.procedure_call.label, quad->val.procedure_call.n_params);
 }
 
 void print_quad_procedure_return

@@ -138,10 +138,11 @@ struct quad *create_quad_procedure_param
 }
 
 struct quad *create_quad_procedure_call
-(char *label, unsigned int n_params)
+(struct quad_address *result, char *label, unsigned int n_params)
 {
         struct quad *this = malloc(sizeof(struct quad));
         this->type = QUAD_PROCEDURE_CALL;
+        this->val.procedure_call.result = result;
         this->val.procedure_call.label = label;
         this->val.procedure_call.n_params = n_params;
         return this;
@@ -620,19 +621,26 @@ struct quad_address *parse_instructions_unary_expr
 struct quad_address *parse_instructions_postfix_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        struct quad_address *expr, *result;
         switch (this->subtype.postfix_expr_subtype) {
         case POSTFIX_EXPR_VAR:
                 return parse_instructions_var(global, local, instructions, this->val.postfix_op.var);
         case POSTFIX_EXPR_CONSTANT:
                 return parse_instructions_constant(global, local, instructions, this->val.postfix_op.constant);
         case POSTFIX_EXPR_POST_INCREMENT:
-                break;
+                expr = parse_instructions_expr(global, local, instructions, this->val.postfix_op.expr);
+                result = get_next_temp(instructions);
+                add_instruction(instructions, create_quad_unary_assign(expr, result, QUAD_OP_POST_INCREMENT));
+                return result;
         case POSTFIX_EXPR_POST_DECREMENT:
-                break;
+                expr = parse_instructions_expr(global, local, instructions, this->val.postfix_op.expr);
+                result = get_next_temp(instructions);
+                add_instruction(instructions, create_quad_unary_assign(expr, result, QUAD_OP_POST_DECREMENT));
+                return result;
         case POSTFIX_EXPR_ENCLOSED:
-                break;
+                return parse_instructions_expr(global, local, instructions, this->val.postfix_op.expr);
         case POSTFIX_EXPR_FUNCTION_CALL:
-                break;
+                return parse_instructions_function_call(global, local, instructions, this->val.postfix_op.function_call);
         default:
                 assert(0);  /* Invalid enum value. */
         }
@@ -713,4 +721,21 @@ struct quad_address *parse_instructions_constant
         default:
                 assert(0);  /* Invalid enum value. */
         }
+}
+
+struct quad_address *parse_instructions_function_call
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct function_call *this)
+{
+        struct quad_address *expr, *result;
+        int n_args = 0;
+        struct function_arg_list *function_arg_list = this->function_arg_list;
+        while (function_arg_list) {
+                n_args++;
+                expr = parse_instructions_expr(global, local, instructions, function_arg_list->expr);
+                add_instruction(instructions, create_quad_procedure_param(expr));
+                function_arg_list = function_arg_list->function_arg_list;
+        }
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_procedure_call(result, this->id, n_args));
+        return result;
 }
