@@ -403,7 +403,13 @@ struct quad_address *parse_instructions_expr
 struct quad_address *parse_instructions_assign_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        struct quad_address *assignee, *assignee_addr, *assignment;
+        assignee = parse_instructions_var(global, local, instructions, this->val.assign.assignee);
+        assignee_addr = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_copy_addr(assignee, assignee_addr));
+        assignment = parse_instructions_expr(global, local, instructions, this->val.assign.assignment);
+        add_instruction(instructions, create_quad_copy_to_addr(assignment, assignee_addr));
+        return assignee;
 }
 
 struct quad_address *parse_instructions_logical_or_expr
