@@ -482,7 +482,7 @@ struct quad_address *parse_instructions_subscript_var
         struct quad *calculate_offset;
         struct symbol *parent_symbol;
         parent_symbol = translate_var(global, local, this->val.subscript.var);
-        parent_size = create_quad_address_const_int(parent_symbol->size);
+        parent_size = create_quad_address_const_int(parent_symbol->val.symbol->size);
         parent = parse_instructions_var(global, local, instructions, this->val.subscript.var);
         index = parse_instructions_expr(global, local, instructions, this->val.subscript.expr);
         parent_addr = get_next_temp(instructions);
@@ -492,6 +492,6 @@ struct quad_address *parse_instructions_subscript_var
         result_addr = get_next_temp(instructions);
         add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
         result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
+        add_instruction(instructions, create_quad_copy_to_addr(result_addr, result));
         return result;
 }
