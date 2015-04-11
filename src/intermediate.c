@@ -323,6 +323,28 @@ struct quad_address *parse_instructions_expr
 (struct instructions *instructions, struct expr *this)
 {
         if (!this) return NULL;
+        switch (this->type) {
+        case ASSIGN_EXPR:
+                return parse_instructions_assign_expr(instructions, this);
+        case LOGICAL_OR_EXPR:
+                return parse_instructions_logical_or_expr(instructions, this);
+        case LOGICAL_AND_EXPR:
+                return parse_instructions_logical_and_expr(instructions, this);
+        case EQUALITY_EXPR:
+                return parse_instructions_equality_expr(instructions, this);
+        case RELATIONAL_EXPR:
+                return parse_instructions_relational_expr(instructions, this);
+        case ADDITIVE_EXPR:
+                return parse_instructions_additive_expr(instructions, this);
+        case MULTIPLICATIVE_EXPR:
+                return parse_instructions_multiplicative_expr(instructions, this);
+        case UNARY_EXPR:
+                return parse_instructions_unary_expr(instructions, this);
+        case POSTFIX_EXPR:
+                return parse_instructions_postfix_expr(instructions, this);
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
 }
 
 struct quad_address *parse_instructions_assign_expr
