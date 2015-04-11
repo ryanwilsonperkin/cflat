@@ -459,15 +459,19 @@ struct quad_address *parse_instructions_identifier_var
 struct quad_address *parse_instructions_field_var
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
 {
-        struct quad_address *parent, *offset, *result;
+        struct quad_address *parent, *parent_addr, *offset, *result_addr, *result;
+        struct quad *parent_to_addr, *result_from_addr;
         struct symbol *parent_symbol;
         unsigned int offset_size;
         parent_symbol = translate_var(global, local, this->val.field.var);
         offset_size = get_offset(parent_symbol->scoped_table, this->val.field.id);
         parent = parse_instructions_var(global, local, instructions, this->val.field.var);
+        parent_addr = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_copy_from_addr(parent, parent_addr));
         offset = create_quad_address_const_int(offset_size);
-        result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_binary_assign(parent, offset, result, QUAD_OP_ADD));
+        result_addr = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
+        add_instruction(instructions, create_quad_copy_to_addr(result_addr, result));
         return result;
 }
 
