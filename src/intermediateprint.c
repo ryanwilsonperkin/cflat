@@ -244,9 +244,9 @@ void print_quad_address
                 fprintf(out, "%s", quad_address->val.id);
                 break;
         case ADDRESS_CONSTANT:
-                switch (quad_address->val.constant->type) {
+                switch (quad_address->val.constant.type) {
                 case CHAR_TYPE:
-                        switch (quad_address->val.constant->val.cval) {
+                        switch (quad_address->val.constant.val.cval) {
                         case '\t':
                                 fprintf(out, "'\\t'");
                                 break;
@@ -254,15 +254,15 @@ void print_quad_address
                                 fprintf(out, "'\\n'");
                                 break;
                         default:
-                                fprintf(out, "'%c'", quad_address->val.constant->val.cval);
+                                fprintf(out, "'%c'", quad_address->val.constant.val.cval);
                                 break;
                         }
                         break;
                 case INT_TYPE:
-                        fprintf(out, "%d", quad_address->val.constant->val.ival);
+                        fprintf(out, "%d", quad_address->val.constant.val.ival);
                         break;
                 case FLOAT_TYPE:
-                        fprintf(out, "%f", quad_address->val.constant->val.fval);
+                        fprintf(out, "%f", quad_address->val.constant.val.fval);
                         break;
                 default:
                         assert(0); /* Invalid enum value. */
