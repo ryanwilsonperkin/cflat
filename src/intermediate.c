@@ -623,8 +623,18 @@ struct quad_address *parse_instructions_postfix_expr
         switch (this->subtype.postfix_expr_subtype) {
         case POSTFIX_EXPR_VAR:
                 return parse_instructions_var(global, local, instructions, this->val.postfix_op.var);
+        case POSTFIX_EXPR_CONSTANT:
+                return parse_instructions_constant(global, local, instructions, this->val.postfix_op.constant);
+        case POSTFIX_EXPR_POST_INCREMENT:
+                break;
+        case POSTFIX_EXPR_POST_DECREMENT:
+                break;
+        case POSTFIX_EXPR_ENCLOSED:
+                break;
+        case POSTFIX_EXPR_FUNCTION_CALL:
+                break;
         default:
-                ;
+                assert(0);  /* Invalid enum value. */
         }
         return create_quad_address_const_int(1);
 }
@@ -688,4 +698,19 @@ struct quad_address *parse_instructions_subscript_var
         result = get_next_temp(instructions);
         add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
         return result;
+}
+
+struct quad_address *parse_instructions_constant
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct constant *this)
+{
+        switch (this->type) {
+        case CHAR_TYPE:
+                return create_quad_address_const_char(this->val.cval);
+        case FLOAT_TYPE:
+                return create_quad_address_const_float(this->val.fval);
+        case INT_TYPE:
+                return create_quad_address_const_int(this->val.ival);
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
 }

@@ -167,5 +167,6 @@ struct quad_address *parse_instructions_var(struct symbol_table *, struct symbol
 struct quad_address *parse_instructions_identifier_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
 struct quad_address *parse_instructions_field_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
 struct quad_address *parse_instructions_subscript_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
+struct quad_address *parse_instructions_constant(struct symbol_table *, struct symbol_table *, struct instructions *, struct constant *);
 
 #endif  /* CFLAT_INTERMEDIATE_H */
