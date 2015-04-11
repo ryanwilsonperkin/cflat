@@ -130,7 +130,16 @@ void print_quad_unconditional_jump
 void print_quad_conditional_jump
 (FILE *out, struct quad *quad)
 {
-        fprintf(out, "if ");
+        switch (quad->val.conditional_jump.op) {
+        case QUAD_OP_TRUE:
+                fprintf(out, "if ");
+                break;
+        case QUAD_OP_FALSE:
+                fprintf(out, "ifFalse ");
+                break;
+        default:
+                assert(0);  /* Invalid enum value for conditional jump. */
+        }
         print_quad_address(out, quad->val.conditional_jump.arg);
         fprintf(out, " goto %s", quad->val.conditional_jump.label);
 }

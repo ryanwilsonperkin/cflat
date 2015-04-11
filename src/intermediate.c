@@ -106,11 +106,12 @@ struct quad *create_quad_unconditional_jump
 }
 
 struct quad *create_quad_conditional_jump
-(struct quad_address *arg, char *label)
+(struct quad_address *arg, enum quad_op op, char *label)
 {
         struct quad *this = malloc(sizeof(struct quad));
         this->type = QUAD_CONDITIONAL_JUMP;
         this->val.conditional_jump.arg = arg;
+        this->val.conditional_jump.op = op;
         this->val.conditional_jump.label = label;
         return this;
 }
@@ -323,7 +324,7 @@ void parse_instructions_select_stmt
         label_else = get_next_label(instructions);
         label_end = get_next_label(instructions);
         result = parse_instructions_expr(global, local, instructions, this->cond);
-        jump_to_if = create_quad_conditional_jump(result, label_if->val.label.label);
+        jump_to_if = create_quad_conditional_jump(result, QUAD_OP_TRUE, label_if->val.label.label);
         jump_to_else = create_quad_unconditional_jump(label_else->val.label.label);
         jump_to_end = create_quad_unconditional_jump(label_end->val.label.label);
         add_instruction(instructions, jump_to_if);
@@ -350,7 +351,7 @@ void parse_instructions_iter_stmt
         add_instruction(instructions, label_loop);
         if (this->cond) {
                 result = parse_instructions_expr(global, local, instructions, this->cond);
-                jump_to_end = create_quad_conditional_jump(result, label_end->val.label.label);
+                jump_to_end = create_quad_conditional_jump(result, QUAD_OP_TRUE, label_end->val.label.label);
                 add_instruction(instructions, jump_to_end);
         }
         parse_instructions_stmt(global, local, instructions, this->body);
@@ -423,8 +424,8 @@ struct quad_address *parse_instructions_logical_or_expr
         label_if_false = get_next_label(instructions);
         label_end = get_next_label(instructions);
         result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_conditional_jump(primary, label_if_true->val.label.label));
-        add_instruction(instructions, create_quad_conditional_jump(secondary, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_conditional_jump(primary, QUAD_OP_TRUE, label_if_true->val.label.label));
+        add_instruction(instructions, create_quad_conditional_jump(secondary, QUAD_OP_TRUE, label_if_true->val.label.label));
         add_instruction(instructions, create_quad_unconditional_jump(label_if_false->val.label.label));
         add_instruction(instructions, label_if_true);
         add_instruction(instructions, create_quad_copy(create_quad_address_const_int(1), result));
@@ -438,7 +439,21 @@ struct quad_address *parse_instructions_logical_or_expr
 struct quad_address *parse_instructions_logical_and_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
-        return create_quad_address_const_int(1);
+        struct quad_address *primary, *secondary, *result;
+        struct quad *label_if_true, *label_if_false, *label_end;
+        primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
+        secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
+        label_if_false = get_next_label(instructions);
+        label_end = get_next_label(instructions);
+        result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_conditional_jump(primary, QUAD_OP_FALSE, label_if_false->val.label.label));
+        add_instruction(instructions, create_quad_conditional_jump(secondary, QUAD_OP_FALSE, label_if_false->val.label.label));
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(1), result));
+        add_instruction(instructions, create_quad_unconditional_jump(label_end->val.label.label));
+        add_instruction(instructions, label_if_false);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), result));
+        add_instruction(instructions, label_end);
+        return result;
 }
 
 struct quad_address *parse_instructions_equality_expr

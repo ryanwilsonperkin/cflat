@@ -41,6 +41,8 @@ enum quad_type {
 };
 
 enum quad_op {
+        QUAD_OP_TRUE,
+        QUAD_OP_FALSE,
         QUAD_OP_EQUAL,
         QUAD_OP_NOT_EQUAL,
         QUAD_OP_LESS_THAN,
@@ -92,6 +94,7 @@ struct quad {
                 } unconditional_jump;
                 struct {
                         struct quad_address *arg;
+                        enum quad_op op;
                         char *label;
                 } conditional_jump;
                 struct {
@@ -127,7 +130,7 @@ struct quad *create_quad_copy_from_addr(struct quad_address *, struct quad_addre
 struct quad *create_quad_copy_to_addr(struct quad_address *, struct quad_address *);
 struct quad *create_quad_label(char *);
 struct quad *create_quad_unconditional_jump(char *);
-struct quad *create_quad_conditional_jump(struct quad_address *, char *);
+struct quad *create_quad_conditional_jump(struct quad_address *, enum quad_op, char *);
 struct quad *create_quad_relational_jump(struct quad_address *, struct quad_address *, enum quad_op, char *);
 struct quad *create_quad_procedure_param(struct quad_address *);
 struct quad *create_quad_procedure_call(char *, unsigned int);
