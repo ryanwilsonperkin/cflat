@@ -31,6 +31,9 @@ void print_quad
         case QUAD_COPY:
                 print_quad_copy(out, quad);
                 break;
+        case QUAD_COPY_ADDR:
+                print_quad_copy_addr(out, quad);
+                break;
         case QUAD_COPY_FROM_ADDR:
                 print_quad_copy_from_addr(out, quad);
                 break;
@@ -87,11 +90,19 @@ void print_quad_copy
         print_quad_address(out, quad->val.copy.arg);
 }
 
+void print_quad_copy_addr
+(FILE *out, struct quad *quad)
+{
+        print_quad_address(out, quad->val.copy_addr.result);
+        fprintf(out, " := &");
+        print_quad_address(out, quad->val.copy_addr.arg);
+}
+
 void print_quad_copy_from_addr
 (FILE *out, struct quad *quad)
 {
         print_quad_address(out, quad->val.copy_from_addr.result);
-        fprintf(out, " := &");
+        fprintf(out, " := *");
         print_quad_address(out, quad->val.copy_from_addr.arg);
 }
 

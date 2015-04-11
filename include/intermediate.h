@@ -26,6 +26,7 @@ enum quad_type {
         QUAD_BINARY_ASSIGN,
         QUAD_UNARY_ASSIGN,
         QUAD_COPY,
+        QUAD_COPY_ADDR,
         QUAD_COPY_FROM_ADDR,
         QUAD_COPY_TO_ADDR,
         QUAD_LABEL,
@@ -76,6 +77,9 @@ struct quad {
                 } copy;
                 struct {
                         struct quad_address *arg, *result;
+                } copy_addr;
+                struct {
+                        struct quad_address *arg, *result;
                 } copy_from_addr;
                 struct {
                         struct quad_address *arg, *result;
@@ -118,6 +122,7 @@ struct instruction *create_instruction(char *, struct quad *);
 struct quad *create_quad_binary_assign(struct quad_address *, struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_unary_assign(struct quad_address *, struct quad_address *, enum quad_op);
 struct quad *create_quad_copy(struct quad_address *, struct quad_address *);
+struct quad *create_quad_copy_addr(struct quad_address *, struct quad_address *);
 struct quad *create_quad_copy_from_addr(struct quad_address *, struct quad_address *);
 struct quad *create_quad_copy_to_addr(struct quad_address *, struct quad_address *);
 struct quad *create_quad_label(char *);

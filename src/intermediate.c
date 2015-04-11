@@ -57,6 +57,16 @@ struct quad *create_quad_copy
         return this;
 }
 
+struct quad *create_quad_copy_addr
+(struct quad_address *arg, struct quad_address *result)
+{
+        struct quad *this = malloc(sizeof(struct quad));
+        this->type = QUAD_COPY_ADDR;
+        this->val.copy_addr.arg = arg;
+        this->val.copy_addr.result = result;
+        return this;
+}
+
 struct quad *create_quad_copy_from_addr
 (struct quad_address *arg, struct quad_address *result)
 {
@@ -393,46 +403,61 @@ struct quad_address *parse_instructions_expr
 struct quad_address *parse_instructions_assign_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_logical_or_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_logical_and_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_equality_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_relational_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_additive_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_multiplicative_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_unary_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_postfix_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
+        switch (this->subtype.postfix_expr_subtype) {
+        case POSTFIX_EXPR_VAR:
+                return parse_instructions_var(global, local, instructions, this->val.postfix_op.var);
+        default:
+                ;
+        }
+        return create_quad_address_const_int(1);
 }
 
 struct quad_address *parse_instructions_var
@@ -466,12 +491,12 @@ struct quad_address *parse_instructions_field_var
         offset_size = get_offset(parent_symbol->scoped_table, this->val.field.id);
         parent = parse_instructions_var(global, local, instructions, this->val.field.var);
         parent_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_from_addr(parent, parent_addr));
+        add_instruction(instructions, create_quad_copy_addr(parent, parent_addr));
         offset = create_quad_address_const_int(offset_size);
         result_addr = get_next_temp(instructions);
         add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
         result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_to_addr(result_addr, result));
+        add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
         return result;
 }
 
@@ -486,12 +511,12 @@ struct quad_address *parse_instructions_subscript_var
         parent = parse_instructions_var(global, local, instructions, this->val.subscript.var);
         index = parse_instructions_expr(global, local, instructions, this->val.subscript.expr);
         parent_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_from_addr(parent, parent_addr));
+        add_instruction(instructions, create_quad_copy_addr(parent, parent_addr));
         offset = get_next_temp(instructions);
         add_instruction(instructions, create_quad_binary_assign(parent_size, index, offset, QUAD_OP_MULTIPLY)); 
         result_addr = get_next_temp(instructions);
         add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
         result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_to_addr(result_addr, result));
+        add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
         return result;
 }
