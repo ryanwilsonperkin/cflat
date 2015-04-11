@@ -393,3 +393,33 @@ struct quad_address *parse_instructions_postfix_expr
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct expr *this)
 {
 }
+
+struct quad_address *parse_instructions_var
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
+{
+        switch (this->type) {
+        case IDENTIFIER:
+                return parse_instructions_identifier_var(global, local, instructions, this);
+        case FIELD:
+                return parse_instructions_field_var(global, local, instructions, this);
+        case SUBSCRIPT:
+                return parse_instructions_subscript_var(global, local, instructions, this);
+        default:
+                assert(0);  /* Invalid enum value. */
+        }
+}
+
+struct quad_address *parse_instructions_identifier_var
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
+{
+}
+
+struct quad_address *parse_instructions_field_var
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
+{
+}
+
+struct quad_address *parse_instructions_subscript_var
+(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
+{
+}
