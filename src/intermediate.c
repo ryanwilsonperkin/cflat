@@ -61,7 +61,7 @@ struct quad *create_quad_copy_from_addr
 (struct quad_address *arg, struct quad_address *result)
 {
         struct quad *this = malloc(sizeof(struct quad));
-        this->type = QUAD_COPY;
+        this->type = QUAD_COPY_FROM_ADDR;
         this->val.copy_from_addr.arg = arg;
         this->val.copy_from_addr.result = result;
         return this;
@@ -71,7 +71,7 @@ struct quad *create_quad_copy_to_addr
 (struct quad_address *arg, struct quad_address *result)
 {
         struct quad *this = malloc(sizeof(struct quad));
-        this->type = QUAD_COPY;
+        this->type = QUAD_COPY_TO_ADDR;
         this->val.copy_to_addr.arg = arg;
         this->val.copy_to_addr.result = result;
         return this;
