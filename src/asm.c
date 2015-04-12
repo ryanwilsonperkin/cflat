@@ -272,6 +272,72 @@ struct line *create_line_bnez
         return this;
 }
 
+struct line *create_line_beq
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BEQ;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
+struct line *create_line_bne
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BNE;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
+struct line *create_line_blt
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BLT;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
+struct line *create_line_ble
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BLE;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
+struct line *create_line_bgt
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BGT;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
+struct line *create_line_bge
+(struct line_address *arg1, struct line_address *arg2, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BGE;
+        this->val.jump_relational.arg1 = arg1;
+        this->val.jump_relational.arg2 = arg2;
+        this->val.jump_relational.label = label;
+        return this;
+}
+
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -522,6 +588,35 @@ void parse_assembly_conditional_jump
 void parse_assembly_relational_jump
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg1, *arg1_reg, *arg2, *arg2_reg;
+        arg1 = translate_quad_address(global, local, this->val.relational_jump.arg1);
+        arg2 = translate_quad_address(global, local, this->val.relational_jump.arg2);
+        arg1_reg = create_line_address_register(INT_TYPE, REG_TEMP0);
+        arg2_reg = create_line_address_register(INT_TYPE, REG_TEMP1);
+        add_line(assembly, create_line_load(arg1, arg1_reg));
+        add_line(assembly, create_line_load(arg2, arg2_reg));
+        switch (this->val.relational_jump.op) {
+        case QUAD_OP_EQUAL:
+                add_line(assembly, create_line_beq(arg1, arg2, this->val.relational_jump.label));
+                break;
+        case QUAD_OP_NOT_EQUAL:
+                add_line(assembly, create_line_bne(arg1, arg2, this->val.relational_jump.label));
+                break;
+        case QUAD_OP_LESS_THAN:
+                add_line(assembly, create_line_blt(arg1, arg2, this->val.relational_jump.label));
+                break;
+        case QUAD_OP_LESS_THAN_OR_EQUAL:
+                add_line(assembly, create_line_ble(arg1, arg2, this->val.relational_jump.label));
+                break;
+        case QUAD_OP_GREATER_THAN:
+                add_line(assembly, create_line_bgt(arg1, arg2, this->val.relational_jump.label));
+                break;
+        case QUAD_OP_GREATER_THAN_OR_EQUAL:
+                add_line(assembly, create_line_bge(arg1, arg2, this->val.relational_jump.label));
+                break;
+        default:
+                assert(0);  /* Invalid enum value for relational_jump. */
+        }
 }
 
 void parse_assembly_procedure_param

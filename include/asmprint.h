@@ -30,5 +30,11 @@ void print_line_not(FILE *, struct line *);
 void print_line_jump(FILE *, struct line *);
 void print_line_beqz(FILE *, struct line *);
 void print_line_bnez(FILE *, struct line *);
+void print_line_beq(FILE *, struct line *);
+void print_line_bne(FILE *, struct line *);
+void print_line_blt(FILE *, struct line *);
+void print_line_ble(FILE *, struct line *);
+void print_line_bgt(FILE *, struct line *);
+void print_line_bge(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */

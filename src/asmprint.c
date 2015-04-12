@@ -194,6 +194,24 @@ void print_line
         case LINE_BNEZ:
                 print_line_bnez(out, this);
                 break;
+        case LINE_BEQ:
+                print_line_beq(out, this);
+                break;
+        case LINE_BNE:
+                print_line_bne(out, this);
+                break;
+        case LINE_BLT:
+                print_line_blt(out, this);
+                break;
+        case LINE_BLE:
+                print_line_ble(out, this);
+                break;
+        case LINE_BGT:
+                print_line_bgt(out, this);
+                break;
+        case LINE_BGE:
+                print_line_bge(out, this);
+                break;
         default:
                 assert(0);  /* Invalid enum value. */
         }
@@ -399,7 +417,7 @@ void print_line_beqz
 {
         fprintf(out, "beqz ");
         print_line_address(out, this->val.jump_conditional.arg, UNENCLOSED);
-        fprintf(out, ", %s", this->val.jump_conditional.label);
+        fprintf(out, ",%s", this->val.jump_conditional.label);
 }
 
 void print_line_bnez
@@ -407,5 +425,65 @@ void print_line_bnez
 {
         fprintf(out, "bnez ");
         print_line_address(out, this->val.jump_conditional.arg, UNENCLOSED);
-        fprintf(out, ", %s", this->val.jump_conditional.label);
+        fprintf(out, ",%s", this->val.jump_conditional.label);
+}
+
+void print_line_beq
+(FILE *out, struct line *this)
+{
+        fprintf(out, "beq ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_bne
+(FILE *out, struct line *this)
+{
+        fprintf(out, "bne ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_blt
+(FILE *out, struct line *this)
+{
+        fprintf(out, "blt ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_ble
+(FILE *out, struct line *this)
+{
+        fprintf(out, "ble ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_bgt
+(FILE *out, struct line *this)
+{
+        fprintf(out, "bgt ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_bge
+(FILE *out, struct line *this)
+{
+        fprintf(out, "bge ");
+        print_line_address(out, this->val.jump_relational.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
+        fprintf(out, ",%s", this->val.jump_relational.label);
 }

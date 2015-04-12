@@ -59,7 +59,13 @@ struct line {
                 LINE_NOT,
                 LINE_JUMP,
                 LINE_BEQZ,
-                LINE_BNEZ
+                LINE_BNEZ,
+                LINE_BEQ,
+                LINE_BNE,
+                LINE_BLT,
+                LINE_BLE,
+                LINE_BGT,
+                LINE_BGE
         } type;
         union {
                 char *label;
@@ -73,6 +79,10 @@ struct line {
                         struct line_address *arg;
                         char *label;
                 } jump_conditional;
+                struct {
+                        struct line_address *arg1, *arg2;
+                        char *label;
+                } jump_relational;
         } val;
 };
 
@@ -106,6 +116,12 @@ struct line *create_line_not(struct line_address *, struct line_address *);
 struct line *create_line_jump(char *);
 struct line *create_line_beqz(struct line_address *, char *);
 struct line *create_line_bnez(struct line_address *, char *);
+struct line *create_line_beq(struct line_address *, struct line_address *, char *);
+struct line *create_line_bne(struct line_address *, struct line_address *, char *);
+struct line *create_line_blt(struct line_address *, struct line_address *, char *);
+struct line *create_line_ble(struct line_address *, struct line_address *, char *);
+struct line *create_line_bgt(struct line_address *, struct line_address *, char *);
+struct line *create_line_bge(struct line_address *, struct line_address *, char *);
 
 void add_line(struct assembly *, struct line *);
 
