@@ -216,7 +216,7 @@ void add_instruction
 struct quad *get_next_label
 (struct instructions *instructions)
 {
-        char *label, *prefix = "L~";
+        char *label, *prefix = "L";
         instructions->n_labels++;
         label = malloc(strlen(prefix) + num_digits(instructions->n_labels) + 1);
         sprintf(label, "%s%u", prefix, instructions->n_labels);
