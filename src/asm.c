@@ -19,6 +19,47 @@ struct assembly *create_assembly
         return this;
 }
 
+struct line_address *create_line_address_name
+(enum basic_type basic_type, char *name)
+{
+        struct line_address *this = malloc(sizeof(struct line_address));
+        this->type = LINE_ADDRESS_NAME;
+        this->basic_type = basic_type;
+        this->val.name = name;
+        return this;
+}
+
+struct line_address *create_line_address_constant
+(enum basic_type basic_type, union value constant)
+{
+        struct line_address *this = malloc(sizeof(struct line_address));
+        this->type = LINE_ADDRESS_CONSTANT;
+        this->basic_type = basic_type;
+        this->val.constant = constant;
+        return this;
+}
+
+struct line_address *create_line_address_offset
+(enum basic_type basic_type, int offset, int reg)
+{
+        struct line_address *this = malloc(sizeof(struct line_address));
+        this->type = LINE_ADDRESS_OFFSET;
+        this->basic_type = basic_type;
+        this->val.offset.offset = offset;
+        this->val.offset.reg = reg;
+        return this;
+}
+
+struct line_address *create_line_address_register
+(enum basic_type basic_type, int reg)
+{
+        struct line_address *this = malloc(sizeof(struct line_address));
+        this->type = LINE_ADDRESS_REG;
+        this->basic_type = basic_type;
+        this->val.reg = reg;
+        return this;
+}
+
 struct line *create_line_load(struct line_address *src, struct line_address *dest)
 {
         struct line *this = malloc(sizeof(struct line));

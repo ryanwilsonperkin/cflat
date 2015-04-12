@@ -9,18 +9,23 @@
 
 enum line_address_type {
         LINE_ADDRESS_NAME,
-        LINE_ADDR_CONSTANT,
-        LINE_ADDR_REG
+        LINE_ADDRESS_CONSTANT,
+        LINE_ADDRESS_OFFSET,
+        LINE_ADDRESS_REG
 };
 
 struct line_address {
-        enum line_address_type;
+        enum line_address_type type;
+        enum basic_type basic_type;
         union {
-                char *id;
+                char *name;
                 union value constant;
+                struct {
+                        int offset;
+                        int reg;
+                } offset;
                 int reg;
         } val;
-        enum basic_type type;
 };
 
 enum line_type {
@@ -48,6 +53,10 @@ struct assembly {
 };
 
 struct assembly *create_assembly();
+struct line_address *create_line_address_name(enum basic_type, char *);
+struct line_address *create_line_address_constant(enum basic_type, union value);
+struct line_address *create_line_address_offset(enum basic_type, int, int);
+struct line_address *create_line_address_register(enum basic_type, int);
 struct line *create_line_load(struct line_address *, struct line_address *);
 struct line *create_line_store(struct line_address *, struct line_address *);
 
