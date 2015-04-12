@@ -10,12 +10,6 @@ struct assembly *create_assembly
         struct assembly *this = malloc(sizeof(struct assembly));
         this->lines = NULL;
         this->n_lines = 0;
-        for (i = 0; i < NUM_IREGS; i++) {
-                this->iregs[i] = 0;
-        }
-        for (i = 0; i < NUM_FREGS; i++) {
-                this->fregs[i] = 0;
-        }
         return this;
 }
 
@@ -40,7 +34,7 @@ struct line_address *create_line_address_constant
 }
 
 struct line_address *create_line_address_offset
-(enum basic_type basic_type, int offset, int reg)
+(enum basic_type basic_type, int offset, struct reg *reg)
 {
         struct line_address *this = malloc(sizeof(struct line_address));
         this->type = LINE_ADDRESS_OFFSET;
@@ -51,7 +45,7 @@ struct line_address *create_line_address_offset
 }
 
 struct line_address *create_line_address_register
-(enum basic_type basic_type, int reg)
+(enum basic_type basic_type, struct reg *reg)
 {
         struct line_address *this = malloc(sizeof(struct line_address));
         this->type = LINE_ADDRESS_REG;
@@ -84,46 +78,6 @@ void add_line
         assembly->n_lines++;
         assembly->lines = realloc(assembly->lines, sizeof(struct line *) * assembly->n_lines);
         assembly->lines[assembly->n_lines - 1] = line;
-}
-
-int get_ireg
-(struct assembly *assembly)
-{
-        int i;
-        for (i = 0; i < NUM_IREGS; i++) {
-                if (!assembly->iregs[i]) {
-                        assembly->iregs[i] = 1;
-                        return i;
-                }
-        }
-        assert(0);  /* Out of registers. */
-}
-
-int get_freg
-(struct assembly *assembly)
-{
-        int i;
-        for (i = 0; i < NUM_FREGS; i++) {
-                if (!assembly->fregs[i]) {
-                        assembly->fregs[i] = 1;
-                        return i;
-                }
-        }
-        assert(0);  /* Out of registers. */
-}
-
-void unget_ireg
-(struct assembly *assembly, int reg)
-{
-        assert(assembly->iregs[reg]);  /* Register must be allocated. */
-        assembly->iregs[reg] = 0;
-}
-
-void unget_freg
-(struct assembly *assembly, int reg)
-{
-        assert(assembly->fregs[reg]);  /* Register must be allocated. */
-        assembly->fregs[reg] = 0;
 }
 
 struct assembly *parse_assembly

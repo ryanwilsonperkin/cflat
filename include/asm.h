@@ -7,6 +7,18 @@
 #define NUM_IREGS 8
 #define NUM_FREGS 6
 
+enum reg_type {
+        SP,
+        FP,
+        RA,
+        TMP
+};
+
+struct reg {
+        enum reg_type type;
+        int n;
+};
+
 enum line_address_type {
         LINE_ADDRESS_NAME,
         LINE_ADDRESS_CONSTANT,
@@ -22,9 +34,9 @@ struct line_address {
                 union value constant;
                 struct {
                         int offset;
-                        int reg;
+                        struct reg *reg;
                 } offset;
-                int reg;
+                struct reg *reg;
         } val;
 };
 
@@ -48,23 +60,17 @@ struct line {
 struct assembly {
         struct line **lines;
         unsigned int n_lines;
-        char iregs[NUM_IREGS];
-        char fregs[NUM_FREGS];
 };
 
 struct assembly *create_assembly();
 struct line_address *create_line_address_name(enum basic_type, char *);
 struct line_address *create_line_address_constant(enum basic_type, union value);
-struct line_address *create_line_address_offset(enum basic_type, int, int);
-struct line_address *create_line_address_register(enum basic_type, int);
+struct line_address *create_line_address_offset(enum basic_type, int, struct reg *);
+struct line_address *create_line_address_register(enum basic_type, struct reg *);
 struct line *create_line_load(struct line_address *, struct line_address *);
 struct line *create_line_store(struct line_address *, struct line_address *);
 
 void add_line(struct assembly *, struct line *);
-int get_ireg(struct assembly *);
-int get_freg(struct assembly *);
-void unget_ireg(struct assembly *, int);
-void unget_freg(struct assembly *, int);
 
 struct assembly *parse_assembly(struct symbol_table *, struct instructions *);
 void parse_assembly_instruction(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
