@@ -19,7 +19,7 @@ ifeq ($(shell uname), Darwin)
 	LDFLAGS += -largp
 endif
 
-OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o intermediate.o intermediateprint.o asm.o print.o cflatc.o
+OBJS = parser.o scanner.o ast.o astprint.o symbol.o symbolprint.o typecheck.o intermediate.o intermediateprint.o asm.o asmprint.o print.o cflatc.o
 TEST_OBJS = symbol_test.o symbol.o ast.o typecheck.o
 
 all: $(BIN_DIR)/cflatc

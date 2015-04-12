@@ -226,7 +226,7 @@ struct quad *get_next_label
 struct quad_address *get_next_temp
 (struct symbol_table *symbol_table)
 {
-        return create_quad_address_temp(++symbol_table->n_temps);
+        return create_quad_address_temp(symbol_table->n_temps++);
 }
 
 struct instructions *parse_instructions

@@ -232,7 +232,7 @@ void parse_assembly_copy_to_addr
         arg_reg1 = create_line_address_register(arg->basic_type, REG_TEMP1);
         arg_reg2 = create_line_address_register(arg->basic_type, REG_TEMP2);
         add_line(assembly, create_line_load(arg, arg_reg1));
-        add_line(assembly, create_line_load(arg_reg1, result));
+        add_line(assembly, create_line_load(result, arg_reg2));
         add_line(assembly, create_line_store(arg_reg1, arg_reg2));
 }
 
@@ -288,7 +288,7 @@ struct line_address *translate_quad_address
         case ADDRESS_CONSTANT:
                 return create_line_address_constant(INT_TYPE, this->val.constant.val);
         case ADDRESS_TEMP:
-                offset = this->val.temp;
+                offset = this->val.temp * 4;
                 return create_line_address_offset(INT_TYPE, offset, REG_SP);
         }
 }

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "asm.h"
+#include "asmprint.h"
 #include "ast.h"
 #include "astprint.h"
 #include "intermediate.h"
@@ -169,7 +170,7 @@ int main
         if (arguments.intermediate_flag) {
                 if (strcmp(arguments.out_fname, "-") == 0) {
                         out = stdout;
-                } else if (!(out = fopen(out_fnames.symbol, "w"))) {
+                } else if (!(out = fopen(out_fnames.intermediate, "w"))) {
                         fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
                         exit(EXIT_FAILURE);
                 }
@@ -181,6 +182,19 @@ int main
         }
 
         /* Output assembler */
+        if (arguments.compile_flag) {
+                if (strcmp(arguments.out_fname, "-") == 0) {
+                        out = stdout;
+                } else if (!(out = fopen(out_fnames.compile, "w"))) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
+                print_assembly(out, assembly);
+                if (out != stdout && fclose(out)) {
+                        fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
+                        exit(EXIT_FAILURE);
+                }
+        }
 
         free_program(program);
         return EXIT_SUCCESS;
