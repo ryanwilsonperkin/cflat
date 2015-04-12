@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "asm.h"
 #include "ast.h"
 #include "astprint.h"
 #include "intermediate.h"
@@ -114,6 +115,7 @@ int main
         struct program *program;
         struct symbol_table *symbol_table;
         struct instructions *instructions;
+        struct assembly *assembly;
 
         /* Parse command line arguments */
         argp_parse (&argp, argc, argv, 0, 0, &arguments);
@@ -131,6 +133,7 @@ int main
         symbol_table = parse_symbols(program);
         type_check_program(symbol_table, program);
         instructions = parse_instructions(symbol_table, program);
+        assembly = parse_assembly(symbol_table, instructions);
 
         /* Output abstract syntax */
         if (arguments.abstract_flag) {
