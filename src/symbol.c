@@ -33,6 +33,7 @@ struct symbol_table *create_symbol_table
         struct symbol_table *this = malloc(sizeof(struct symbol_table));
         this->size = 0;
         this->n_items = 0;
+        this->n_temps = 0;
         this->items = NULL;
         this->temps = NULL;
         return this;

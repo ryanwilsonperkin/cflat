@@ -224,9 +224,9 @@ struct quad *get_next_label
 }
 
 struct quad_address *get_next_temp
-(struct instructions *instructions)
+(struct symbol_table *symbol_table)
 {
-        return create_quad_address_temp(++instructions->n_temps);
+        return create_quad_address_temp(++symbol_table->n_temps);
 }
 
 struct instructions *parse_instructions
@@ -407,7 +407,7 @@ struct quad_address *parse_instructions_assign_expr
 {
         struct quad_address *assignee, *assignee_addr, *assignment;
         assignee = parse_instructions_var(global, local, instructions, this->val.assign.assignee);
-        assignee_addr = get_next_temp(instructions);
+        assignee_addr = get_next_temp(local);
         add_instruction(instructions, create_quad_copy_addr(assignee, assignee_addr));
         assignment = parse_instructions_expr(global, local, instructions, this->val.assign.assignment);
         add_instruction(instructions, create_quad_copy_to_addr(assignment, assignee_addr));
@@ -420,7 +420,7 @@ struct quad_address *parse_instructions_logical_or_expr
         struct quad_address *primary, *secondary, *result;
         primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, QUAD_OP_LOGICAL_OR));
         return result;
 }
@@ -431,7 +431,7 @@ struct quad_address *parse_instructions_logical_and_expr
         struct quad_address *primary, *secondary, *result;
         primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, QUAD_OP_LOGICAL_AND));
         return result;
 }
@@ -453,7 +453,7 @@ struct quad_address *parse_instructions_equality_expr
         }
         primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
         return result;
 }
@@ -481,7 +481,7 @@ struct quad_address *parse_instructions_relational_expr
         }
         primary = parse_instructions_expr(global, local, instructions, this->val.relation.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.relation.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
         return result;
 }
@@ -503,7 +503,7 @@ struct quad_address *parse_instructions_additive_expr
         }
         primary = parse_instructions_expr(global, local, instructions, this->val.binary_op.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.binary_op.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
         return result;
 }
@@ -528,7 +528,7 @@ struct quad_address *parse_instructions_multiplicative_expr
         }
         primary = parse_instructions_expr(global, local, instructions, this->val.binary_op.primary);
         secondary = parse_instructions_expr(global, local, instructions, this->val.binary_op.secondary);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_binary_assign(primary, secondary, result, op));
         return result;
 }
@@ -570,7 +570,7 @@ struct quad_address *parse_instructions_unary_expr
                 assert(0);  /* Invalid enum value. */
         }
         expr = parse_instructions_expr(global, local, instructions, this->val.unary_op.expr);
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_unary_assign(expr, result, op));
         return result;
 }
@@ -586,12 +586,12 @@ struct quad_address *parse_instructions_postfix_expr
                 return parse_instructions_constant(global, local, instructions, this->val.postfix_op.constant);
         case POSTFIX_EXPR_POST_INCREMENT:
                 expr = parse_instructions_expr(global, local, instructions, this->val.postfix_op.expr);
-                result = get_next_temp(instructions);
+                result = get_next_temp(local);
                 add_instruction(instructions, create_quad_unary_assign(expr, result, QUAD_OP_POST_INCREMENT));
                 return result;
         case POSTFIX_EXPR_POST_DECREMENT:
                 expr = parse_instructions_expr(global, local, instructions, this->val.postfix_op.expr);
-                result = get_next_temp(instructions);
+                result = get_next_temp(local);
                 add_instruction(instructions, create_quad_unary_assign(expr, result, QUAD_OP_POST_DECREMENT));
                 return result;
         case POSTFIX_EXPR_ENCLOSED:
@@ -617,10 +617,10 @@ struct quad_address *parse_instructions_var
         }
 
         cur_var = this;
-        final_offset = get_next_temp(instructions);
+        final_offset = get_next_temp(local);
         add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), final_offset));
         while (cur_var->type != IDENTIFIER) {
-                final_offset = (final_offset) ? final_offset : get_next_temp(instructions);
+                final_offset = (final_offset) ? final_offset : get_next_temp(local);
                 if (cur_var->type == FIELD) {
                         parent = cur_var->val.field.var;
                         parent_symbol = translate_var(global, local, parent);
@@ -632,16 +632,16 @@ struct quad_address *parse_instructions_var
                         offset_size = parent_symbol->val.symbol->size;
                         width = create_quad_address_const_int(offset_size);
                         index = parse_instructions_expr(global, local, instructions, cur_var->val.subscript.expr);
-                        offset = get_next_temp(instructions);
+                        offset = get_next_temp(local);
                         add_instruction(instructions, create_quad_binary_assign(width, index, offset, QUAD_OP_MULTIPLY));
                 }
                 add_instruction(instructions, create_quad_binary_assign(final_offset, offset, final_offset, QUAD_OP_ADD));
                 cur_var = parent;
         }
         base = create_quad_address_name(cur_var->val.id);
-        base_addr = get_next_temp(instructions);
-        result_addr = get_next_temp(instructions);
-        result = get_next_temp(instructions);
+        base_addr = get_next_temp(local);
+        result_addr = get_next_temp(local);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_copy_addr(base, base_addr));
         add_instruction(instructions, create_quad_binary_assign(base_addr, final_offset, result_addr, QUAD_OP_ADD));
         add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
@@ -672,12 +672,12 @@ struct quad_address *parse_instructions_function_call
         while (function_arg_list) {
                 n_args++;
                 expr = parse_instructions_expr(global, local, instructions, function_arg_list->expr);
-                stored_expr = get_next_temp(instructions);
+                stored_expr = get_next_temp(local);
                 add_instruction(instructions, create_quad_copy(expr, stored_expr));
                 add_instruction(instructions, create_quad_procedure_param(stored_expr));
                 function_arg_list = function_arg_list->function_arg_list;
         }
-        result = get_next_temp(instructions);
+        result = get_next_temp(local);
         add_instruction(instructions, create_quad_procedure_call(result, this->id, n_args));
         return result;
 }

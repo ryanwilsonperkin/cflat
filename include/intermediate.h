@@ -142,6 +142,7 @@ struct quad_address *create_quad_address_name(char *);
 struct quad_address *create_quad_address_constant(struct constant *);
 struct quad_address *create_quad_address_temp(unsigned int);
 
+struct quad_address *get_next_temp(struct symbol_table *);
 void add_instruction(struct instructions *, struct quad *);
 
 struct instructions *parse_instructions(struct symbol_table *, struct program *);

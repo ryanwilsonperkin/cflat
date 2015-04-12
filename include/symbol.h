@@ -34,7 +34,7 @@ struct symbol_table_item {
 };
 
 struct symbol_table {
-        unsigned int size, n_items;
+        unsigned int size, n_items, n_temps;
         struct symbol_table_item **items, **temps;
 };
 
