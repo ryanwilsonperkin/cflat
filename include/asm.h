@@ -82,4 +82,6 @@ void parse_assembly_procedure_param(struct symbol_table *, struct symbol_table *
 void parse_assembly_procedure_call(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_return(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 
+struct line_address *translate_quad_address(struct symbol_table *, struct symbol_table *, struct quad_address *);
+
 #endif  /* CFLAT_ASM_H */

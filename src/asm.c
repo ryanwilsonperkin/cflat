@@ -205,3 +205,25 @@ void parse_assembly_procedure_return
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
 }
+
+/* TODO: Get type of values, not just INT */
+struct line_address *translate_quad_address
+(struct symbol_table *global, struct symbol_table *local, struct quad_address *this)
+{
+        struct symbol *symbol;
+        int offset;
+        switch (this->type) {
+        case ADDRESS_NAME:
+                if (get_symbol(local, this->val.id)) {
+                        offset = (local->n_temps * 4) + get_offset(local, this->val.id);
+                        return create_line_address_offset(INT_TYPE, offset, REG_SP);
+                } else {
+                        return create_line_address_name(INT_TYPE, this->val.id);
+                }
+        case ADDRESS_CONSTANT:
+                return create_line_address_constant(INT_TYPE, this->val.constant.val);
+        case ADDRESS_TEMP:
+                offset = this->val.temp;
+                return create_line_address_offset(INT_TYPE, offset, REG_SP);
+        }
+}
