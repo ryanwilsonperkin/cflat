@@ -15,5 +15,17 @@ void print_line_store(FILE *, struct line *);
 void print_line_label(FILE *, struct line *);
 void print_line_add(FILE *, struct line *);
 void print_line_sub(FILE *, struct line *);
+void print_line_or(FILE *, struct line *);
+void print_line_and(FILE *, struct line *);
+void print_line_seq(FILE *, struct line *);
+void print_line_sne(FILE *, struct line *);
+void print_line_slt(FILE *, struct line *);
+void print_line_sle(FILE *, struct line *);
+void print_line_sgt(FILE *, struct line *);
+void print_line_sge(FILE *, struct line *);
+void print_line_mul(FILE *, struct line *);
+void print_line_div(FILE *, struct line *);
+void print_line_mod(FILE *, struct line *);
+void print_line_not(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */

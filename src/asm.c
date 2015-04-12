@@ -58,8 +58,8 @@ struct line *create_line_load(struct line_address *src, struct line_address *des
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_LOAD;
-        this->val.load.src = src;
-        this->val.load.dest = dest;
+        this->val.unary_op.arg = src;
+        this->val.unary_op.result = dest;
         return this;
 }
 
@@ -67,8 +67,8 @@ struct line *create_line_load_address(struct line_address *src, struct line_addr
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_LOAD_ADDRESS;
-        this->val.load.src = src;
-        this->val.load.dest = dest;
+        this->val.unary_op.arg = src;
+        this->val.unary_op.result = dest;
         return this;
 }
 
@@ -76,8 +76,8 @@ struct line *create_line_store(struct line_address *src, struct line_address *de
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_STORE;
-        this->val.store.src = src;
-        this->val.store.dest = dest;
+        this->val.unary_op.arg = src;
+        this->val.unary_op.result = dest;
         return this;
 }
 
@@ -86,7 +86,7 @@ struct line *create_line_label
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_LABEL;
-        this->val.label.label = label;
+        this->val.label = label;
         return this;
 }
 
@@ -95,9 +95,9 @@ struct line *create_line_add
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_ADD;
-        this->val.add.arg1 = arg1;
-        this->val.add.arg2 = arg2;
-        this->val.add.result = result;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
         return this;
 }
 
@@ -106,9 +106,140 @@ struct line *create_line_sub
 {
         struct line *this = malloc(sizeof(struct line));
         this->type = LINE_SUB;
-        this->val.sub.arg1 = arg1;
-        this->val.sub.arg2 = arg2;
-        this->val.sub.result = result;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_or
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_OR;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_and
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_AND;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_seq
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SEQ;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_sne
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SNE;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_slt
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SLT;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_sle
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SLE;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_sgt
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SGT;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_sge
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SGE;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_mul
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_MUL;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_div
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_DIV;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_mod
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_MOD;
+        this->val.binary_op.arg1 = arg1;
+        this->val.binary_op.arg2 = arg2;
+        this->val.binary_op.result = result;
+        return this;
+}
+
+struct line *create_line_not
+(struct line_address *arg, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_NOT;
+        this->val.unary_op.arg = arg;
+        this->val.unary_op.result = result;
         return this;
 }
 
@@ -196,6 +327,9 @@ void parse_assembly_binary_assign
         add_line(assembly, create_line_load(arg1, arg1_reg));
         add_line(assembly, create_line_load(arg2, arg2_reg));
         add_line(assembly, create_line_load(result, result_reg));
+        switch (this->val.binary_assign.op) {
+
+        }
         /* binary op */
         add_line(assembly, create_line_store(result_reg, result));
 }

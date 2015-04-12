@@ -59,24 +59,13 @@ struct line {
                 LINE_NOT
         } type;
         union {
+                char *label;
                 struct {
-                        struct line_address *src, *dest;
-                } load;
-                struct {
-                        struct line_address *src, *dest;
-                } load_address;
-                struct {
-                        struct line_address *src, *dest;
-                } store;
-                struct {
-                        char *label;
-                } label;
+                        struct line_address *arg, *result;
+                } unary_op;
                 struct {
                         struct line_address *arg1, *arg2, *result;
-                } add;
-                struct {
-                        struct line_address *arg1, *arg2, *result;
-                } sub;
+                } binary_op;
         } val;
 };
 
@@ -93,6 +82,20 @@ struct line_address *create_line_address_register(enum basic_type, enum reg);
 struct line *create_line_load(struct line_address *, struct line_address *);
 struct line *create_line_load_address(struct line_address *, struct line_address *);
 struct line *create_line_store(struct line_address *, struct line_address *);
+struct line *create_line_add(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_sub(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_or(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_and(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_seq(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_sne(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_slt(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_sle(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_sgt(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_sge(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_mul(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_div(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_mod(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_not(struct line_address *, struct line_address *);
 
 void add_line(struct assembly *, struct line *);
 
