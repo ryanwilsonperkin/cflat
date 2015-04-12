@@ -57,7 +57,9 @@ struct line {
                 LINE_DIV,
                 LINE_REM,
                 LINE_NOT,
-                LINE_JUMP
+                LINE_JUMP,
+                LINE_BEQZ,
+                LINE_BNEZ
         } type;
         union {
                 char *label;
@@ -67,6 +69,10 @@ struct line {
                 struct {
                         struct line_address *arg1, *arg2, *result;
                 } binary_op;
+                struct {
+                        struct line_address *arg;
+                        char *label;
+                } jump_conditional;
         } val;
 };
 
@@ -98,6 +104,8 @@ struct line *create_line_div(struct line_address *, struct line_address *, struc
 struct line *create_line_rem(struct line_address *, struct line_address *, struct line_address *);
 struct line *create_line_not(struct line_address *, struct line_address *);
 struct line *create_line_jump(char *);
+struct line *create_line_beqz(struct line_address *, char *);
+struct line *create_line_bnez(struct line_address *, char *);
 
 void add_line(struct assembly *, struct line *);
 

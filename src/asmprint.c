@@ -188,6 +188,12 @@ void print_line
         case LINE_JUMP:
                 print_line_jump(out, this);
                 break;
+        case LINE_BEQZ:
+                print_line_beqz(out, this);
+                break;
+        case LINE_BNEZ:
+                print_line_bnez(out, this);
+                break;
         default:
                 assert(0);  /* Invalid enum value. */
         }
@@ -386,4 +392,20 @@ void print_line_jump
 (FILE *out, struct line *this)
 {
         fprintf(out, "j %s", this->val.label);
+}
+
+void print_line_beqz
+(FILE *out, struct line *this)
+{
+        fprintf(out, "beqz ");
+        print_line_address(out, this->val.jump_conditional.arg, UNENCLOSED);
+        fprintf(out, ", %s", this->val.jump_conditional.label);
+}
+
+void print_line_bnez
+(FILE *out, struct line *this)
+{
+        fprintf(out, "bnez ");
+        print_line_address(out, this->val.jump_conditional.arg, UNENCLOSED);
+        fprintf(out, ", %s", this->val.jump_conditional.label);
 }

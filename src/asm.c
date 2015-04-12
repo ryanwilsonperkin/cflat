@@ -252,6 +252,26 @@ struct line *create_line_jump
         return this;
 }
 
+struct line *create_line_beqz
+(struct line_address *arg, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BEQZ;
+        this->val.jump_conditional.arg = arg;
+        this->val.jump_conditional.label = label;
+        return this;
+}
+
+struct line *create_line_bnez
+(struct line_address *arg, char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_BNEZ;
+        this->val.jump_conditional.arg = arg;
+        this->val.jump_conditional.label = label;
+        return this;
+}
+
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -483,6 +503,20 @@ void parse_assembly_unconditional_jump
 void parse_assembly_conditional_jump
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg;
+        arg = translate_quad_address(global, local, this->val.conditional_jump.arg);
+        arg_reg = create_line_address_register(INT_TYPE, REG_TEMP0);
+        add_line(assembly, create_line_load(arg, arg_reg));
+        switch (this->val.conditional_jump.op) {
+        case QUAD_OP_TRUE:
+                add_line(assembly, create_line_bnez(arg_reg, this->val.conditional_jump.label));
+                break;
+        case QUAD_OP_FALSE:
+                add_line(assembly, create_line_beqz(arg_reg, this->val.conditional_jump.label));
+                break;
+        default:
+                assert(0);  /* Invalid enum value for conditional_jump. */
+        }
 }
 
 void parse_assembly_relational_jump
