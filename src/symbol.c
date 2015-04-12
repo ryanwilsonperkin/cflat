@@ -33,7 +33,6 @@ struct symbol_table *create_symbol_table
         struct symbol_table *this = malloc(sizeof(struct symbol_table));
         this->size = 0;
         this->n_items = 0;
-        this->n_temps = 0;
         this->items = NULL;
         this->temps = NULL;
         return this;
@@ -144,21 +143,6 @@ void add_symbol
         symbol_table->items = realloc(symbol_table->items, sizeof(struct symbol_table_item *) * symbol_table->n_items);
         symbol_table->items[symbol_table->n_items - 1] = create_symbol_table_item(id, symbol_table->size, symbol);
         symbol_table->size += symbol->size;
-}
-
-void add_symbol_temp
-(struct symbol_table *symbol_table, struct symbol *symbol)
-{
-        char *id, *prefix = "temp~";
-        symbol_table->n_temps++;
-        id = malloc(strlen(prefix) + num_digits(symbol_table->n_temps) + 1);
-        sprintf(id, "%s%d", prefix, symbol_table->n_temps);
-        if (get_symbol(symbol_table, id)) {
-                fprintf(stderr, "error: redefinition of symbol '%s'\n", id);
-                exit(EXIT_FAILURE);
-        }
-        symbol_table->temps = realloc(symbol_table->temps, sizeof(struct symbol_table_item *) * symbol_table->n_temps);
-        symbol_table->temps[symbol_table->n_temps - 1] = create_symbol_table_item(id, 0, symbol);
 }
 
 void add_symbol_type
@@ -355,7 +339,6 @@ struct symbol *translate_logical_or_expr
                 type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
         }
         symbol = create_symbol_basic(INT_TYPE);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -372,7 +355,6 @@ struct symbol *translate_logical_and_expr
                 type_error(this->val.relation.primary->pos, "invalid operand to expression (requires int)");
         }
         symbol = create_symbol_basic(INT_TYPE);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -389,7 +371,6 @@ struct symbol *translate_equality_expr
                 type_error(this->val.relation.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(INT_TYPE);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -406,7 +387,6 @@ struct symbol *translate_relational_expr
                 type_error(this->val.relation.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(INT_TYPE);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -423,7 +403,6 @@ struct symbol *translate_additive_expr
                 type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(primary->val.basic_type);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -443,7 +422,6 @@ struct symbol *translate_multiplicative_expr
                 type_error(this->val.binary_op.primary->pos, "invalid operand to expression");
         }
         symbol = create_symbol_basic(primary->val.basic_type);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -473,7 +451,6 @@ struct symbol *translate_unary_expr
         default:
                 assert(0);  /* Invalid enum value. */
         }
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 
@@ -515,7 +492,6 @@ struct symbol *translate_function_call
                 return NULL;
         } else {
                 symbol = create_symbol_basic(parent->val.function_def->type_specifier);
-                add_symbol_temp(global, symbol);
                 return symbol;
         }
 }
@@ -585,7 +561,6 @@ struct symbol *translate_constant
 {
         struct symbol *symbol;
         symbol = create_symbol_basic(this->type);
-        add_symbol_temp(local, symbol);
         return symbol;
 }
 

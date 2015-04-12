@@ -9,7 +9,6 @@ void print_symbol_table
 {
         int i;
         if (!this) return;
-        print_at_depth(out, depth, "N_TEMPS: %d", this->n_temps);
         for (i = 0; i < this->n_items; i++) {
                 print_symbol_table_item(out, this->items[i], depth);
         }

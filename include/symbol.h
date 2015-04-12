@@ -34,7 +34,7 @@ struct symbol_table_item {
 };
 
 struct symbol_table {
-        unsigned int size, n_items, n_temps;
+        unsigned int size, n_items;
         struct symbol_table_item **items, **temps;
 };
 
@@ -52,7 +52,6 @@ struct symbol *get_symbol(struct symbol_table *, char *);
 unsigned int get_offset(struct symbol_table *, char *);
 void add_symbol(struct symbol_table *, char *, struct symbol *);
 void add_symbol_type(struct symbol_table *, char *, struct symbol *);
-void add_symbol_temp(struct symbol_table *, struct symbol *);
 
 struct symbol_table *parse_symbols(struct program *);
 void parse_program(struct symbol_table *, struct program *);
