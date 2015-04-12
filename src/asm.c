@@ -40,7 +40,11 @@ int get_reg
 struct assembly *parse_assembly
 (struct symbol_table *global, struct instructions *instructions)
 {
+        int i;
         struct assembly *this = create_assembly();
+        for (i = 0; i < instructions->n_quads; i++) {
+                parse_assembly_instruction(global, this, instructions->quads[i]);
+        }
         return this;
 }
 
