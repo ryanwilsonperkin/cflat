@@ -243,6 +243,15 @@ struct line *create_line_not
         return this;
 }
 
+struct line *create_line_jump
+(char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_JUMP;
+        this->val.label = label;
+        return this;
+}
+
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -468,6 +477,7 @@ void parse_assembly_label
 void parse_assembly_unconditional_jump
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        add_line(assembly, create_line_jump(this->val.unconditional_jump.label));
 }
 
 void parse_assembly_conditional_jump

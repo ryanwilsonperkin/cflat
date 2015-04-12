@@ -185,6 +185,9 @@ void print_line
         case LINE_NOT:
                 print_line_not(out, this);
                 break;
+        case LINE_JUMP:
+                print_line_jump(out, this);
+                break;
         default:
                 assert(0);  /* Invalid enum value. */
         }
@@ -377,4 +380,10 @@ void print_line_not
         print_line_address(out, this->val.unary_op.result, UNENCLOSED);
         fprintf(out, ",");
         print_line_address(out, this->val.unary_op.arg, UNENCLOSED);
+}
+
+void print_line_jump
+(FILE *out, struct line *this)
+{
+        fprintf(out, "j %s", this->val.label);
 }
