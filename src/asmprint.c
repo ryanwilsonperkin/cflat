@@ -179,8 +179,8 @@ void print_line
         case LINE_DIV:
                 print_line_div(out, this);
                 break;
-        case LINE_MOD:
-                print_line_mod(out, this);
+        case LINE_REM:
+                print_line_rem(out, this);
                 break;
         case LINE_NOT:
                 print_line_not(out, this);
@@ -359,10 +359,10 @@ void print_line_div
         print_line_address(out, this->val.binary_op.arg2, UNENCLOSED);
 }
 
-void print_line_mod
+void print_line_rem
 (FILE *out, struct line *this)
 {
-        fprintf(out, "mod ");
+        fprintf(out, "rem ");
         print_line_address(out, this->val.binary_op.result, UNENCLOSED);
         fprintf(out, ",");
         print_line_address(out, this->val.binary_op.arg1, UNENCLOSED);
@@ -374,7 +374,7 @@ void print_line_not
 (FILE *out, struct line *this)
 {
         fprintf(out, "not ");
-        print_line_address(out, this->val.binary_op.result, UNENCLOSED);
+        print_line_address(out, this->val.unary_op.result, UNENCLOSED);
         fprintf(out, ",");
-        print_line_address(out, this->val.binary_op.arg1, UNENCLOSED);
+        print_line_address(out, this->val.unary_op.arg, UNENCLOSED);
 }

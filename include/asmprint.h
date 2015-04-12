@@ -25,7 +25,7 @@ void print_line_sgt(FILE *, struct line *);
 void print_line_sge(FILE *, struct line *);
 void print_line_mul(FILE *, struct line *);
 void print_line_div(FILE *, struct line *);
-void print_line_mod(FILE *, struct line *);
+void print_line_rem(FILE *, struct line *);
 void print_line_not(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */

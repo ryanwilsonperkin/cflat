@@ -55,7 +55,7 @@ struct line {
                 LINE_SGE,
                 LINE_MUL,
                 LINE_DIV,
-                LINE_MOD,
+                LINE_REM,
                 LINE_NOT
         } type;
         union {
@@ -94,7 +94,7 @@ struct line *create_line_sgt(struct line_address *, struct line_address *, struc
 struct line *create_line_sge(struct line_address *, struct line_address *, struct line_address *);
 struct line *create_line_mul(struct line_address *, struct line_address *, struct line_address *);
 struct line *create_line_div(struct line_address *, struct line_address *, struct line_address *);
-struct line *create_line_mod(struct line_address *, struct line_address *, struct line_address *);
+struct line *create_line_rem(struct line_address *, struct line_address *, struct line_address *);
 struct line *create_line_not(struct line_address *, struct line_address *);
 
 void add_line(struct assembly *, struct line *);

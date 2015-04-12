@@ -222,11 +222,11 @@ struct line *create_line_div
         return this;
 }
 
-struct line *create_line_mod
+struct line *create_line_rem
 (struct line_address *arg1, struct line_address *arg2, struct line_address *result)
 {
         struct line *this = malloc(sizeof(struct line));
-        this->type = LINE_MOD;
+        this->type = LINE_REM;
         this->val.binary_op.arg1 = arg1;
         this->val.binary_op.arg2 = arg2;
         this->val.binary_op.result = result;
@@ -328,7 +328,47 @@ void parse_assembly_binary_assign
         add_line(assembly, create_line_load(arg2, arg2_reg));
         add_line(assembly, create_line_load(result, result_reg));
         switch (this->val.binary_assign.op) {
-
+        case QUAD_OP_LOGICAL_OR:
+                add_line(assembly, create_line_or(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_LOGICAL_AND:
+                add_line(assembly, create_line_and(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_EQUAL:
+                add_line(assembly, create_line_seq(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_NOT_EQUAL:
+                add_line(assembly, create_line_sne(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_LESS_THAN:
+                add_line(assembly, create_line_slt(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_LESS_THAN_OR_EQUAL:
+                add_line(assembly, create_line_sle(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_GREATER_THAN:
+                add_line(assembly, create_line_sgt(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_GREATER_THAN_OR_EQUAL:
+                add_line(assembly, create_line_sge(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_ADD:
+                add_line(assembly, create_line_add(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_SUBTRACT:
+                add_line(assembly, create_line_sub(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_MULTIPLY:
+                add_line(assembly, create_line_mul(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_DIVIDE:
+                add_line(assembly, create_line_div(arg1_reg, arg2_reg, result_reg));
+                break;
+        case QUAD_OP_MODULO:
+                add_line(assembly, create_line_rem(arg1_reg, arg2_reg, result_reg));
+                break;
+        default:
+                assert(0);  /* Invalid enum value for binary_op. */
         }
         /* binary op */
         add_line(assembly, create_line_store(result_reg, result));
@@ -345,7 +385,13 @@ void parse_assembly_unary_assign
         result_reg = create_line_address_register(arg->basic_type, REG_TEMP2);
         add_line(assembly, create_line_load(arg, arg_reg));
         add_line(assembly, create_line_load(result, result_reg));
-        /* unary op */
+        switch (this->val.unary_assign.op) {
+        case QUAD_OP_NOT_UNARY:
+                add_line(assembly, create_line_not(arg_reg, result_reg));
+                break;
+        default:
+                assert(0);  /* Invalid enum value for unary_op. */
+        }
         add_line(assembly, create_line_store(result_reg, result));
 }
 
@@ -404,16 +450,18 @@ void parse_assembly_copy_to_addr
 void parse_assembly_label
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
-        int n_temps;
-        struct line_address *offset, *sp;
+        int temp_offset, local_offset, total_offset;
+        struct line_address *sp_offset, *sp;
         struct symbol *symbol;
         symbol = get_symbol(global, this->val.label.label);
         add_line(assembly, create_line_label(this->val.label.label));
         if (symbol && symbol->type == SYMBOL_FUNCTION) {
-                n_temps = symbol->scoped_table->n_temps;
-                offset = create_line_address_constant(INT_TYPE, (union value)(n_temps * 4));
+                temp_offset = symbol->scoped_table->n_temps * 4;
+                local_offset = symbol->scoped_table->size;
+                total_offset = temp_offset + local_offset;
+                sp_offset = create_line_address_constant(INT_TYPE, (union value)total_offset);
                 sp = create_line_address_register(INT_TYPE, REG_SP);
-                add_line(assembly, create_line_sub(sp, offset, sp));
+                add_line(assembly, create_line_sub(sp, sp_offset, sp));
         }
 }
 
