@@ -16,6 +16,7 @@ struct assembly *create_assembly();
 
 void add_assembly_line(struct assembly *, char *);
 int get_reg(struct assembly *);
+void unget_reg(struct assembly *, int);
 
 struct assembly *parse_assembly(struct symbol_table *, struct instructions *);
 void parse_assembly_instruction(struct symbol_table *, struct assembly *, struct quad *);

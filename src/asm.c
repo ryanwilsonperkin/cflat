@@ -37,6 +37,13 @@ int get_reg
         assert(0);  /* Out of registers. */
 }
 
+void unget_reg
+(struct assembly *assembly, int reg)
+{
+        assert(assembly->regs[reg]);  /* Register must be allocated. */
+        assembly->regs[reg] = 0;
+}
+
 struct assembly *parse_assembly
 (struct symbol_table *global, struct instructions *instructions)
 {
