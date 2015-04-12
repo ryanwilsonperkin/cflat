@@ -167,9 +167,6 @@ struct quad_address *parse_instructions_multiplicative_expr(struct symbol_table 
 struct quad_address *parse_instructions_unary_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
 struct quad_address *parse_instructions_postfix_expr(struct symbol_table *, struct symbol_table *, struct instructions *, struct expr *);
 struct quad_address *parse_instructions_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
-struct quad_address *parse_instructions_identifier_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
-struct quad_address *parse_instructions_field_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
-struct quad_address *parse_instructions_subscript_var(struct symbol_table *, struct symbol_table *, struct instructions *, struct var *);
 struct quad_address *parse_instructions_constant(struct symbol_table *, struct symbol_table *, struct instructions *, struct constant *);
 struct quad_address *parse_instructions_function_call(struct symbol_table *, struct symbol_table *, struct instructions *, struct function_call *);
 

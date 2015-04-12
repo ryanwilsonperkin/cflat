@@ -607,60 +607,43 @@ struct quad_address *parse_instructions_postfix_expr
 struct quad_address *parse_instructions_var
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
 {
-        switch (this->type) {
-        case IDENTIFIER:
-                return parse_instructions_identifier_var(global, local, instructions, this);
-        case FIELD:
-                return parse_instructions_field_var(global, local, instructions, this);
-        case SUBSCRIPT:
-                return parse_instructions_subscript_var(global, local, instructions, this);
-        default:
-                assert(0);  /* Invalid enum value. */
-        }
-}
-
-struct quad_address *parse_instructions_identifier_var
-(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
-{
-        return create_quad_address_name(this->val.id);
-}
-
-struct quad_address *parse_instructions_field_var
-(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
-{
-        struct quad_address *offset, *parent, *parent_addr, *result, *result_addr;
+        struct quad_address *offset, *final_offset, *base, *base_addr, *result, *result_addr, *width, *index;
+        struct var *cur_var, *parent;
         struct symbol *parent_symbol;
         unsigned int offset_size;
-        parent_symbol = translate_var(global, local, this->val.field.var);
-        offset_size = get_offset(parent_symbol->scoped_table, this->val.field.id);
-        parent = parse_instructions_var(global, local, instructions, this->val.field.var);
-        parent_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_addr(parent, parent_addr));
-        offset = create_quad_address_const_int(offset_size);
-        result_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
-        result = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
-        return result;
-}
 
-struct quad_address *parse_instructions_subscript_var
-(struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct var *this)
-{
-        struct quad_address *index, *offset, *parent, *parent_addr, *parent_size, *result, *result_addr;
-        struct quad *calculate_offset;
-        struct symbol *parent_symbol;
-        parent_symbol = translate_var(global, local, this->val.subscript.var);
-        parent_size = create_quad_address_const_int(parent_symbol->val.symbol->size);
-        parent = parse_instructions_var(global, local, instructions, this->val.subscript.var);
-        index = parse_instructions_expr(global, local, instructions, this->val.subscript.expr);
-        parent_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_copy_addr(parent, parent_addr));
-        offset = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_binary_assign(parent_size, index, offset, QUAD_OP_MULTIPLY)); 
+        if (this->type == IDENTIFIER) {
+                return create_quad_address_name(this->val.id);
+        }
+
+        cur_var = this;
+        final_offset = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_copy(create_quad_address_const_int(0), final_offset));
+        while (cur_var->type != IDENTIFIER) {
+                final_offset = (final_offset) ? final_offset : get_next_temp(instructions);
+                if (cur_var->type == FIELD) {
+                        parent = cur_var->val.field.var;
+                        parent_symbol = translate_var(global, local, parent);
+                        offset_size = get_offset(parent_symbol->scoped_table, cur_var->val.field.id);
+                        offset = create_quad_address_const_int(offset_size);
+                } else if (cur_var->type == SUBSCRIPT) {
+                        parent = cur_var->val.subscript.var;
+                        parent_symbol = translate_var(global, local, parent);
+                        offset_size = parent_symbol->val.symbol->size;
+                        width = create_quad_address_const_int(offset_size);
+                        index = parse_instructions_expr(global, local, instructions, cur_var->val.subscript.expr);
+                        offset = get_next_temp(instructions);
+                        add_instruction(instructions, create_quad_binary_assign(width, index, offset, QUAD_OP_MULTIPLY));
+                }
+                add_instruction(instructions, create_quad_binary_assign(final_offset, offset, final_offset, QUAD_OP_ADD));
+                cur_var = parent;
+        }
+        base = create_quad_address_name(cur_var->val.id);
+        base_addr = get_next_temp(instructions);
         result_addr = get_next_temp(instructions);
-        add_instruction(instructions, create_quad_binary_assign(parent_addr, offset, result_addr, QUAD_OP_ADD));
         result = get_next_temp(instructions);
+        add_instruction(instructions, create_quad_copy_addr(base, base_addr));
+        add_instruction(instructions, create_quad_binary_assign(base_addr, final_offset, result_addr, QUAD_OP_ADD));
         add_instruction(instructions, create_quad_copy_from_addr(result_addr, result));
         return result;
 }
