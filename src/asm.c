@@ -34,7 +34,7 @@ struct line_address *create_line_address_constant
 }
 
 struct line_address *create_line_address_offset
-(enum basic_type basic_type, int offset, struct reg *reg)
+(enum basic_type basic_type, int offset, enum reg reg)
 {
         struct line_address *this = malloc(sizeof(struct line_address));
         this->type = LINE_ADDRESS_OFFSET;
@@ -45,7 +45,7 @@ struct line_address *create_line_address_offset
 }
 
 struct line_address *create_line_address_register
-(enum basic_type basic_type, struct reg *reg)
+(enum basic_type basic_type, enum reg reg)
 {
         struct line_address *this = malloc(sizeof(struct line_address));
         this->type = LINE_ADDRESS_REG;
