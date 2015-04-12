@@ -11,3 +11,6 @@ scanner.c
 parser.c
 parser.h
 parser.output
+
+# Testing files
+test.cb
