@@ -19,6 +19,24 @@ struct assembly *create_assembly
         return this;
 }
 
+struct line *create_line_load(struct line_address *src, struct line_address *dest)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_LOAD;
+        this->val.load.src = src;
+        this->val.load.dest = dest;
+        return this;
+}
+
+struct line *create_line_store(struct line_address *src, struct line_address *dest)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_STORE;
+        this->val.store.src = src;
+        this->val.store.dest = dest;
+        return this;
+}
+
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -196,14 +214,4 @@ void parse_assembly_procedure_call
 void parse_assembly_procedure_return
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
-}
-
-struct line *create_load(int reg, struct quad_address *addr)
-{
-        return NULL;
-}
-
-struct line *create_store(int reg, struct quad_address *addr)
-{
-        return NULL;
 }
