@@ -726,13 +726,15 @@ struct quad_address *parse_instructions_constant
 struct quad_address *parse_instructions_function_call
 (struct symbol_table *global, struct symbol_table *local, struct instructions *instructions, struct function_call *this)
 {
-        struct quad_address *expr, *result;
+        struct quad_address *expr, *stored_expr, *result;
         int n_args = 0;
         struct function_arg_list *function_arg_list = this->function_arg_list;
         while (function_arg_list) {
                 n_args++;
                 expr = parse_instructions_expr(global, local, instructions, function_arg_list->expr);
-                add_instruction(instructions, create_quad_procedure_param(expr));
+                stored_expr = get_next_temp(instructions);
+                add_instruction(instructions, create_quad_copy(expr, stored_expr));
+                add_instruction(instructions, create_quad_procedure_param(stored_expr));
                 function_arg_list = function_arg_list->function_arg_list;
         }
         result = get_next_temp(instructions);
