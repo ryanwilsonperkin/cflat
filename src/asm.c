@@ -198,12 +198,12 @@ void parse_assembly_procedure_return
 {
 }
 
-struct line *create_load_word(int reg, struct quad_address *addr)
+struct line *create_load(int reg, struct quad_address *addr)
 {
         return NULL;
 }
 
-struct line *create_store_word(int reg, struct quad_address *addr)
+struct line *create_store(int reg, struct quad_address *addr)
 {
         return NULL;
 }
