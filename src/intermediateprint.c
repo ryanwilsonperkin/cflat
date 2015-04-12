@@ -181,6 +181,12 @@ void print_quad_op_binary
 {
         print_quad_address(out, arg1);
         switch (op) {
+        case QUAD_OP_LOGICAL_OR:
+                fprintf(out, " || ");
+                break;
+        case QUAD_OP_LOGICAL_AND:
+                fprintf(out, " && ");
+                break;
         case QUAD_OP_EQUAL:
                 fprintf(out, " == ");
                 break;

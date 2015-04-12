@@ -43,6 +43,8 @@ enum quad_type {
 enum quad_op {
         QUAD_OP_TRUE,
         QUAD_OP_FALSE,
+        QUAD_OP_LOGICAL_OR,
+        QUAD_OP_LOGICAL_AND,
         QUAD_OP_EQUAL,
         QUAD_OP_NOT_EQUAL,
         QUAD_OP_LESS_THAN,
