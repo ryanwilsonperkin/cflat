@@ -63,6 +63,15 @@ struct line *create_line_load(struct line_address *src, struct line_address *des
         return this;
 }
 
+struct line *create_line_load_address(struct line_address *src, struct line_address *dest)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_LOAD_ADDRESS;
+        this->val.load.src = src;
+        this->val.load.dest = dest;
+        return this;
+}
+
 struct line *create_line_store(struct line_address *src, struct line_address *dest)
 {
         struct line *this = malloc(sizeof(struct line));
@@ -144,21 +153,59 @@ struct assembly *parse_assembly
 void parse_assembly_binary_assign
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg1, *arg1_reg;
+        struct line_address *arg2, *arg2_reg;
+        struct line_address *result, *result_reg;
+        arg1 = translate_quad_address(global, local, this->val.binary_assign.arg1);
+        arg2 = translate_quad_address(global, local, this->val.binary_assign.arg1);
+        result = translate_quad_address(global, local, this->val.binary_assign.result);
+        arg1_reg = create_line_address_register(arg1->basic_type, REG_TEMP1);
+        arg2_reg = create_line_address_register(arg2->basic_type, REG_TEMP2);
+        result_reg = create_line_address_register(result->basic_type, REG_TEMP3);
+        add_line(assembly, create_line_load(arg1, arg1_reg));
+        add_line(assembly, create_line_load(arg2, arg2_reg));
+        add_line(assembly, create_line_load(result, result_reg));
+        /* binary op */
+        add_line(assembly, create_line_store(result_reg, result));
 }
 
 void parse_assembly_unary_assign
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg;
+        struct line_address *result, *result_reg;
+        arg = translate_quad_address(global, local, this->val.unary_assign.arg);
+        result = translate_quad_address(global, local, this->val.unary_assign.result);
+        arg_reg = create_line_address_register(arg->basic_type, REG_TEMP1);
+        result_reg = create_line_address_register(arg->basic_type, REG_TEMP2);
+        add_line(assembly, create_line_load(arg, arg_reg));
+        add_line(assembly, create_line_load(result, result_reg));
+        /* unary op */
+        add_line(assembly, create_line_store(result_reg, result));
 }
 
 void parse_assembly_copy
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg;
+        struct line_address *result;
+        arg = translate_quad_address(global, local, this->val.copy.arg);
+        result = translate_quad_address(global, local, this->val.copy.result);
+        arg_reg = create_line_address_register(arg->basic_type, REG_TEMP1);
+        add_line(assembly, create_line_load(arg, arg_reg));
+        add_line(assembly, create_line_store(arg_reg, result));
 }
 
 void parse_assembly_copy_addr
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg;
+        struct line_address *result;
+        arg = translate_quad_address(global, local, this->val.copy.arg);
+        result = translate_quad_address(global, local, this->val.copy.result);
+        arg_reg = create_line_address_register(arg->basic_type, REG_TEMP1);
+        add_line(assembly, create_line_load_address(arg, arg_reg));
+        add_line(assembly, create_line_store(arg_reg, result));
 }
 
 void parse_assembly_copy_from_addr

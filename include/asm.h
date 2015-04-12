@@ -40,12 +40,16 @@ struct line_address {
 struct line {
         enum line_type {
                 LINE_LOAD,
+                LINE_LOAD_ADDRESS,
                 LINE_STORE
         } type;
         union {
                 struct {
                         struct line_address *src, *dest;
                 } load;
+                struct {
+                        struct line_address *src, *dest;
+                } load_address;
                 struct {
                         struct line_address *src, *dest;
                 } store;
@@ -63,6 +67,7 @@ struct line_address *create_line_address_constant(enum basic_type, union value);
 struct line_address *create_line_address_offset(enum basic_type, int, enum reg);
 struct line_address *create_line_address_register(enum basic_type, enum reg);
 struct line *create_line_load(struct line_address *, struct line_address *);
+struct line *create_line_load_address(struct line_address *, struct line_address *);
 struct line *create_line_store(struct line_address *, struct line_address *);
 
 void add_line(struct assembly *, struct line *);
