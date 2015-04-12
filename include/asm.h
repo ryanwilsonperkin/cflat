@@ -4,21 +4,58 @@
 #include "intermediate.h"
 #include "symbol.h"
 
-#define NUM_REGS 8
+#define NUM_IREGS 8
+#define NUM_FREGS 6
 
-typedef char* line;
+enum line_addr_type {
+        ASSEMBLY_ADDR_NAME,
+        ASSEMBLY_ADDR_CONSTANT,
+        ASSEMBLY_ADDR_REG
+};
+
+struct line_addr {
+        enum line_addr_type;
+        union {
+                char *id;
+                union value constant;
+                int reg;
+        } val;
+        enum basic_type type;
+};
+
+enum line_type {
+        LINE_LOAD_WORD,
+        LINE_STORE_WORD
+};
+
+struct line {
+        enum line_type type;
+        union {
+                struct {
+                        struct line_addr *src, *dest;
+                } load_word;
+                struct {
+                        struct line_addr *src, *dest;
+                } store_word;
+        } val;
+};
 
 struct assembly {
-        line *lines;
+        struct line **lines;
         unsigned int n_lines;
-        char regs[NUM_REGS];
+        char iregs[NUM_IREGS];
+        char fregs[NUM_FREGS];
 };
 
 struct assembly *create_assembly();
+struct line *create_line_load_word(struct line_addr *, struct line_addr *);
+struct line *create_line_store_word(struct line_addr *, struct line_addr *);
 
-void add_line(struct assembly *, line);
-int get_reg(struct assembly *);
-void unget_reg(struct assembly *, int);
+void add_line(struct assembly *, struct line *);
+int get_ireg(struct assembly *);
+int get_freg(struct assembly *);
+void unget_ireg(struct assembly *, int);
+void unget_freg(struct assembly *, int);
 
 struct assembly *parse_assembly(struct symbol_table *, struct instructions *);
 void parse_assembly_instruction(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
@@ -36,7 +73,7 @@ void parse_assembly_procedure_param(struct symbol_table *, struct symbol_table *
 void parse_assembly_procedure_call(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_return(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 
-line create_load_word(int, struct quad_address *);
-line create_store_word(int, struct quad_address *);
+struct line *create_load_word(int, struct quad_address *);
+struct line *create_store_word(int, struct quad_address *);
 
 #endif  /* CFLAT_ASM_H */

@@ -10,38 +10,61 @@ struct assembly *create_assembly
         struct assembly *this = malloc(sizeof(struct assembly));
         this->lines = NULL;
         this->n_lines = 0;
-        for (i = 0; i < NUM_REGS; i++) {
-                this->regs[i] = 0;
+        for (i = 0; i < NUM_IREGS; i++) {
+                this->iregs[i] = 0;
+        }
+        for (i = 0; i < NUM_FREGS; i++) {
+                this->fregs[i] = 0;
         }
         return this;
 }
 
 void add_line
-(struct assembly *assembly, line l)
+(struct assembly *assembly, struct line *line)
 {
         assembly->n_lines++;
-        assembly->lines = realloc(assembly->lines, sizeof(line) * assembly->n_lines);
-        assembly->lines[assembly->n_lines - 1] = l;
+        assembly->lines = realloc(assembly->lines, sizeof(struct line *) * assembly->n_lines);
+        assembly->lines[assembly->n_lines - 1] = line;
 }
 
-int get_reg
+int get_ireg
 (struct assembly *assembly)
 {
         int i;
-        for (i = 0; i < NUM_REGS; i++) {
-                if (!assembly->regs[i]) {
-                        assembly->regs[i] = 1;
+        for (i = 0; i < NUM_IREGS; i++) {
+                if (!assembly->iregs[i]) {
+                        assembly->iregs[i] = 1;
                         return i;
                 }
         }
         assert(0);  /* Out of registers. */
 }
 
-void unget_reg
+int get_freg
+(struct assembly *assembly)
+{
+        int i;
+        for (i = 0; i < NUM_FREGS; i++) {
+                if (!assembly->fregs[i]) {
+                        assembly->fregs[i] = 1;
+                        return i;
+                }
+        }
+        assert(0);  /* Out of registers. */
+}
+
+void unget_ireg
 (struct assembly *assembly, int reg)
 {
-        assert(assembly->regs[reg]);  /* Register must be allocated. */
-        assembly->regs[reg] = 0;
+        assert(assembly->iregs[reg]);  /* Register must be allocated. */
+        assembly->iregs[reg] = 0;
+}
+
+void unget_freg
+(struct assembly *assembly, int reg)
+{
+        assert(assembly->fregs[reg]);  /* Register must be allocated. */
+        assembly->fregs[reg] = 0;
 }
 
 struct assembly *parse_assembly
@@ -113,23 +136,6 @@ void parse_assembly_instruction
 void parse_assembly_binary_assign
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
-        struct quad_address *arg1, *arg2, *result;
-        int reg_arg1, reg_arg2, reg_result;
-        reg_arg1 = get_reg(assembly);
-        reg_arg2 = get_reg(assembly);
-        reg_result = get_reg(assembly);
-        arg1 = this->val.binary_assign.arg1;
-        arg2 = this->val.binary_assign.arg2;
-        result = this->val.binary_assign.result;
-        add_line(assembly, create_load_word(reg_arg1, arg1));
-        add_line(assembly, create_load_word(reg_arg2, arg2));
-        add_line(assembly, create_load_word(reg_result, result));
-        add_line(assembly, create_store_word(reg_arg1, arg1));
-        add_line(assembly, create_store_word(reg_arg2, arg2));
-        add_line(assembly, create_store_word(reg_result, result));
-        unget_reg(assembly, reg_arg1);
-        unget_reg(assembly, reg_arg2);
-        unget_reg(assembly, reg_result);
 }
 
 void parse_assembly_unary_assign
@@ -192,12 +198,12 @@ void parse_assembly_procedure_return
 {
 }
 
-line create_load_word(int reg, struct quad_address *addr)
+struct line *create_load_word(int reg, struct quad_address *addr)
 {
-        return "";
+        return NULL;
 }
 
-line create_store_word(int reg, struct quad_address *addr)
+struct line *create_store_word(int reg, struct quad_address *addr)
 {
-        return "";
+        return NULL;
 }
