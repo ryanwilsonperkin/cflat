@@ -41,7 +41,22 @@ struct line {
         enum line_type {
                 LINE_LOAD,
                 LINE_LOAD_ADDRESS,
-                LINE_STORE
+                LINE_STORE,
+                LINE_LABEL,
+                LINE_ADD,
+                LINE_SUB,
+                LINE_OR,
+                LINE_AND,
+                LINE_SEQ,
+                LINE_SNE,
+                LINE_SLT,
+                LINE_SLE,
+                LINE_SGT,
+                LINE_SGE,
+                LINE_MUL,
+                LINE_DIV,
+                LINE_MOD,
+                LINE_NOT
         } type;
         union {
                 struct {
@@ -53,6 +68,15 @@ struct line {
                 struct {
                         struct line_address *src, *dest;
                 } store;
+                struct {
+                        char *label;
+                } label;
+                struct {
+                        struct line_address *arg1, *arg2, *result;
+                } add;
+                struct {
+                        struct line_address *arg1, *arg2, *result;
+                } sub;
         } val;
 };
 

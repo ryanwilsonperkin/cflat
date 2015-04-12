@@ -127,6 +127,9 @@ void print_line_address_reg
 void print_line
 (FILE *out, struct line *this)
 {
+        if (this->type != LINE_LABEL) {
+                fprintf(out, "\t");
+        }
         switch (this->type) {
         case LINE_LOAD:
                 print_line_load(out, this);
@@ -137,6 +140,17 @@ void print_line
         case LINE_STORE:
                 print_line_store(out, this);
                 break;
+        case LINE_LABEL:
+                print_line_label(out, this);
+                break;
+        case LINE_ADD:
+                print_line_add(out, this);
+                break;
+        case LINE_SUB:
+                print_line_sub(out, this);
+                break;
+        default:
+                assert(0);  /* Invalid enum value. */
         }
 }
 
@@ -171,3 +185,30 @@ void print_line_store
         print_line_address(out, this->val.load.dest, ENCLOSED);
 }
 
+void print_line_label
+(FILE *out, struct line *this)
+{
+        fprintf(out, "%s:", this->val.label.label);
+}
+
+void print_line_add
+(FILE *out, struct line *this)
+{
+        fprintf(out, "add ");
+        print_line_address(out, this->val.add.result, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.add.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.add.arg2, UNENCLOSED);
+}
+
+void print_line_sub
+(FILE *out, struct line *this)
+{
+        fprintf(out, "sub ");
+        print_line_address(out, this->val.add.result, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.add.arg1, UNENCLOSED);
+        fprintf(out, ",");
+        print_line_address(out, this->val.add.arg2, UNENCLOSED);
+}

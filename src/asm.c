@@ -81,6 +81,37 @@ struct line *create_line_store(struct line_address *src, struct line_address *de
         return this;
 }
 
+struct line *create_line_label
+(char *label)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_LABEL;
+        this->val.label.label = label;
+        return this;
+}
+
+struct line *create_line_add
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_ADD;
+        this->val.add.arg1 = arg1;
+        this->val.add.arg2 = arg2;
+        this->val.add.result = result;
+        return this;
+}
+
+struct line *create_line_sub
+(struct line_address *arg1, struct line_address *arg2, struct line_address *result)
+{
+        struct line *this = malloc(sizeof(struct line));
+        this->type = LINE_SUB;
+        this->val.sub.arg1 = arg1;
+        this->val.sub.arg2 = arg2;
+        this->val.sub.result = result;
+        return this;
+}
+
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -239,6 +270,17 @@ void parse_assembly_copy_to_addr
 void parse_assembly_label
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        int n_temps;
+        struct line_address *offset, *sp;
+        struct symbol *symbol;
+        symbol = get_symbol(global, this->val.label.label);
+        add_line(assembly, create_line_label(this->val.label.label));
+        if (symbol && symbol->type == SYMBOL_FUNCTION) {
+                n_temps = symbol->scoped_table->n_temps;
+                offset = create_line_address_constant(INT_TYPE, (union value)(n_temps * 4));
+                sp = create_line_address_register(INT_TYPE, REG_SP);
+                add_line(assembly, create_line_sub(sp, offset, sp));
+        }
 }
 
 void parse_assembly_unconditional_jump

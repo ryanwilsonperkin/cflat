@@ -56,13 +56,7 @@ enum quad_op {
         QUAD_OP_MULTIPLY,
         QUAD_OP_DIVIDE,
         QUAD_OP_MODULO,
-        QUAD_OP_NOT_UNARY,
-        QUAD_OP_POSITIVE,
-        QUAD_OP_NEGATIVE,
-        QUAD_OP_PRE_INCREMENT,
-        QUAD_OP_PRE_DECREMENT,
-        QUAD_OP_POST_INCREMENT,
-        QUAD_OP_POST_DECREMENT
+        QUAD_OP_NOT_UNARY
 };
 
 struct quad {

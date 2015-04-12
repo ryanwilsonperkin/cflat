@@ -12,5 +12,8 @@ void print_line(FILE *, struct line *);
 void print_line_load(FILE *, struct line *);
 void print_line_load_address(FILE *, struct line *);
 void print_line_store(FILE *, struct line *);
+void print_line_label(FILE *, struct line *);
+void print_line_add(FILE *, struct line *);
+void print_line_sub(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */

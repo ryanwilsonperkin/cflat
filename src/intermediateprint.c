@@ -234,30 +234,6 @@ void print_quad_op_unary
                 fprintf(out, "!");
                 print_quad_address(out, arg);
                 break;
-        case QUAD_OP_POSITIVE:
-                fprintf(out, "+");
-                print_quad_address(out, arg);
-                break;
-        case QUAD_OP_NEGATIVE:
-                fprintf(out, "-");
-                print_quad_address(out, arg);
-                break;
-        case QUAD_OP_PRE_INCREMENT:
-                fprintf(out, "++");
-                print_quad_address(out, arg);
-                break;
-        case QUAD_OP_PRE_DECREMENT:
-                fprintf(out, "--");
-                print_quad_address(out, arg);
-                break;
-        case QUAD_OP_POST_INCREMENT:
-                print_quad_address(out, arg);
-                fprintf(out, "++");
-                break;
-        case QUAD_OP_POST_DECREMENT:
-                print_quad_address(out, arg);
-                fprintf(out, "--");
-                break;
         default:
                 assert(0);  /* Invalid enum value for unary op. */
         }
