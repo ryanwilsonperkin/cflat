@@ -141,11 +141,6 @@ struct assembly *parse_assembly
         return this;
 }
 
-void parse_assembly_instruction
-(struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
-{
-}
-
 void parse_assembly_binary_assign
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {

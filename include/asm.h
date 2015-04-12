@@ -68,7 +68,6 @@ struct line *create_line_store(struct line_address *, struct line_address *);
 void add_line(struct assembly *, struct line *);
 
 struct assembly *parse_assembly(struct symbol_table *, struct instructions *);
-void parse_assembly_instruction(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_binary_assign(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_unary_assign(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_copy(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
