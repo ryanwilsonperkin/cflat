@@ -16,12 +16,12 @@ struct assembly *create_assembly
         return this;
 }
 
-void add_assembly_line
-(struct assembly *assembly, char *line)
+void add_line
+(struct assembly *assembly, line l)
 {
         assembly->n_lines++;
-        assembly->lines = realloc(assembly->lines, sizeof(char *) * assembly->n_lines);
-        assembly->lines[assembly->n_lines - 1] = line;
+        assembly->lines = realloc(assembly->lines, sizeof(line) * assembly->n_lines);
+        assembly->lines[assembly->n_lines - 1] = l;
 }
 
 int get_reg
@@ -106,6 +106,23 @@ void parse_assembly_instruction
 void parse_assembly_binary_assign
 (struct symbol_table *global, struct assembly *assembly, struct quad *this)
 {
+        struct quad_address *arg1, *arg2, *result;
+        int reg_arg1, reg_arg2, reg_result;
+        reg_arg1 = get_reg(assembly);
+        reg_arg2 = get_reg(assembly);
+        reg_result = get_reg(assembly);
+        arg1 = this->val.binary_assign.arg1;
+        arg2 = this->val.binary_assign.arg2;
+        result = this->val.binary_assign.result;
+        add_line(assembly, create_load_word(reg_arg1, arg1));
+        add_line(assembly, create_load_word(reg_arg2, arg2));
+        add_line(assembly, create_load_word(reg_result, result));
+        add_line(assembly, create_store_word(reg_arg1, arg1));
+        add_line(assembly, create_store_word(reg_arg2, arg2));
+        add_line(assembly, create_store_word(reg_result, result));
+        unget_reg(assembly, reg_arg1);
+        unget_reg(assembly, reg_arg2);
+        unget_reg(assembly, reg_result);
 }
 
 void parse_assembly_unary_assign
@@ -168,3 +185,12 @@ void parse_assembly_procedure_return
 {
 }
 
+line create_load_word(int reg, struct quad_address *addr)
+{
+        return "";
+}
+
+line create_store_word(int reg, struct quad_address *addr)
+{
+        return "";
+}

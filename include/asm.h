@@ -6,15 +6,17 @@
 
 #define NUM_REGS 8
 
+typedef char* line;
+
 struct assembly {
-        char **lines;
+        line *lines;
         unsigned int n_lines;
         char regs[NUM_REGS];
 };
 
 struct assembly *create_assembly();
 
-void add_assembly_line(struct assembly *, char *);
+void add_line(struct assembly *, line);
 int get_reg(struct assembly *);
 void unget_reg(struct assembly *, int);
 
@@ -33,5 +35,8 @@ void parse_assembly_relational_jump(struct symbol_table *, struct assembly *, st
 void parse_assembly_procedure_param(struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_call(struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_return(struct symbol_table *, struct assembly *, struct quad *);
+
+line create_load_word(int, struct quad_address *);
+line create_store_word(int, struct quad_address *);
 
 #endif  /* CFLAT_ASM_H */
