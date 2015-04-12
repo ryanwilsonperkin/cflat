@@ -211,11 +211,29 @@ void parse_assembly_copy_addr
 void parse_assembly_copy_from_addr
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg1, *arg_reg2;
+        struct line_address *result;
+        arg = translate_quad_address(global, local, this->val.copy.arg);
+        result = translate_quad_address(global, local, this->val.copy.result);
+        arg_reg1 = create_line_address_register(arg->basic_type, REG_TEMP1);
+        arg_reg2 = create_line_address_register(arg->basic_type, REG_TEMP2);
+        add_line(assembly, create_line_load(arg, arg_reg1));
+        add_line(assembly, create_line_load_address(arg_reg1, arg_reg2));
+        add_line(assembly, create_line_store(arg_reg2, result));
 }
 
 void parse_assembly_copy_to_addr
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
+        struct line_address *arg, *arg_reg1, *arg_reg2;
+        struct line_address *result;
+        arg = translate_quad_address(global, local, this->val.copy.arg);
+        result = translate_quad_address(global, local, this->val.copy.result);
+        arg_reg1 = create_line_address_register(arg->basic_type, REG_TEMP1);
+        arg_reg2 = create_line_address_register(arg->basic_type, REG_TEMP2);
+        add_line(assembly, create_line_load(arg, arg_reg1));
+        add_line(assembly, create_line_load(arg_reg1, result));
+        add_line(assembly, create_line_store(arg_reg1, arg_reg2));
 }
 
 void parse_assembly_label
