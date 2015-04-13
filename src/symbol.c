@@ -193,7 +193,7 @@ void parse_builtins
                 0, 0, "puti",
                 create_function_param_list(
                         0, 0,
-                        create_var_decl_basic(0, 0, FLOAT_TYPE, "i", NULL),
+                        create_var_decl_basic(0, 0, INT_TYPE, "i", NULL),
                         NULL
                 ),
                 NULL

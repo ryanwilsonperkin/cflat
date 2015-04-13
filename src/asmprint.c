@@ -41,6 +41,12 @@ void print_reg
 (FILE *out, enum reg this)
 {
         switch (this) {
+        case REG_A0:
+                fprintf(out, "$a0");
+                break;
+        case REG_V0:
+                fprintf(out, "$v0");
+                break;
         case REG_SP:
                 fprintf(out, "$sp");
                 break;
@@ -231,6 +237,9 @@ void print_line
                 break;
         case LINE_BGE:
                 print_line_bge(out, this);
+                break;
+        case LINE_SYSCALL:
+                print_line_syscall(out, this);
                 break;
         default:
                 assert(0);  /* Invalid enum value. */
@@ -506,4 +515,10 @@ void print_line_bge
         fprintf(out, ",");
         print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
         fprintf(out, ",%s", this->val.jump_relational.label);
+}
+
+void print_line_syscall
+(FILE *out, struct line *this)
+{
+        fprintf(out, "syscall");
 }

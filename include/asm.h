@@ -5,6 +5,8 @@
 #include "symbol.h"
 
 enum reg {
+        REG_A0,
+        REG_V0,
         REG_SP,
         REG_FP,
         REG_RA,
@@ -65,7 +67,8 @@ struct line {
                 LINE_BLT,
                 LINE_BLE,
                 LINE_BGT,
-                LINE_BGE
+                LINE_BGE,
+                LINE_SYSCALL
         } type;
         union {
                 char *label;
@@ -122,6 +125,7 @@ struct line *create_line_blt(struct line_address *, struct line_address *, char 
 struct line *create_line_ble(struct line_address *, struct line_address *, char *);
 struct line *create_line_bgt(struct line_address *, struct line_address *, char *);
 struct line *create_line_bge(struct line_address *, struct line_address *, char *);
+struct line *create_line_syscall();
 
 void add_line(struct assembly *, struct line *);
 
@@ -139,6 +143,7 @@ void parse_assembly_relational_jump(struct symbol_table *, struct symbol_table *
 void parse_assembly_procedure_param(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_call(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 void parse_assembly_procedure_return(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
+void parse_assembly_builtin_puti(struct symbol_table *, struct symbol_table *, struct assembly *, struct quad *);
 
 struct line_address *translate_quad_address(struct symbol_table *, struct symbol_table *, struct quad_address *);
 

@@ -37,5 +37,6 @@ void print_line_blt(FILE *, struct line *);
 void print_line_ble(FILE *, struct line *);
 void print_line_bgt(FILE *, struct line *);
 void print_line_bge(FILE *, struct line *);
+void print_line_syscall(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */
