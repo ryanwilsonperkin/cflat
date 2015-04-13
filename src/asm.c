@@ -415,14 +415,13 @@ void parse_assembly_binary_assign
         struct line_address *arg2, *arg2_reg;
         struct line_address *result, *result_reg;
         arg1 = translate_quad_address(global, local, this->val.binary_assign.arg1);
-        arg2 = translate_quad_address(global, local, this->val.binary_assign.arg1);
+        arg2 = translate_quad_address(global, local, this->val.binary_assign.arg2);
         result = translate_quad_address(global, local, this->val.binary_assign.result);
         arg1_reg = create_line_address_register(arg1->basic_type, REG_TEMP1);
         arg2_reg = create_line_address_register(arg2->basic_type, REG_TEMP2);
         result_reg = create_line_address_register(result->basic_type, REG_TEMP3);
         add_line(assembly, create_line_load(arg1, arg1_reg));
         add_line(assembly, create_line_load(arg2, arg2_reg));
-        add_line(assembly, create_line_load(result, result_reg));
         switch (this->val.binary_assign.op) {
         case QUAD_OP_LOGICAL_OR:
                 add_line(assembly, create_line_or(arg1_reg, arg2_reg, result_reg));
