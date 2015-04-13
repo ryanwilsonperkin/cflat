@@ -1,0 +1,12 @@
+/* Typecheck error
+ * Function called with wrong number of arguments
+ */
+
+int factorial(int n) {
+        return n * factorial(n-1);
+}
+
+int main() {
+        factorial(1, 2);
+        return 0;
+}

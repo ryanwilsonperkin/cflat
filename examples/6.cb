@@ -1,0 +1,6 @@
+/* Syntax error
+ * Missing braces in function body
+ */
+
+int main()
+        return 0

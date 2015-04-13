@@ -1,0 +1,9 @@
+/* Typecheck error
+ * Referenced unknown variable
+ */
+
+int main() {
+        int x;
+        y = 1;
+        return 0;
+}

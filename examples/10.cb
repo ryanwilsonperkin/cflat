@@ -1,0 +1,10 @@
+/* Typecheck error
+ * Access of field on object that is not a record
+ */
+
+int main() {
+        int x;
+        int y;
+        y = x.some_field;
+        return 0;
+}
