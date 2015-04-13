@@ -3,6 +3,9 @@
 
 void print_assembly(FILE *, struct symbol_table *, struct assembly *);
 void print_assembly_symbols(FILE *, struct symbol_table *);
+void print_putc(FILE *);
+void print_putf(FILE *);
+void print_puti(FILE *);
 void print_reg(FILE *, enum reg);
 void print_line_address(FILE *, struct line_address *, int);
 void print_line_address_name(FILE *, struct line_address *);
@@ -37,6 +40,5 @@ void print_line_blt(FILE *, struct line *);
 void print_line_ble(FILE *, struct line *);
 void print_line_bgt(FILE *, struct line *);
 void print_line_bge(FILE *, struct line *);
-void print_line_syscall(FILE *, struct line *);
 
 #endif  /* CFLAT_ASMPRINT_H */

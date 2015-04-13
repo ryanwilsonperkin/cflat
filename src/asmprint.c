@@ -19,6 +19,9 @@ void print_assembly
                 print_line(out, this->lines[i]);
                 fprintf(out, "\n");
         }
+        print_putc(out);
+        print_putf(out);
+        print_puti(out);
 }
 
 void print_assembly_symbols
@@ -35,6 +38,21 @@ void print_assembly_symbols
                 }
                 fprintf(out, "%s:\t.space %d\n", id, symbol->size);
         }
+}
+
+void print_putc
+(FILE *out)
+{
+}
+
+void print_putf
+(FILE *out)
+{
+}
+
+void print_puti
+(FILE *out)
+{
 }
 
 void print_reg
@@ -237,9 +255,6 @@ void print_line
                 break;
         case LINE_BGE:
                 print_line_bge(out, this);
-                break;
-        case LINE_SYSCALL:
-                print_line_syscall(out, this);
                 break;
         default:
                 assert(0);  /* Invalid enum value. */
@@ -515,10 +530,4 @@ void print_line_bge
         fprintf(out, ",");
         print_line_address(out, this->val.jump_relational.arg2, UNENCLOSED);
         fprintf(out, ",%s", this->val.jump_relational.label);
-}
-
-void print_line_syscall
-(FILE *out, struct line *this)
-{
-        fprintf(out, "syscall");
 }

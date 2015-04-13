@@ -339,14 +339,6 @@ struct line *create_line_bge
         return this;
 }
 
-struct line *create_line_syscall
-()
-{
-        struct line *this = malloc(sizeof(struct line));
-        this->type = LINE_SYSCALL;
-        return this;
-}
-
 void add_line
 (struct assembly *assembly, struct line *line)
 {
@@ -636,29 +628,11 @@ void parse_assembly_procedure_param
 void parse_assembly_procedure_call
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
-        char *label;
-        label = this->val.procedure_call.label;
-        if (strcmp(label, "puti") == 0) {
-                parse_assembly_builtin_puti(global, local, assembly, this);
-                return;
-        }
 }
 
 void parse_assembly_procedure_return
 (struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
 {
-}
-
-void parse_assembly_builtin_puti
-(struct symbol_table *global, struct symbol_table *local, struct assembly *assembly, struct quad *this)
-{
-        struct line_address *a0, *v0, *to_put;
-        to_put = translate_quad_address(global, local, this->val.procedure_call.result);
-        a0 = create_line_address_register(INT_TYPE, REG_A0);
-        v0 = create_line_address_register(INT_TYPE, REG_V0);
-        add_line(assembly, create_line_load(to_put, a0));
-        add_line(assembly, create_line_load(create_line_address_constant(INT_TYPE, (union value)1), v0));
-        add_line(assembly, create_line_syscall());
 }
 
 /* TODO: Get type of values, not just INT */
