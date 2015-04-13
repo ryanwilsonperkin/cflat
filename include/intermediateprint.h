@@ -1,3 +1,8 @@
+/* intermediateprint.h
+ * Print intermediate representation.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #ifndef CFLAT_INTERMEDIATEPRINT_H
 #define CFLAT_INTERMEDIATEPRINT_H
 

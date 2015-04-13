@@ -1,3 +1,8 @@
+/* intermediate.c
+ * Construct intermediate representation from abstract syntax tree.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>

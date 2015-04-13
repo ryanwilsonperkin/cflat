@@ -1,3 +1,8 @@
+/* typecheck.c
+ * Typechecking of abstract syntax tree and symbol table.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

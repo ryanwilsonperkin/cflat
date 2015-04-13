@@ -1,3 +1,13 @@
+/* cflat.c
+ * Compiler for Cflat programs.
+ * Reads from the named input file.
+ * Parses input into abstract syntax tree.
+ * Parses symbols into symbol table.
+ * Translates abstract syntax tree into intermediate representation.
+ * Translates intermediate representation into MIPS assembly.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <argp.h>
 #include <errno.h>
 #include <stdio.h>

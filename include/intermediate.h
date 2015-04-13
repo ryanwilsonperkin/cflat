@@ -1,3 +1,8 @@
+/* intermediate.h
+ * Construct intermediate representation from abstract syntax tree.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #ifndef CFLAT_INTERMEDIATE_H
 #define CFLAT_INTERMEDIATE_H
 

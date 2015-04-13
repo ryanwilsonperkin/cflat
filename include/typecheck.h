@@ -1,3 +1,8 @@
+/* typecheck.h
+ * Typechecking of abstract syntax tree and symbol table.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #ifndef CFLAT_TYPECHECK_H
 #define CFLAT_TYPECHECK_H
 

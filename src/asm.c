@@ -1,3 +1,8 @@
+/* asm.c
+ * Convert intermediate representation to assembly.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

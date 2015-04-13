@@ -1,3 +1,8 @@
+/* symbolprint.h
+ * Print representation of symbol table.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #ifndef CFLAT_SYMBOLPRINT_H
 #define CFLAT_SYMBOLPRINT_H
 

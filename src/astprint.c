@@ -1,3 +1,8 @@
+/* astprint.c
+ * Print representation of abstract syntax tree.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <assert.h>
 #include <stdio.h>
 #include "astprint.h"

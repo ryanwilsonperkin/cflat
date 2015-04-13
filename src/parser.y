@@ -1,4 +1,9 @@
 %{
+/* parser.y
+ * Parsing of lexical tokens into abstract syntax tree.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

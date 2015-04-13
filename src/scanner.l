@@ -1,4 +1,9 @@
 %{
+/* scanner.l
+ * Lexical analysis and scanning.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

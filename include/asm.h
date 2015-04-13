@@ -1,3 +1,8 @@
+/* asm.h
+ * Convert intermediate representation to assembly.
+ * by Ryan Wilson-Perkin
+ * for CIS4650W15 Compilers: Cflat Assignment
+ */
 #ifndef CFLAT_ASM_H
 #define CFLAT_ASM_H
 
