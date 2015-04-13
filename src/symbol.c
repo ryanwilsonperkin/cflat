@@ -162,8 +162,45 @@ struct symbol_table *parse_symbols
 (struct program *program)
 {
         struct symbol_table *this = create_symbol_table();
+        parse_builtins(this);
         parse_program(this, program);
         return this;
+}
+
+void parse_builtins
+(struct symbol_table *global)
+{
+        struct function_def *putc, *puti, *putf;
+        putc = create_void_function_def(
+                0, 0, "putc",
+                create_function_param_list(
+                        0, 0,
+                        create_var_decl_basic(0, 0, CHAR_TYPE, "c", NULL),
+                        NULL
+                ),
+                NULL
+        );
+        putf = create_void_function_def(
+                0, 0, "putf",
+                create_function_param_list(
+                        0, 0,
+                        create_var_decl_basic(0, 0, FLOAT_TYPE, "f", NULL),
+                        NULL
+                ),
+                NULL
+        );
+        puti = create_void_function_def(
+                0, 0, "puti",
+                create_function_param_list(
+                        0, 0,
+                        create_var_decl_basic(0, 0, FLOAT_TYPE, "i", NULL),
+                        NULL
+                ),
+                NULL
+        );
+        parse_function_def(global, putc);
+        parse_function_def(global, putf);
+        parse_function_def(global, puti);
 }
 
 void parse_program
