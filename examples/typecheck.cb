@@ -1,4 +1,15 @@
-
+/* Typecheck test suite
+ * Tests:
+ *      Assignment expressions
+ *      Logical expressions
+ *      Euqality expressions
+ *      Relational expressions
+ *      Additive expressions
+ *      Multiplicative expressions
+ *      Postfix expressions
+ *      Function calls
+ *      Correct number and type of arguments
+ */
 void expressions()
 {
         char c;
