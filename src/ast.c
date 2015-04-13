@@ -101,7 +101,7 @@ struct struct_type *create_struct_type
                 this->id = id;
         } else {
                 this->id = malloc(id_length);
-                sprintf(this->id, "%s:%d", prefix, counter++);
+                sprintf(this->id, "%s%d", prefix, counter++);
         }
         this->var_decl_stmt_list = var_decl_stmt_list;
         return this;
