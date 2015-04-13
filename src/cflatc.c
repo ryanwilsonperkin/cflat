@@ -189,7 +189,7 @@ int main
                         fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
                         exit(EXIT_FAILURE);
                 }
-                print_assembly(out, assembly);
+                print_assembly(out, symbol_table, assembly);
                 if (out != stdout && fclose(out)) {
                         fprintf(stderr, "cflatc: '%s': %s\n", out_fnames.symbol, strerror(errno));
                         exit(EXIT_FAILURE);

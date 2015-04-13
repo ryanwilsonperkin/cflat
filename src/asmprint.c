@@ -8,12 +8,32 @@
 #define UNENCLOSED 0
 
 void print_assembly
-(FILE *out, struct assembly *this)
+(FILE *out, struct symbol_table *global, struct assembly *this)
 {
         int i;
+        fprintf(out, ".data\n");
+        print_assembly_symbols(out, global);
+        fprintf(out, ".text\n");
+        fprintf(out, ".globl main\n");
         for (i = 0; i < this->n_lines; i++) {
                 print_line(out, this->lines[i]);
                 fprintf(out, "\n");
+        }
+}
+
+void print_assembly_symbols
+(FILE *out, struct symbol_table *global)
+{
+        int i;
+        char *id;
+        struct symbol *symbol;
+        for (i = 0; i < global->n_items; i++) {
+                id = global->items[i]->id;
+                symbol = global->items[i]->symbol;
+                if (symbol->type == SYMBOL_FUNCTION) {
+                        continue;
+                }
+                fprintf(out, "%s:\t.space %d\n", id, symbol->size);
         }
 }
 

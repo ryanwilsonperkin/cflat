@@ -1,7 +1,8 @@
 #ifndef CFLAT_ASMPRINT_H
 #define CFLAT_ASMPRINT_H
 
-void print_assembly(FILE *, struct assembly *);
+void print_assembly(FILE *, struct symbol_table *, struct assembly *);
+void print_assembly_symbols(FILE *, struct symbol_table *);
 void print_reg(FILE *, enum reg);
 void print_line_address(FILE *, struct line_address *, int);
 void print_line_address_name(FILE *, struct line_address *);
